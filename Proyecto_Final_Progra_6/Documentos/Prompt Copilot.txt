@@ -1,4 +1,4 @@
-# Estándares de desarrollo para Claudes 2.0 (.NET 9 + Angular)
+# Estándares de desarrollo para Libreria Universidad (.NET 9 + Angular)
 
 ## 1. Encabezado obligatorio para cada archivo
 
@@ -25,7 +25,7 @@ base de datos al iniciar.
 
 Historial de cambios:
 1. 23/07/2025 - Estructura inicial y configuración de servicios principales.
-2. 02/07/2025 - Actualización de referencias a OIDC: uso de ClaudesSpaClientID en lugar de QuickAppClientID.
+2. 02/07/2025 - Actualización de referencias a OIDC: uso de LibreriaUniversidadSpaClientID en lugar de QuickAppClientID.
                - Mejoras en comentarios y consistencia.
 
 Alertas Críticas:
@@ -40,10 +40,10 @@ Alertas Críticas:
 - Utiliza las convenciones de nomenclatura de C# y el resto de tecnologías del stack para documentacion XML segun sea el origen del archivo.
 - No eliminar las secciones comentadas como "Notas Importantes" o cometarios del código, ya que contienen información relevante para el mantenimiento, configuracion, uso, desarrollo o descripcion.
 - Divide el código en grandes secciones, cada una debe contener encabezado y pie explicativo usando el siguiente formato:
--En el o los archivos analizados se deben remplazar todas las referencias a ebenmonney, emonney, quickapp, Quick Application, Copyright, template, o cualquier otro termino relacionado o que con la plantilla original o proyecto QuickApp por Claudes 2.0, o mi nombre como programador (Raul O.A según corresponda siempre y cuando no tengan dependencias o referencias asociadas que se vallan a romper.
+-En el o los archivos analizados se deben remplazar todas las referencias a ebenmonney, emonney, quickapp, Quick Application, Copyright, template, o cualquier otro termino relacionado o que con la plantilla original o proyecto QuickApp por Libreria Universidad, o mi nombre como programador (Raul O.A según corresponda siempre y cuando no tengan dependencias o referencias asociadas que se vallan a romper.
 -Si existe texto en ingles debe ser traducido al español, a menos que sea un nombre de variable o propiedad que no deba ser traducido.
 - Los metadatos deben ser congruentes con el contenido del archivo y actualizados según corresponda.
-- Repositorio del proyecto: https://github.com/RaulOA/Claudes-2.0 
+- Repositorio del proyecto: https://github.com/RaulOA/Libreria-Universidad 
 - si existen url en comentarios o documentación, deben ser actualizadas a la url del repositorio del proyecto o a la url de la documentación oficial de .NET 9, Angular 17, OpenIddict, etc. según corresponda.
 
 ======================================================== INICIO - NOMBRE DE LA SECCIÓN =========================================================
@@ -60,9 +60,9 @@ Línea 2: en blanco
 Línea 3 en adelante: Archivo.extension: descripción completa del cambio con los detalles necesarios
 
 Ejemplo:
-Actualizado nombre de cliente OIDC a ClaudesSpaClientID
+Actualizado nombre de cliente OIDC a LibreriaUniversidadSpaClientID
 
-Se modificó Program.cs para usar ClaudesSpaClientID en lugar de QuickAppClientID.  
+Se modificó Program.cs para usar LibreriaUniversidadSpaClientID en lugar de QuickAppClientID.  
 Se mejoraron comentarios y consistencia en los nombres del proyecto.
 
 Además, si el commit cierra una incidencia, usar la sintaxis:
@@ -77,7 +77,7 @@ Se añadió validación adicional y se actualizaron mensajes de error.
 ## 4. Migraciones de base de datos
 Las migraciones deben seguir estas pautas:
 - Cada migración debe tener un nombre descriptivo que refleje el cambio realizado.
-- Las migraciones deben ser generadas automáticamente usando `dotnet ef migrations add NombreMigracion` utilizando la terminal desde el proyecto Caudes_2._0.Server.
+- Las migraciones deben ser generadas automáticamente usando `dotnet ef migrations add NombreMigracion` utilizando la terminal desde el proyecto Libreria_Universidad.Server.
 - No se deben modificar manualmente las migraciones generadas.
 - Las migraciones deben ser aplicadas al entorno de desarrollo local antes de hacer push al repositorio.
 - Finalmente, ejecutar `dotnet ef database update` para aplicar los cambios en la base de datos.
