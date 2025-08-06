@@ -1,0 +1,247 @@
+﻿Propuesta de Base de Datos para el sistema CLAUDES
+
+Este documento describe la estructura propuesta para la base de datos del sistema CLAUDES, detallando las tablas, campos, tipos de datos, llaves primarias y foráneas, así como las relaciones entre entidades. El objetivo es facilitar la implementación y el mantenimiento, asegurando claridad y normalización.
+
+─────────────────────────────────────────────
+1. Tablas de Configuración y Catálogos Generales
+
+- Rol
+  - Id (INTEGER, PK): Identificador único del rol.
+  - Nombre (VARCHAR(100)): Nombre del rol (Ej: Administrador, Consulta).
+  - Descripcion (TEXT): Descripción detallada de las funciones del rol.
+
+- Region
+  - Id (INTEGER, PK): Identificador único de la región.
+  - Nombre (VARCHAR(150)): Nombre de la región (Ej: Región Brunca).
+
+- SubRegion
+  - Id (INTEGER, PK): Identificador único de la subregión.
+  - Nombre (VARCHAR(150)): Nombre de la subregión (Ej: SUBREGION SANTA ROSA).
+  - RegionId (INTEGER, FK): Referencia a la tabla Region.
+
+- Cultivo
+  - Id (INTEGER, PK): Identificador único del cultivo.
+  - Nombre (VARCHAR(100)): Nombre del cultivo (Ej: Frijol Negro, Maíz Blanco).
+
+- Semilla
+  - Id (INTEGER, PK): Identificador único de la variedad de semilla.
+  - Nombre (VARCHAR(100)): Nombre de la variedad (Ej: BRUNCA, CRIOLLO).
+  - CultivoId (INTEGER, FK): Referencia a la tabla Cultivo.
+
+- SistemaSiembra
+  - Id (INTEGER, PK): Identificador único del sistema de siembra.
+  - Nombre (VARCHAR(100)): Nombre del sistema (Ej: Espeque, Mecanizado).
+
+- PeriodoCosecha
+  - Id (INTEGER, PK): Identificador único del período.
+  - Descripcion (VARCHAR(50)): Descripción textual del período (Ej: "2018-2019").
+  - FechaInicio (DATE): Fecha de inicio del período.
+  - FechaFin (DATE): Fecha de fin del período.
+  - EsActual (BOOLEAN): Indica si el período es el actualmente activo.
+
+- Cosecha
+  - Id (INTEGER, PK): Identificador único de la cosecha.
+  - Nombre (VARCHAR(50)): Nombre de la cosecha (Ej: "COSECHA 2").
+  - PeriodoCosechaId (INTEGER, FK): Referencia a la tabla PeriodoCosecha.
+
+- ProgramaVerificacion
+  - Id (INTEGER, PK): Identificador único del programa.
+  - Nombre (VARCHAR(150)): Nombre del programa de verificación.
+
+─────────────────────────────────────────────
+2. Tablas de Gestión de Entidades
+
+- Usuario
+  - Id (VARCHAR(50), PK): Identificador único del usuario (login name).
+  - NombreCompleto (VARCHAR(200)): Nombre completo del funcionario.
+  - ClaveHash (VARCHAR(255)): Hash de la contraseña.
+  - RolId (INTEGER, FK): Referencia a Rol.
+  - CorreoElectronico (VARCHAR(150)): Correo institucional.
+  - Telefono (VARCHAR(20)): Teléfono fijo.
+  - Celular (VARCHAR(20)): Teléfono celular.
+  - RegionId (INTEGER, FK): Región asignada.
+  - SubRegionId (INTEGER, FK): Subregión asignada (una a la vez).
+  - Estado (VARCHAR(20)): Estado (Ej: Activo, Inactivo).
+  - FechaCreacion (DATETIME): Fecha de creación.
+  - FechaUltimaModificacion (DATETIME): Fecha de última modificación.
+
+- Industrial
+  - Id (VARCHAR(50), PK): Identificador único (Cédula Jurídica).
+  - Nombre (VARCHAR(255)): Nombre o razón social.
+  - FechaRegistro (DATE): Fecha de registro.
+  - DomicilioLegal (TEXT): Dirección legal.
+  - NombreRepresentanteLegal (VARCHAR(200)): Nombre del representante legal.
+  - CedulaRepresentanteLegal (VARCHAR(50)): Cédula del representante legal.
+  - FotoRepresentanteLegalUrl (VARCHAR(500)): URL o ruta de la foto.
+  - Telefono (VARCHAR(20)): Teléfono.
+  - Fax (VARCHAR(20)): Fax.
+  - CorreoElectronico (VARCHAR(150)): Correo electrónico.
+  - TieneDocInventarios (BOOLEAN): Declaración de inventarios.
+  - TieneDocCompraGranos (BOOLEAN): Comprobante de compra de granos.
+  - TieneDocPermisosFito (BOOLEAN): Permisos fitosanitarios.
+  - TieneDocCCSS (BOOLEAN): Comprobante CCSS.
+  - TieneDocMinSalud (BOOLEAN): Comprobante Min. Salud.
+  - Estado (VARCHAR(20)): Estado (Ej: Activo, Eliminado).
+
+- AgenteAutorizadoIndustrial
+  - Id (INTEGER, PK): Identificador único del agente.
+  - IndustrialId (VARCHAR(50), FK): Referencia a Industrial.
+  - Cedula (VARCHAR(50)): Cédula del agente.
+  - Nombre (VARCHAR(200)): Nombre completo.
+  - Telefono (VARCHAR(20)): Teléfono.
+  - CorreoElectronico (VARCHAR(150)): Correo electrónico.
+  - Estado (VARCHAR(20)): Estado (ACTIVO, INACTIVO).
+  - RegionId (INTEGER, FK): Región de trabajo.
+  - FotoUrl (VARCHAR(500)): URL o ruta de la foto.
+
+- Organizacion
+  - Id (VARCHAR(50), PK): Identificador único (Cédula Jurídica).
+  - Nombre (VARCHAR(255)): Nombre de la organización.
+  - FechaRegistro (DATE): Fecha de registro.
+  - DomicilioLegal (TEXT): Domicilio legal.
+  - NombreRepresentanteLegal (VARCHAR(200)): Nombre del representante legal.
+  - CedulaRepresentanteLegal (VARCHAR(50)): Cédula del representante legal.
+  - FotoRepresentanteLegalUrl (VARCHAR(500)): URL o ruta de la foto.
+  - Telefono (VARCHAR(20)): Teléfono.
+  - Fax (VARCHAR(20)): Fax.
+  - CorreoElectronico (VARCHAR(150)): Correo electrónico.
+  - RegionId (INTEGER, FK): Región.
+  - SubRegionId (INTEGER, FK): Subregión.
+  - TieneDocInventarios (BOOLEAN): Documentación de inventarios.
+  - TieneDocCompraGranos (BOOLEAN): Documentación de compra de granos.
+  - TieneDocPermisoFito (BOOLEAN): Permisos fitosanitarios.
+  - TieneDocCCSS (BOOLEAN): Comprobante CCSS.
+  - TieneDocMinSalud (BOOLEAN): Comprobante Min. Salud.
+  - Estado (VARCHAR(20)): Estado (Activa, Eliminada).
+
+- AgenteAutorizadoOrganizacion
+  - Id (INTEGER, PK): Identificador único del agente.
+  - OrganizacionId (VARCHAR(50), FK): Referencia a Organizacion.
+  - Cedula (VARCHAR(50)): Cédula del agente.
+  - Nombre (VARCHAR(200)): Nombre completo.
+  - Telefono (VARCHAR(20)): Teléfono.
+  - CorreoElectronico (VARCHAR(150)): Correo electrónico.
+  - Estado (VARCHAR(20)): Estado (ACTIVO, INACTIVO).
+  - RegionId (INTEGER, FK): Región de trabajo.
+  - FotoUrl (VARCHAR(500)): URL o ruta de la foto.
+
+- Productor
+  - Id (VARCHAR(50), PK): Identificador único (Cédula).
+  - NombreCompleto (VARCHAR(200)): Nombre completo.
+  - TipoCedula (CHAR(1)): Nacional 'N', Extranjero 'E'.
+  - FotoUrl (VARCHAR(500)): URL o ruta de la foto.
+  - Telefono1 (VARCHAR(20)): Primer teléfono.
+  - Telefono2 (VARCHAR(20)): Segundo teléfono (opcional).
+  - CorreoElectronico (VARCHAR(150)): Correo electrónico (opcional).
+  - RegionId (INTEGER, FK): Región.
+  - SubRegionId (INTEGER, FK): Subregión.
+  - Distrito (VARCHAR(150)): Distrito.
+  - Caserio (VARCHAR(150)): Caserío.
+  - DireccionExacta (TEXT): Dirección detallada.
+  - Estado (VARCHAR(20)): Estado (Activo, Eliminado).
+
+─────────────────────────────────────────────
+3. Tablas de Registros de Siembra
+
+- RegistroProductor
+  - Id (VARCHAR(50), PK): Identificador único del registro de siembra.
+  - ProductorId (VARCHAR(50), FK): Productor asociado.
+  - PeriodoCosechaId (INTEGER, FK): Período de cosecha.
+  - CosechaId (INTEGER, FK): Cosecha específica.
+  - FechaRegistro (DATE): Fecha del registro.
+  - AutorizaDatos (BOOLEAN): Autorización de uso de datos.
+  - ProgramaVerificacionId (INTEGER, FK): Programa de verificación (opcional).
+  - Estado (VARCHAR(20)): Estado (Activa, Anulada).
+  - UsuarioRegistraId (VARCHAR(50), FK): Usuario que creó el registro.
+  - FechaCreacion (DATETIME): Fecha de creación.
+  - UsuarioModificaId (VARCHAR(50), FK): Usuario que modificó.
+  - FechaUltimaModificacion (DATETIME): Fecha de última modificación.
+
+- DetalleSiembra
+  - Id (INTEGER, PK): Identificador único del detalle.
+  - RegistroProductorId (VARCHAR(50), FK): Referencia a RegistroProductor.
+  - CultivoId (INTEGER, FK): Cultivo sembrado.
+  - AreaSembradaHa (DECIMAL(10,2)): Área sembrada (hectáreas).
+  - RendimientoEstimadoQqHa (DECIMAL(10,2)): Rendimiento estimado (qq/ha).
+  - ProduccionEstimadaQq (DECIMAL(10,2)): Producción total estimada (qq).
+  - MesSiembra (VARCHAR(20)): Mes de siembra.
+  - Provincia (VARCHAR(100)): Provincia.
+  - Canton (VARCHAR(100)): Cantón.
+  - Distrito (VARCHAR(100)): Distrito.
+  - Caserio (VARCHAR(100)): Caserío.
+  - DireccionExacta (TEXT): Dirección exacta.
+  - Latitud (VARCHAR(30)): Latitud (opcional).
+  - Longitud (VARCHAR(30)): Longitud (opcional).
+  - CantidadLotes (INTEGER): Número de lotes.
+  - SistemaSiembraId (INTEGER, FK): Sistema de siembra.
+  - MesEstimadoCosecha1 (VARCHAR(20)): Primer mes estimado de cosecha.
+  - MesEstimadoCosecha2 (VARCHAR(20)): Segundo mes estimado de cosecha.
+  - PorcentajeFlujoMes1 (DECIMAL(5,2)): % flujo mes 1.
+  - PorcentajeFlujoMes2 (DECIMAL(5,2)): % flujo mes 2.
+  - SemillaId (INTEGER, FK): Variedad de semilla.
+  - CantidadSemillaKg (DECIMAL(10,2)): Cantidad de semilla (kg).
+  - Comentario (TEXT): Observaciones.
+
+- RegistroProductorOrganizacion
+  - RegistroProductorId (VARCHAR(50), PK, FK): Referencia a RegistroProductor.
+  - OrganizacionId (VARCHAR(50), PK, FK): Referencia a Organizacion.
+
+─────────────────────────────────────────────
+4. Tablas de Gestión de Compras
+
+- ConsecutivoCompra
+  - Id (INTEGER, PK): ID de configuración.
+  - RegionId (INTEGER, FK): Región.
+  - SubRegionId (INTEGER, FK): Subregión.
+  - Literal (VARCHAR(20)): Parte literal del consecutivo.
+  - NumeralActual (INTEGER): Último número utilizado.
+  - Anio (INTEGER): Año.
+  - PeriodoCosechaId (INTEGER, FK): Período asociado.
+
+- CompraCosecha
+  - Id (VARCHAR(50), PK): Identificador único de la compra.
+  - Fecha (DATE): Fecha de la compra.
+  - Tipo (VARCHAR(30)): Tipo (Independiente/Organización).
+  - IndustrialCompradorId (VARCHAR(50), FK): Industrial que compra.
+  - AgenteIndustrialCompradorId (INTEGER, FK): Agente del industrial.
+  - CosechaId (INTEGER, FK): Cosecha.
+  - PeriodoCosechaId (INTEGER, FK): Período.
+  - CultivoId (INTEGER, FK): Cultivo.
+  - CantidadTotalQq (DECIMAL(10,2)): Cantidad total (qq).
+  - PrecioUnitarioQq (DECIMAL(10,2)): Precio por quintal.
+  - Observaciones (TEXT): Observaciones.
+  - Estado (VARCHAR(20)): Estado (Activa, Anulada).
+  - UsuarioRegistraId (VARCHAR(50), FK): Usuario que registra.
+  - FechaCreacion (DATETIME): Fecha de creación.
+  - ProductorVendedorId (VARCHAR(50), FK): Productor vendedor (si aplica).
+  - OrganizacionVendedoraId (VARCHAR(50), FK): Organización vendedora (si aplica).
+  - AgenteOrganizacionVendedoraId (INTEGER, FK): Agente de la organización (si aplica).
+
+- DetalleCompraOrganizacion
+  - Id (INTEGER, PK): Identificador único del detalle.
+  - CompraCosechaId (VARCHAR(50), FK): Referencia a CompraCosecha.
+  - ProductorId (VARCHAR(50), FK): Productor participante.
+  - CantidadVendidaQq (DECIMAL(10,2)): Cantidad vendida por productor.
+
+─────────────────────────────────────────────
+5. Tabla de Auditoría
+
+- Bitacora
+  - Id (INTEGER, PK): Identificador único del registro.
+  - FechaHora (DATETIME): Fecha y hora del evento.
+  - UsuarioId (VARCHAR(50), FK): Usuario que realizó la acción.
+  - Accion (VARCHAR(50)): Tipo de acción (INSERT, UPDATE, DELETE_LOGICO).
+  - Proceso (VARCHAR(100)): Módulo o proceso afectado.
+  - Tabla (VARCHAR(100)): Nombre de la tabla afectada.
+  - RegistroAfectadoId (VARCHAR(100)): ID del registro afectado.
+  - Detalle (TEXT): Descripción del cambio.
+  - IpOrigen (VARCHAR(45)): IP de origen (opcional).
+
+─────────────────────────────────────────────
+Notas generales:
+- Todas las llaves foráneas (FK) deben mantener la integridad referencial.
+- Los campos de estado permiten la gestión lógica (activo/inactivo/eliminado) sin eliminar físicamente los registros.
+- Se recomienda definir abreviaturas estándar para los nombres de tablas y campos según las políticas del DBA.
+- Los tamaños de los campos pueden ajustarse según necesidades específicas y volumen de datos esperado.
+
+Esta estructura busca cubrir todos los procesos y requisitos funcionales definidos para el sistema CLAUDES, facilitando la escalabilidad y el mantenimiento futuro.

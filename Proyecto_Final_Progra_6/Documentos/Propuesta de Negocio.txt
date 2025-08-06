@@ -1,0 +1,117 @@
+# Propuesta de Negocio: Sistema de Gestión de Inventario y Ventas para una Librería Universitaria
+
+========================================================================================================================
+## 1. Tecnologías y características incluidas en la plantilla base (QuickApp / Proyecto_Final_Progra_6)
+
+La plantilla __Proyecto_Final_Progra_6__ (basada en QuickApp) proporciona una base tecnológica moderna y robusta, con los siguientes elementos ya integrados y listos para usar:
+
+- **Frontend:** Angular 19 y TypeScript, gestionado con Angular CLI.
+- **Backend:** ASP.NET Core 9.0 Web API, arquitectura RESTful.
+- **Base de datos:** SQL Server, gestionada mediante Entity Framework Core (Code First).
+- **ORM:** Entity Framework Core, con patrones Repository y Unit of Work.
+- **Autenticación y autorización:** OIDC/OAuth2 y ASP.NET Core Identity, con roles y permisos.
+- **Seguridad:** JWT (Bearer authentication) almacenados en WebStorage, sin cookies.
+- **Documentación de APIs:** Swagger integrado.
+- **Theming y UI:** Bootstrap 5 y SASS para personalización visual y responsividad.
+- **Internacionalización:** Soporte multilenguaje.
+- **Notificaciones y diálogos:** Servicios listos para interacción y feedback.
+- **Estructura modular:** Backend y frontend desacoplados, código limpio y mantenible.
+- **CRUD básico:** APIs y formularios para operaciones básicas.
+- **Dashboard básico:** Visualización inicial de datos y KPIs.
+- **Control de versiones:** Integración con GitHub desde Visual Studio 2022.
+- **Servicios adicionales:** Email API, configuración centralizada, manejo de tokens de acceso y refresh.
+
+Estas características cubren la mayoría de los requisitos técnicos y funcionales para una aplicación empresarial moderna y permiten un desarrollo ágil y seguro.
+
+========================================================================================================================
+## 2. Requerimientos y funcionalidades a incorporar (no presentes originalmente en la plantilla)
+
+De acuerdo a los requerimientos académicos y funcionales (ver Requerimientos.txt), se deben incorporar o adaptar los siguientes elementos para cumplir con el objetivo del proyecto:
+
+- **Gestión de inventario y ventas específica para librería universitaria:**
+  - Entidades principales: Libro (Producto), Categoría, Venta, Cliente, Proveedor (opcional).
+  - Relaciones uno a muchos y muchos a muchos (ejemplo: libros-categorías, ventas-libros).
+  - CRUD completo y validaciones para cada entidad.
+
+- **Reportes avanzados:**
+  - Integración y uso de Crystal Reports para al menos 2 reportes clave (ventas por periodo, inventario bajo).
+  - Exportación de reportes a PDF y aplicación de filtros.
+
+- **Dashboard informativo avanzado:**
+  - Visualización de KPIs relevantes (ventas del día, stock bajo, productos más vendidos).
+  - Gráficos interactivos usando Chart.js o ngx-charts.
+
+- **Roles adicionales y diferenciación de vistas:**
+  - Incorporar roles de Administrador, Vendedor y Cliente.
+  - Restringir vistas y acciones según el tipo de usuario.
+
+- **Consumo de APIs y seguridad en Angular:**
+  - Servicios Angular para consumir los nuevos endpoints CRUD.
+  - Adaptar o crear interceptores para JWT si es necesario.
+
+- **Diseño y experiencia de usuario adaptados:**
+  - Personalizar la interfaz, menús y dashboard para la temática de librería.
+  - Asegurar responsividad y usabilidad en todos los dispositivos.
+
+- **Documentación y entregables académicos:**
+  - Manual técnico (PDF) con arquitectura, diagramas, explicación de componentes e instrucciones de instalación.
+  - Video demo o presentación.
+  - Código fuente completo en repositorio público de GitHub.
+
+========================================================================================================================
+## 3. Lineamientos para el desarrollo y futuras modificaciones
+
+- Toda nueva funcionalidad, cambio o sugerencia debe ser congruente con esta propuesta y aprovechar las tecnologías y patrones ya presentes en la plantilla.
+- Se priorizará la reutilización de componentes, servicios y estilos existentes.
+- Los cambios deben mantener la coherencia visual y funcional del sistema.
+- La seguridad y la protección de datos serán consideradas en cada etapa.
+- La documentación y los entregables deben reflejar la arquitectura y tecnologías aquí descritas.
+
+========================================================================================================================
+## 4. Resumen
+
+La solución propuesta es un sistema de gestión de inventario y ventas para una librería universitaria, construido sobre la plantilla __Proyecto_Final_Progra_6__ (QuickApp), que ya integra la mayoría de las tecnologías y patrones modernos. Las funcionalidades adicionales requeridas se incorporarán de forma congruente, asegurando compatibilidad, coherencia y cumplimiento de todos los objetivos del proyecto sin incurrir en reiteraciones o repeticion de codigo o funcionalidades que se pueden reutilizar.
+
+========================================================================================================================
+## 5. Estructura de la plantilla base y lineamientos de organización
+
+Para mantener la compatibilidad, coherencia y buenas prácticas del sistema, es fundamental seguir la estructura de carpetas, archivos y organización definida por la plantilla __Proyecto_Final_Progra_6__ (QuickApp). Esta estructura modular separa claramente las responsabilidades y facilita el desarrollo, mantenimiento y escalabilidad del proyecto.
+
+### Estructura general de la plantilla (según análisis de la solución):
+
+#### Backend (ASP.NET Core 9.0 / Proyecto_Final_Progra_6.Server)
+- **/Controllers**: Controladores API REST.
+- **/Models**: Modelos de datos y entidades.
+- **/Services**: Lógica de negocio y servicios de aplicación.
+- **/Configuration**: Configuración de seguridad, OIDC, etc.
+- **/Data**: Contexto de base de datos y migraciones.
+- **/Properties**: Configuración de proyecto.
+- **/ReadMe.html**: Documentación y guía de la solución.
+
+#### Frontend (Angular 19 / Proyecto_Final_Progra_6.client)
+- **/src/app/components**: Componentes de UI (formularios, listas, dashboard, controles, etc.).
+- **/src/app/services**: Servicios Angular para consumo de APIs y lógica de frontend.
+- **/src/app/models**: Modelos de datos TypeScript.
+- **/src/app/routes**: Definición de rutas y navegación.
+- **/src/assets**: Recursos estáticos (imágenes, scripts, estilos externos, etc.).
+- **/src/styles**: Archivos SASS/Bootstrap para theming y personalización visual.
+- **/src/environments**: Configuración de entornos.
+- **/src/index.html** y **/src/main.ts**: Entradas principales de la aplicación.
+
+#### Otros elementos clave
+- **Swagger**: Documentación interactiva de APIs.
+- **Internacionalización**: Soporte multilenguaje integrado.
+- **Theming**: Personalización visual con Bootstrap y SASS.
+- **Control de versiones**: Integración con GitHub desde Visual Studio 2022.
+- **Estructura modular**: Separación clara entre backend y frontend.
+
+### Lineamientos para el desarrollo
+
+- **Respetar la estructura de carpetas y archivos**: Toda nueva funcionalidad, entidad, servicio o componente debe ubicarse en la carpeta correspondiente según el estándar de la plantilla.
+- **Nombrado y convenciones**: Seguir las convenciones de nombres de clases, archivos y carpetas ya presentes en la solución.
+- **Modularidad**: Mantener la separación de responsabilidades entre backend y frontend, y entre lógica de negocio, datos y presentación.
+- **No romper el estándar**: Evitar cambios estructurales que puedan dificultar la mantenibilidad o integración futura.
+- **Documentar cambios relevantes**: Toda modificación significativa debe estar documentada para facilitar el mantenimiento y la colaboración.
+
+**Nota:** Antes de crear, mover o eliminar archivos/carpetas, revisar la estructura actual y asegurarse de que el cambio respete el estándar de la plantilla. Esto garantiza que el desarrollo siga siendo compatible, escalable y fácil de mantener.
+========================================================================================================================

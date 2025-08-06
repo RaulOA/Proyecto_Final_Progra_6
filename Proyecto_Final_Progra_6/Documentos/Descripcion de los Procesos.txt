@@ -1,0 +1,569 @@
+﻿Descripción de los procesos (EPS)
+
+Este documento detalla, de manera textual y secuencial, el flujo de cada uno de los requisitos funcionales (RF) y de reportería (RR) identificados para el sistema CLAUDES. Se utiliza terminología estándar de diagramas de flujo: Inicio, Fin, Proceso, Decisión, Entrada/Salida.
+
+2.1. Gestión de Acceso y Seguridad
+
+RF001: Acceso de usuarios mediante nombre de usuario y contraseña.
+1. Inicio: Usuario accede a la página de inicio de sesión del sistema CLAUDES.
+2. Entrada: Usuario ingresa su nombre de usuario y contraseña en los campos correspondientes.
+3. Proceso: Usuario hace clic en el botón "Ingresar".
+4. Proceso: Sistema valida las credenciales contra la base de datos de usuarios.
+5. Decisión: ¿Credenciales correctas?
+   ○ Sí:
+      1. Proceso: Sistema redirige al usuario al panel de usuario correspondiente a su rol.
+      2. Fin: Acceso concedido.
+   ○ No:
+      1. Salida: Sistema muestra un mensaje de error "Usuario o contraseña incorrectos".
+      2. Proceso: Sistema permanece en la página de inicio de sesión.
+      3. Fin: Acceso denegado.
+
+RF002: Recuperación de contraseña mediante código enviado al correo institucional.
+1. Inicio: Usuario está en la página de inicio de sesión.
+2. Proceso: Usuario hace clic en el enlace "¿Olvidó su contraseña?".
+3. Salida: Sistema muestra la página de "Asistente de recuperación de contraseñas".
+4. Entrada: Usuario ingresa su cuenta de correo electrónico institucional.
+5. Proceso: Usuario hace clic en el botón "Enviar Código".
+6. Proceso: Sistema verifica si el correo electrónico existe y es institucional.
+7. Decisión: ¿Correo válido y registrado?
+   ○ Sí:
+      1. Proceso: Sistema genera un código de verificación único.
+      2. Proceso: Sistema envía el código de verificación al correo electrónico ingresado.
+      3. Salida: Sistema muestra un mensaje "Se ha generado un código, favor verificar su cuenta de correo electrónico" y habilita un campo para ingresar el código.
+      4. Entrada: Usuario ingresa el código de verificación recibido.
+      5. Proceso: Usuario hace clic en "Aceptar" o similar.
+      6. Proceso: Sistema valida el código ingresado.
+      7. Decisión: ¿Código correcto?
+         ■ Sí:
+            1. Salida: Sistema muestra la página para ingresar la nueva contraseña.
+            2. Entrada: Usuario ingresa la nueva contraseña y la confirma.
+            3. Proceso: Usuario hace clic en "Actualizar".
+            4. Proceso: Sistema actualiza la contraseña en la base de datos.
+            5. Salida: Sistema muestra mensaje de "Contraseña actualizada exitosamente".
+            6. Proceso: Sistema redirige a la página de inicio de sesión o muestra botón "Ir a Autenticarse".
+            7. Fin: Contraseña recuperada.
+         ■ No (Código incorrecto):
+            1. Salida: Sistema muestra mensaje de "Código incorrecto".
+            2. Proceso: Permanece en la pantalla de ingreso de código.
+            3. Fin: Proceso de recuperación interrumpido.
+   ○ No (Correo inválido o no registrado):
+      1. Salida: Sistema muestra un mensaje de error "Correo electrónico no válido o no registrado".
+      2. Proceso: Permanece en la página de asistente de recuperación.
+      3. Fin: Proceso de recuperación interrumpido.
+
+RF003: Cambio de contraseña por usuario autenticado.
+1. Inicio: Usuario autenticado accede a la opción "Configuración" > "Cambiar Contraseña" en su panel.
+2. Salida: Sistema muestra el formulario para cambio de contraseña (puede solicitar contraseña actual y nueva contraseña con confirmación, o solo nueva contraseña según la guía).
+3. Entrada: Usuario ingresa la nueva contraseña en el campo "Clave".
+4. Proceso: Usuario hace clic en el botón "Restablecer Contraseña".
+5. Proceso: Sistema valida la nueva contraseña (ej. complejidad, si aplica).
+6. Proceso: Sistema actualiza la contraseña del usuario en la base de datos.
+7. Salida: Sistema muestra un mensaje de "Contraseña cambiada exitosamente".
+8. Fin: Cambio de contraseña completado.
+
+RF004: Cierre de sesión.
+1. Inicio: Usuario autenticado en el sistema.
+2. Proceso: Usuario hace clic en la opción "Cerrar sesión".
+3. Proceso: Sistema invalida la sesión actual del usuario.
+4. Proceso: Sistema redirige al usuario a la página de inicio de sesión.
+5. Fin: Sesión cerrada.
+
+2.2. Gestión de Usuarios
+
+RF005: Listar usuarios registrados.
+1. Inicio: Administrador accede al menú "Usuarios" > "Lista de Usuarios".
+2. Proceso: Sistema consulta la base de datos para obtener todos los usuarios activos.
+3. Salida: Sistema muestra un listado/tabla con la información de los usuarios: Usuario, Nombre, Rol, Región, Teléfono, y opciones de "Editar" y "Borrar".
+4. Fin: Listado de usuarios mostrado.
+
+RF006: Editar información de usuario.
+1. Inicio: Administrador se encuentra en la "Lista de Usuarios" (RF005).
+2. Proceso: Administrador hace clic en el botón "Editar" correspondiente a un usuario.
+3. Salida: Sistema muestra la página "Mantenimiento de Usuarios de Aplicación" con los datos del usuario seleccionado precargados (Funcionario, Nombre, Usuario, Rol, Correo, Teléfono, Celular, Región, Subregión).
+4. Entrada: Administrador modifica los campos necesarios (Rol, Región, Subregión).
+5. Proceso: Administrador hace clic en el botón "Modificar".
+6. Proceso: Sistema valida los datos ingresados.
+7. Decisión: ¿Datos válidos y cumple RF006.1?
+   ○ Sí:
+      1. Proceso: Sistema actualiza la información del usuario en la base de datos.
+      2. Salida: Sistema muestra un mensaje de "Usuario modificado exitosamente".
+      3. Proceso: Sistema redirige a la "Lista de Usuarios".
+      4. Fin: Usuario editado.
+   ○ No:
+      1. Salida: Sistema muestra mensaje de error correspondiente.
+      2. Proceso: Permanece en la página de edición.
+      3. Fin: Edición fallida.
+
+RF006.1: Restricción de una sola subregión activa por usuario.
+1. Proceso (dentro de RF006 o RF007): Al intentar guardar los cambios o agregar un nuevo usuario.
+2. Decisión: ¿Se ha asignado más de una subregión activa para el trabajo del usuario?
+   ○ Sí:
+      1. Salida: Sistema muestra un mensaje de error "Un usuario solo puede trabajar en una Subregión a la vez".
+      2. Proceso: No se guardan los cambios.
+   ○ No:
+      1. Proceso: Continúa con el flujo de guardado.
+
+RF007: Agregar nuevo usuario.
+1. Inicio: Administrador accede al menú "Usuarios" > "Agregar Usuario".
+2. Salida: Sistema muestra el formulario "Registro de Usuarios de Aplicación" con campos vacíos: Funcionario (CNP), Nombre, Usuario (se autogenera o se ingresa), Clave, Rol (lista desplegable), Correo, Teléfono, Celular, Región (lista desplegable), Sub Región (lista desplegable).
+3. Entrada: Administrador completa la información solicitada.
+   ○ Proceso (Ayuda para el usuario): El sistema sugiere la composición del "Usuario" (primera letra del nombre + primer apellido).
+4. Proceso: Administrador hace clic en el botón "Agregar".
+5. Proceso: Sistema valida los datos ingresados (campos obligatorios, formato de correo, etc.) y RF006.1.
+6. Decisión: ¿Datos válidos?
+   ○ Sí:
+      1. Proceso: Sistema guarda el nuevo usuario en la base de datos con estado activo.
+      2. Salida: Sistema muestra un mensaje de "Usuario agregado exitosamente".
+      3. Proceso: Sistema limpia el formulario para agregar otro usuario o redirige a la lista de usuarios (según comportamiento del botón "Nuevo Usuario" o "Agregar").
+      4. Fin: Usuario agregado.
+   ○ No:
+      1. Salida: Sistema muestra mensaje de error correspondiente.
+      2. Proceso: Permanece en la página de agregación.
+      3. Fin: Agregación fallida.
+
+RF008: Activar usuario inactivo.
+1. Inicio: Administrador accede al menú "Usuarios" > "Activar Usuario".
+2. Salida: Sistema muestra la página "Listado de Usuarios" (para activar) con filtros para Región y un desplegable para seleccionar el usuario inactivo.
+3. Entrada: Administrador selecciona la Región (opcional, si ayuda a filtrar) y luego selecciona el usuario inactivo de la lista.
+4. Proceso: Administrador hace clic en el botón "Activar".
+5. Proceso: Sistema cambia el estado del usuario a "activo" en la base de datos, conservando su rol y demás información.
+6. Salida: Sistema muestra un mensaje de "Usuario activado exitosamente".
+7. Proceso: Sistema actualiza la lista de usuarios inactivos (el usuario activado ya no debería aparecer).
+8. Fin: Usuario activado.
+
+RF009: Borrar (desactivar) usuario.
+1. Inicio: Administrador se encuentra en la "Lista de Usuarios" (RF005).
+2. Proceso: Administrador hace clic en el botón "Borrar" correspondiente a un usuario.
+3. Decisión (Confirmación): Sistema pregunta "¿Está seguro de que desea borrar este usuario?".
+   ○ Sí (Usuario confirma):
+      1. Proceso: Sistema cambia el estado del usuario a "inactivo" en la base de datos (borrado lógico).
+      2. Salida: Sistema muestra un mensaje de "Usuario borrado exitosamente".
+      3. Proceso: Sistema actualiza la "Lista de Usuarios" (el usuario borrado ya no aparece).
+      4. Fin: Usuario borrado (desactivado).
+   ○ No (Usuario cancela):
+      1. Proceso: No se realiza ninguna acción.
+      2. Fin: Operación cancelada.
+
+RF010: Filtrar usuarios por tipo y región.
+1. Inicio: Administrador se encuentra en la "Lista de Usuarios" (RF005).
+2. Salida: Sistema muestra filtros desplegables para "Tipo de Usuario" y "Región" sobre el listado.
+3. Entrada: Administrador selecciona un valor en uno o ambos filtros.
+4. Proceso: Sistema actualiza (o requiere un botón "Buscar/Filtrar") el listado de usuarios mostrando solo aquellos que coinciden con los criterios de filtro seleccionados.
+5. Fin: Listado de usuarios filtrado.
+
+RF011: Gestión de roles y permisos.
+1. Proceso (en RF001 - Login): Tras una autenticación exitosa, el sistema identifica el rol del usuario.
+2. Proceso: El sistema presenta las opciones de menú y funcionalidades permitidas para ese rol específico.
+   ○ Ej: Un usuario "Consulta" solo verá opciones de "Reportes".
+   ○ Ej: Un usuario "Apoyo" solo podrá digitar información específica.
+   ○ Ej: Un "Administrador" tendrá acceso a todas las funcionalidades descritas en la guía.
+3. Fin: Acceso diferenciado según rol.
+
+2.3. Gestión de Datos de Productores (Industriales y Organizaciones)
+
+RF012: Registrar información de industriales.
+1. Inicio: Administrador accede a "Datos Productores" > "Industriales".
+2. Proceso: Administrador hace clic en el botón "Nuevo".
+3. Salida: Sistema muestra el formulario "Registro de Industriales" con campos para: Identificador, Cédula, Nombre, Fecha, Domicilio Legal, Representante, Cédula (Rep.), Teléfono, Fax, Correo, y casillas de verificación para "Revisión de la documentación".
+4. Entrada: Administrador ingresa toda la información del industrial.
+5. Proceso: Administrador marca las casillas de documentación presentada.
+6. Proceso (Opcional): Administrador sube la foto del representante legal.
+7. Proceso: Administrador hace clic en el botón "Agregar".
+8. Proceso: Sistema valida los datos.
+9. Decisión: ¿Datos válidos?
+   ○ Sí:
+      1. Proceso: Sistema guarda el nuevo industrial en la base de datos.
+      2. Salida: Sistema muestra mensaje "Industrial agregado exitosamente".
+      3. Proceso: Sistema puede redirigir a la lista de industriales o limpiar formulario para nuevo ingreso.
+      4. Fin: Industrial registrado.
+   ○ No:
+      1. Salida: Sistema muestra mensaje de error.
+      2. Fin: Registro fallido.
+
+RF013: Listar industriales registrados.
+1. Inicio: Administrador accede a "Datos Productores" > "Industriales".
+2. Proceso: Sistema consulta la base de datos para obtener los industriales.
+3. Salida: Sistema muestra un listado/tabla con: Cédula, Nombre, Teléfono, Representante, y opciones "Editar", "Eliminar".
+4. Fin: Listado de industriales mostrado.
+
+RF014: Editar información de un industrial registrado.
+1. Inicio: Administrador en el listado de industriales (RF013).
+2. Proceso: Administrador hace clic en "Editar" para un industrial.
+3. Salida: Sistema muestra el formulario "Registro de Industriales" (o similar para edición) con los datos del industrial precargados.
+4. Entrada: Administrador modifica los datos necesarios, incluyendo la imagen del representante legal.
+5. Proceso: Administrador hace clic en "Modificar".
+6. Proceso: Sistema valida los datos.
+7. Decisión: ¿Datos válidos?
+   ○ Sí:
+      1. Proceso: Sistema actualiza la información del industrial.
+      2. Salida: Sistema muestra mensaje "Industrial modificado exitosamente".
+      3. Fin: Industrial editado.
+   ○ No:
+      1. Salida: Sistema muestra mensaje de error.
+      2. Fin: Edición fallida.
+
+RF015: Eliminar (lógicamente) industriales.
+1. Inicio: Administrador en el listado de industriales (RF013).
+2. Proceso: Administrador hace clic en "Eliminar" para un industrial.
+3. Decisión (Confirmación): Sistema pregunta "¿Está seguro de que desea eliminar este industrial?".
+   ○ Sí:
+      1. Proceso: Sistema marca el industrial como inactivo/eliminado.
+      2. Salida: Sistema muestra mensaje "Industrial eliminado exitosamente".
+      3. Proceso: Actualiza el listado.
+      4. Fin: Industrial eliminado.
+   ○ No:
+      1. Fin: Operación cancelada.
+
+RF016: Filtrar el listado de industriales por Cédula y Nombre.
+1. Inicio: Administrador en el listado de industriales (RF013).
+2. Salida: Sistema muestra campos de filtro para "Filtrar Cédula" y "Nombre" (o un campo de búsqueda general).
+3. Entrada: Administrador ingresa texto en los campos de filtro.
+4. Proceso: Administrador hace clic en "Buscar" (o el listado se actualiza dinámicamente).
+5. Proceso: Sistema actualiza el listado mostrando solo los industriales que coinciden.
+6. Fin: Listado de industriales filtrado.
+
+RF017: Registrar agentes autorizados por cada industrial.
+1. Inicio: Administrador editando un industrial (RF014) o en una sección específica de "Agentes Autorizados" del industrial.
+2. Salida: Sistema muestra la sección "Registro Detalle Agente Autorizado" con campos para Cédula, Nombre, Teléfono, Correo, Estado (Activo/Inactivo), Región y opción para agregar foto.
+3. Entrada: Administrador ingresa los datos del agente autorizado.
+4. Proceso: Administrador hace clic en el signo "+" (o botón "Agregar Agente").
+5. Proceso (Opcional): Administrador agrega la foto del agente.
+6. Proceso: Sistema valida los datos.
+7. Decisión: ¿Datos válidos?
+   ○ Sí:
+      1. Proceso: Sistema guarda el agente autorizado asociado al industrial.
+      2. Salida: Sistema muestra el agente en la lista de "Registro Agentes Autorizados" del industrial.
+      3. Fin: Agente autorizado registrado.
+   ○ No:
+      1. Salida: Sistema muestra mensaje de error.
+      2. Fin: Registro de agente fallido.
+
+RF017.1: El representante legal del industrial también debe poder registrarse como agente autorizado.
+● Este es un caso de uso dentro de RF017. El flujo es el mismo, utilizando los datos del representante legal.
+
+RF018: Editar la información de los agentes autorizados por el industrial.
+1. Inicio: Administrador visualizando la lista de "Registro Agentes Autorizados" de un industrial.
+2. Proceso: Administrador hace clic en "Editar" junto a un agente.
+3. Salida: Sistema carga los datos del agente en los campos de "Registro Detalle Agente Autorizado".
+4. Entrada: Administrador modifica los datos.
+5. Proceso: Administrador hace clic en un botón "Guardar Cambios Agente" o similar.
+6. Proceso: Sistema valida y actualiza los datos del agente.
+7. Salida: Actualiza la lista de agentes.
+8. Fin: Agente editado.
+
+RF019-RF025: Gestión de organizaciones y sus agentes.
+● Flujos análogos a RF012-RF018, adaptando campos y filtros a organizaciones, región y subregión.
+
+RF026: Modificar las cédulas de los productores.
+1. Inicio: Administrador accede a "Datos Productores" > "Editar Cédulas".
+2. Salida: Sistema muestra "Editor de Cédulas de Productores" con filtros para Región y Subregión.
+3. Entrada: Administrador selecciona Región y Subregión.
+4. Proceso: Sistema carga el listado de productores (Código, Cédula, Nombre) para la selección.
+5. Entrada: Administrador localiza al productor y modifica directamente el campo Cédula en el listado (o selecciona un productor para una edición más detallada).
+6. Proceso: Administrador hace clic en "Guardar Productor".
+7. Proceso: Sistema valida la nueva cédula (formato, unicidad si aplica).
+8. Decisión: ¿Cédula válida y no hay conflictos?
+   ○ Sí:
+      1. Proceso: Sistema actualiza la cédula del productor, considerando el histórico.
+      2. Salida: Mensaje "Cédula(s) actualizada(s) exitosamente".
+      3. Fin: Cédula modificada.
+   ○ No:
+      1. Salida: Mensaje de error.
+      2. Fin: Modificación fallida.
+
+RF026.1: Filtrar el listado de cédulas de productores por Región y Subregión para su edición.
+● Este es parte del flujo de RF026 (pasos 2, 3 y 4).
+
+RF026.2: Permitir eliminar (lógicamente) una cédula de productor de la lista de edición.
+1. Inicio: Administrador en "Editor de Cédulas de Productores" con listado cargado.
+2. Proceso: Administrador hace clic en "Eliminar" junto a un productor.
+3. Decisión (Confirmación): "¿Está seguro de eliminar este productor?"
+   ○ Sí:
+      1. Proceso: Sistema elimina (lógicamente) al productor.
+      2. Salida: Mensaje "Productor eliminado".
+      3. Proceso: Actualiza listado.
+      4. Fin: Productor eliminado.
+   ○ No:
+      1. Fin: Operación cancelada.
+
+2.4. Gestión de Registros de Productor y Siembra
+
+RF027: Listar los registros de productores (siembras).
+1. Inicio: Administrador accede a "Registros" > "Registro Productor".
+2. Salida: Sistema muestra "Listado de Registros de Productor" con filtros para Período, Región, Cosecha, Estado, Subregión.
+3. Entrada: Administrador selecciona los filtros deseados.
+4. Proceso: Administrador hace clic en "Buscar".
+5. Proceso: Sistema consulta la base de datos.
+6. Salida: Sistema muestra listado con: Consecutivo, Cédula, Productor, Cosecha, Fecha, y opción "Editar".
+7. Fin: Listado mostrado.
+
+RF028: Editar un registro de productor existente (datos generales de la siembra).
+1. Inicio: Administrador en listado de RF027.
+2. Proceso: Administrador hace clic en "Editar" para un registro.
+3. Salida: Sistema muestra la página "Registro de Productor" con datos precargados: Cédula, Nombre, Consecutivo, Cosecha, Autoriza datos, Fecha, Programa Verificación, Periodo. También muestra pestañas/secciones: "Registro Siembra", "Datos Siembra", "Organizaciones", "Estadística" y la foto del productor.
+4. Entrada: Administrador modifica los datos generales necesarios.
+5. Proceso: Administrador hace clic en "Aplicar" (para guardar cambios generales).
+6. Proceso: Sistema valida y guarda los cambios.
+7. Salida: Mensaje "Registro actualizado".
+8. Fin: Datos generales del registro de productor editados.
+
+RF028.1: Permitir ver la foto del productor durante la edición.
+● Parte del flujo de RF028 (paso 3).
+
+RF029: Registrar y editar los detalles de siembra asociados a un productor.
+1. Inicio: Administrador en la pantalla de edición de "Registro de Productor" (RF028).
+2. Proceso: Administrador navega a la sección de "Registro Siembra" o "Datos Siembra".
+3. Salida:
+   ○ Se muestra un listado de siembras ya registradas para ese productor (Cultivo, Área, Rend, Prod, Mes Siembra, opción "Editar").
+   ○ Se muestran campos para ingresar una nueva siembra o editar una existente:
+      ■ RF029.6 (Ubicación): Provincia, Cantón, Distrito, Caserío, Dirección exacta, Latitud, Longitud.
+      ■ RF029.7 (Cosecha): Cantidad de Lotes, Sistema de Siembra, Primera del Mes, Segunda del Mes, % Flujo, Variedad de Semilla, Cantidad Semilla (Kg).
+      ■ RF029.1, RF029.2, RF029.3, RF029.4, RF029.5 (Estimaciones): Área (Hectáreas), Rendimiento (qq), Cultivo, Producción, Mes Siembra.
+      ■ RF029.9: Comentario.
+4. Entrada (Para nueva siembra): Administrador completa los campos de detalle de siembra.
+5. Proceso (Para nueva siembra): Administrador hace clic en el signo "+" o botón "Agregar Siembra".
+6. Entrada (Para editar siembra): Administrador selecciona una siembra del listado y hace clic en "Editar". Los datos se cargan en los campos. Administrador modifica los datos.
+7. Proceso (Para editar siembra): Administrador hace clic en un botón "Guardar Siembra" o "Aplicar Cambios Siembra".
+8. Proceso: Sistema valida los datos de la siembra.
+9. Decisión: ¿Datos válidos?
+   ○ Sí:
+      1. Proceso: Sistema guarda/actualiza el detalle de siembra asociado al registro del productor.
+      2. Salida: El listado de siembras del productor se actualiza. Mensaje "Detalle de siembra guardado/actualizado".
+      3. Fin: Detalle de siembra gestionado.
+   ○ No:
+      1. Salida: Mensaje de error.
+      2. Fin: Gestión de detalle de siembra fallida.
+
+RF030: Permitir asociar el registro de siembra a organizaciones.
+1. Inicio: Administrador en la pantalla de edición de "Registro de Productor" (RF028).
+2. Proceso: Administrador navega a la pestaña/sección "Organizaciones".
+3. Salida: Sistema muestra una interfaz para seleccionar o listar organizaciones a las que el productor/siembra está asociado.
+4. Entrada: Administrador selecciona/deselecciona organizaciones.
+5. Proceso: Administrador guarda los cambios de asociación.
+6. Proceso: Sistema actualiza la asociación en la base de datos.
+7. Fin: Asociación con organizaciones gestionada.
+
+RF031: Permitir ver estadísticas asociadas al registro del productor.
+1. Inicio: Administrador en la pantalla de edición de "Registro de Productor" (RF028).
+2. Proceso: Administrador navega a la pestaña/sección "Estadística".
+3. Salida: Sistema muestra información estadística relevante.
+4. Fin: Estadísticas visualizadas.
+
+2.5. Gestión de Compras de Cosecha
+
+RF032: Listar las compras de cosecha.
+1. Inicio: Administrador accede a "Registros" > "Compras de Cosechas".
+2. Salida: Sistema muestra "Listado de Compras" con filtros para Período, Región, Estado, Subregión.
+3. Entrada: Administrador selecciona los filtros.
+4. Proceso: Sistema consulta la BD.
+5. Salida: Listado con: Tipo (P/O), Consecutivo, Fecha, Cultivo, Comprador, Cantidad, Precio Unitario, opción "Editar".
+6. Fin: Listado de compras mostrado.
+
+RF033: Editar datos de una compra de cosecha a productor independiente.
+1. Inicio: Administrador en listado de RF032, selecciona una compra tipo "P" (Productor Independiente) y hace clic en "Editar".
+2. Salida: Sistema muestra "Registro de Compras por Productor Independiente" con datos precargados: Consecutivo, Fecha, Cédula Productor, Nombre, Comprador, Agente, Cosecha, Periodo, Cultivo, Cantidad, Disponible (del productor), Precio Unitario, Observaciones. Se muestran fotos de productor y agente.
+3. Entrada: Administrador modifica los campos necesarios.
+4. Proceso: Administrador hace clic en "Aplicar".
+5. Proceso: Sistema valida los datos.
+6. Decisión: ¿Datos válidos?
+   ○ Sí:
+      1. Proceso: Sistema actualiza la compra. Actualiza saldo disponible del productor (RR007.4).
+      2. Salida: Mensaje "Compra actualizada".
+      3. Fin: Compra editada.
+   ○ No:
+      1. Salida: Mensaje de error.
+      2. Fin: Edición fallida.
+
+RF034: Editar datos de una compra de cosecha por medio de una organización.
+1. Inicio: Administrador en listado de RF032, selecciona una compra tipo "O" (Organización) y hace clic en "Editar".
+2. Salida: Sistema muestra "Registro de Compras por Organización" con datos generales precargados: Consecutivo, Fecha, Comprador, Agente (Comprador), Organización, Agente (Organización), Cosecha, Periodo, Cultivo, Cantidad (total), Precio Unitario, Observaciones. Se muestran fotos de agentes. También se muestra sección "Detalle Compra" con listado de productores asociados.
+3. Entrada (Datos Generales): Administrador modifica los campos generales.
+4. Proceso (Datos Generales): Administrador hace clic en "Aplicar" (para datos generales).
+5. Proceso: Sistema valida y guarda cambios generales.
+6. Salida (Detalle Compra):
+   ○ Listado de productores: Productor, Cantidad, Disponible, opción "Eliminar".
+   ○ Opción para "Selección Productor" (para agregar productor al detalle).
+7. Entrada (Agregar Productor al Detalle): Administrador busca y selecciona un productor de la organización, ingresa la cantidad comprada a ese productor.
+8. Proceso (Agregar Productor al Detalle): Administrador guarda el productor en el detalle.
+9. Entrada (Modificar/Eliminar Productor del Detalle): Administrador modifica cantidad o elimina un productor del listado del detalle.
+10. Proceso: Sistema valida los datos del detalle (ej. suma de cantidades vs total).
+11. Decisión: ¿Datos del detalle válidos?
+   ○ Sí:
+      1. Proceso: Sistema actualiza el detalle de la compra. Actualiza saldos disponibles de los productores implicados (RR007.4).
+      2. Salida: Mensaje "Detalle de compra actualizado".
+      3. Fin: Compra por organización editada.
+   ○ No:
+      1. Salida: Mensaje de error.
+      2. Fin: Edición de detalle fallida.
+
+2.6. Configuración Avanzada del Sistema
+
+RF035: Administrar los consecutivos de compras.
+1. Inicio: Administrador accede a "Configuración Avanzada" > "Consecutivo".
+2. Salida: Sistema muestra "Mantenimiento de Consecutivos de Compras" con un listado: Código, Región, Sub Región, Literal, Numeral, Año, opción "Modificar". Opción "Agregar".
+3. Para Agregar:
+   1. Proceso: Adm. hace clic en "Agregar" o llena campos para nuevo consecutivo.
+   2. Entrada: Adm. ingresa Código (si no es autogen.), Región, Subregión, Literal, Numeral (inicia en 0), Año.
+   3. Proceso: Adm. hace clic en "Guardar Nuevo".
+4. Para Modificar:
+   1. Proceso: Adm. hace clic en "Modificar" para un consecutivo existente.
+   2. Entrada: Adm. cambia los campos necesarios.
+   3. Proceso: Adm. hace clic en "Guardar Cambios".
+5. Proceso: Sistema valida los datos.
+6. Decisión: ¿Datos válidos?
+   ○ Sí: Sistema guarda/actualiza el consecutivo. Actualiza el listado. Fin.
+   ○ No: Mensaje de error. Fin.
+
+RF036: Administrar los períodos de siembra y cosecha.
+1. Inicio: Administrador accede a "Configuración Avanzada" > "Período".
+2. Salida: Sistema muestra "Mantenimiento de Periodos" con listado: Código, Descripción, Actual, opciones "Modificar", "Eliminar". Botón "Agregar".
+3. Para Agregar:
+   1. Proceso: Adm. hace clic en "Agregar".
+   2. Entrada: Adm. ingresa Descripción, define si es Actual. Código es autogen.
+   3. Proceso: Adm. hace clic en "Guardar".
+4. Para Modificar:
+   1. Proceso: Adm. hace clic en "Modificar".
+   2. Entrada: Adm. cambia Descripción, Actual.
+   3. Proceso: Adm. hace clic en "Guardar".
+5. Para Eliminar:
+   1. Proceso: Adm. hace clic en "Eliminar".
+   2. Decisión (Confirmación): ¿Seguro? Sí/No.
+   3. Proceso (Sí): Sistema elimina el período (si no está en uso crítico).
+6. Proceso: Sistema valida y guarda/actualiza/elimina. Actualiza listado. Fin.
+
+RF037: Administrar los tipos de semilla.
+1. Inicio: Administrador accede a "Configuración Avanzada" > "Semilla".
+2. Salida: Sistema muestra "Mantenimiento de Semillas" con listado: Código, Descripción, Cultivo, opciones "Modificar", "Eliminar". Botón "Agregar".
+3. Para Agregar:
+   1. Proceso: Adm. hace clic en "Agregar".
+   2. Entrada: Adm. ingresa Descripción de la semilla, selecciona el Cultivo al que pertenece.
+   3. Proceso: Adm. hace clic en "Guardar".
+4. Para Modificar:
+   1. Proceso: Adm. hace clic en "Modificar".
+   2. Salida: Pantalla con Código, Descripción, Cultivo. Botón "Nueva Semilla" y "Modificar".
+   3. Entrada: Adm. cambia Descripción, Cultivo.
+   4. Proceso: Adm. hace clic en "Modificar".
+5. Para Eliminar: Similar a RF036.
+6. Proceso: Sistema valida y guarda/actualiza/elimina. Actualiza listado. Fin.
+
+RF038: Administrar los sistemas de siembra.
+1. Inicio: Administrador accede a "Configuración Avanzada" > "Sistema Siembra".
+2. Salida: Sistema muestra "Mantenimiento Sistemas de Siembra" con listado: Código, Descripción, opciones "Modificar", "Eliminar". Botón "Agregar".
+3. Flujos para Agregar, Modificar, Eliminar: Similares a RF037.
+4. Proceso: Sistema valida y guarda/actualiza/elimina. Actualiza listado. Fin.
+
+2.7. Ayuda
+
+RF039: Acceso al manual de usuario.
+1. Inicio: Usuario autenticado en el sistema.
+2. Proceso: Usuario hace clic en el menú "Ayuda" > "Manual Usuario".
+3. Salida: Sistema muestra una vista del manual de usuario (posiblemente incrustado o un enlace a un PDF).
+4. Fin: Manual accesible.
+
+RF040: Descargar manual de usuario.
+1. Inicio: Usuario visualizando el manual (RF039) o desde la opción de menú.
+2. Proceso: Usuario hace clic en un botón/enlace "Descargar Manual".
+3. Proceso: Sistema inicia la descarga del archivo del manual (ej. PDF).
+4. Fin: Manual descargado.
+
+3. Descripción de los reportes
+
+Se describe el detalle para cada uno de los requisitos de reportería (RR) identificados para el sistema CLAUDES. Las descripciones se presentan de manera textual y secuencial, utilizando terminología estándar de diagramas de flujo (Inicio, Fin, Proceso, Decisión, Entrada/Salida).
+
+3.1. Reportes de Productores
+
+RR001: Generar reporte "Consulta General del Productor".
+1. Inicio: Usuario (con permisos) accede a "Reportes" > "Productor" > "Consulta General del Productor".
+2. Salida: Sistema muestra filtros para Región y Subregión.
+3. Entrada: Usuario selecciona Región y Subregión.
+4. Proceso: Usuario hace clic en un botón "Generar Reporte" o "Excel".
+5. Proceso: Sistema consulta la base de datos según los filtros.
+6. Proceso: Sistema genera el archivo Excel (RR001.1) con los datos (RR001.2).
+7. Salida: Sistema ofrece la descarga del archivo Excel.
+8. Fin: Reporte generado y descargado.
+
+RR002: Permitir la "Consulta Cédula del Productor".
+1. Inicio: Usuario accede a "Reportes" > "Productor" > "Consulta Cédula de Productor".
+2. Salida: Sistema muestra un campo para ingresar la "Cédula".
+3. Entrada: Usuario ingresa la cédula a consultar.
+4. Proceso: Usuario hace clic en "Buscar".
+5. Proceso: Sistema consulta la base de datos.
+6. Decisión: ¿Productor encontrado?
+   ○ Sí:
+      1. Salida: Sistema muestra los datos del productor (RR002.1) y su foto.
+      2. Fin: Consulta exitosa.
+   ○ No:
+      1. Salida: Sistema muestra mensaje "Productor no encontrado".
+      2. Fin: Consulta fallida.
+
+3.2. Reportes de Proceso de Siembra
+
+RR003: Generar reporte "Registro Productor" (detalle de siembra).
+1. Inicio: Usuario accede a "Reportes" > "Proceso de Siembra" > "Registro Productor".
+2. Salida: Sistema muestra filtros para Región y Subregión.
+3. Entrada: Usuario selecciona Región y Subregión.
+4. Proceso: Usuario hace clic en "Exportar Excel".
+5. Proceso: Sistema consulta la BD para obtener los registros de productor y sus detalles de siembra según filtros.
+6. Proceso: Sistema genera el archivo Excel (RR003.1) con los datos (RR003.2, RR003.3).
+7. Salida: Descarga del archivo Excel.
+8. Fin: Reporte generado.
+
+RR004: Generar reporte "Registro General" (de productor).
+1. Inicio: Usuario accede a "Reportes" > "Proceso de Siembra" > "Registro General".
+2. Salida: Filtros para Período, Región, Subregión.
+3. Entrada: Usuario selecciona filtros.
+4. Proceso: Clic en "Exportar Excel".
+5. Proceso: Consulta BD.
+6. Proceso: Genera Excel (RR004.1) con datos (RR004.2).
+7. Salida: Descarga Excel.
+8. Fin: Reporte generado.
+
+3.3. Reportes de Compras de Productor
+
+RR005: Generar reporte "Compras Por Industrial".
+1. Inicio: Usuario accede a "Reportes" > "Compras Productor" > "Compras Por Industrial".
+2. Salida: Filtros para Cultivo, Período, Región, Subregión.
+3. Entrada: Usuario selecciona filtros.
+4. Proceso: Clic en "Exportar Excel".
+5. Proceso: Consulta BD.
+6. Proceso: Genera Excel (RR005.1) con datos (RR005.2).
+7. Salida: Descarga Excel.
+8. Fin: Reporte generado.
+
+RR006: Generar reporte "Compras Por Industrial Detallado".
+1. Inicio: Usuario accede a "Reportes" > "Compras Productor" > "Compras Por Industrial Detallado".
+2. Salida: Filtros para Cultivo, Período, Región, Subregión.
+3. Entrada: Usuario selecciona filtros.
+4. Proceso: Clic en "Exportar Excel".
+5. Proceso: Consulta BD, agrupando por industrial.
+6. Proceso: Genera Excel (RR006.1) with data (RR006.2).
+7. Salida: Descarga Excel.
+8. Fin: Reporte generado.
+
+RR007: Generar reporte "Saldos Disponibles" por productor.
+1. Inicio: Usuario accede a "Reportes" > "Compras Productor" > "Saldos Disponible".
+2. Salida: Filtros para Cultivo, Período, Cosecha, Región, Subregión.
+3. Entrada: Usuario selecciona filtros.
+4. Proceso: Clic en "Exportar Excel".
+5. Proceso: Sistema calcula los saldos disponibles (Producción registrada - Ventas) para cada productor según filtros.
+6. Proceso: Genera Excel (RR007.2) con datos (RR007.3).
+7. Salida: Descarga Excel.
+8. Fin: Reporte generado.
+
+RR007.4: El sistema debe actualizar los saldos disponibles en tiempo real.
+● Este no es un flujo de reporte, sino una funcionalidad del sistema.
+1. Evento: Se ingresa/modifica una compra de cosecha (RF033, RF034) O se modifica un dato de siembra que afecta la producción (RF029).
+2. Proceso: Sistema recalcula el saldo disponible para el productor y cultivo afectado.
+3. Proceso: Sistema actualiza el valor del saldo disponible en la base de datos o lo calcula dinámicamente cuando se consulta.
+4. Fin: Saldo actualizado.
+
+3.4. Reportes de Administración
+
+RR008: Generar reporte de "Bitácora".
+1. Inicio: Usuario accede a "Administración" > "Bitácora".
+2. Salida: Sistema muestra "Listado de Transacciones Efectuadas (Bitácora)". (Puede tener filtros de fecha, usuario, proceso, no especificados pero comunes).
+3. Proceso: Usuario hace clic en "Exportar Excel".
+4. Proceso: Sistema consulta la tabla de bitácora.
+5. Proceso: Genera Excel (RR008.1) con datos (RR008.3).
+6. Salida: Descarga Excel.
+7. Fin: Reporte de bitácora generado.

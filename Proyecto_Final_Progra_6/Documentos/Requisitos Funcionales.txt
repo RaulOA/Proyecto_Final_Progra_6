@@ -1,0 +1,65 @@
+﻿Detalle de los Requisitos Funcionales (RF) del sistema CLAUDES
+
+Este documento enumera y describe todos los requisitos funcionales identificados para el sistema CLAUDES, agrupados por área funcional. Cada requisito define una capacidad esencial que el sistema debe cumplir para satisfacer las necesidades operativas y de gestión.
+
+Gestión de Acceso y Seguridad
+● RF001: El sistema debe permitir el acceso a usuarios mediante un nombre de usuario y contraseña, validando credenciales contra la base de datos y diferenciando el acceso según el rol asignado.
+● RF002: El sistema debe ofrecer una opción para recuperar la contraseña en caso de olvido, enviando un código de verificación al correo electrónico institucional registrado y permitiendo el restablecimiento seguro de la clave.
+● RF003: El sistema debe permitir al usuario cambiar su propia contraseña una vez autenticado, validando la nueva clave según las políticas de seguridad.
+● RF004: El sistema debe cerrar la sesión del usuario, invalidando la sesión activa y redirigiendo a la pantalla de inicio de sesión.
+
+Gestión de Usuarios
+● RF005: El sistema debe permitir listar todos los usuarios registrados, mostrando su nombre, usuario, rol, región y teléfono, con opciones para editar y borrar.
+● RF006: El sistema debe permitir editar la información de un usuario existente, incluyendo su rol, región y subregión de trabajo, validando que los datos sean correctos.
+● RF006.1: El sistema debe restringir que un usuario pueda trabajar en una sola subregión a la vez, impidiendo la asignación de múltiples subregiones activas.
+● RF007: El sistema debe permitir agregar nuevos usuarios, solicitando nombre completo, generando un nombre de usuario sugerido, asignando una clave temporal, rol, correo, teléfono, celular, región y subregión.
+● RF008: El sistema debe permitir activar usuarios que previamente fueron desactivados (borrados lógicamente), recuperando su rol y datos previos.
+● RF009: El sistema debe permitir borrar (desactivar lógicamente) usuarios del listado, mediante confirmación y sin eliminar físicamente los datos.
+● RF010: El sistema debe permitir filtrar el listado de usuarios por Tipo de Usuario y Región, mostrando solo los que cumplen los criterios seleccionados.
+● RF011: El sistema debe gestionar diferentes roles de usuario (Administrador, Apoyo, Consulta, Director, Jefatura) con distintos niveles de acceso y permisos, mostrando solo las opciones y funcionalidades permitidas según el rol.
+
+Gestión de Datos de Productores (Industriales y Organizaciones)
+● RF012: El sistema debe permitir registrar la información de industriales, incluyendo datos generales, representante legal, documentación y foto.
+● RF013: El sistema debe permitir listar los industriales registrados, mostrando cédula, nombre, teléfono, representante y opciones de edición/eliminación.
+● RF014: El sistema debe permitir editar la información de un industrial registrado, permitiendo modificar todos los campos y la foto del representante.
+● RF015: El sistema debe permitir eliminar (lógicamente) industriales, mediante confirmación y sin borrar físicamente los datos.
+● RF016: El sistema debe permitir filtrar el listado de industriales por Cédula y Nombre, actualizando la lista según los criterios ingresados.
+● RF017: El sistema debe permitir registrar agentes autorizados por cada industrial, incluyendo datos personales, estado, región y foto.
+● RF017.1: El representante legal del industrial también debe poder registrarse como agente autorizado, usando sus propios datos.
+● RF018: El sistema debe permitir editar la información de los agentes autorizados por el industrial, actualizando los datos y la foto.
+● RF019: El sistema debe permitir registrar la información de organizaciones, incluyendo datos generales, región y subregión.
+● RF020: El sistema debe permitir listar las organizaciones registradas, mostrando cédula, nombre, teléfono, representante, subregión y opciones de edición/eliminación.
+● RF021: El sistema debe permitir editar la información de una organización registrada, permitiendo modificar todos los campos y la foto del representante.
+● RF022: El sistema debe permitir eliminar (lógicamente) organizaciones, mediante confirmación y sin borrar físicamente los datos.
+● RF023: El sistema debe permitir filtrar el listado de organizaciones por Cédula, Nombre, Región y Subregión, actualizando la lista según los criterios ingresados.
+● RF024: El sistema debe permitir registrar agentes autorizados por cada organización, incluyendo datos personales, estado, región y foto.
+● RF024.1: El representante legal de la organización también debe poder registrarse como agente autorizado, usando sus propios datos.
+● RF025: El sistema debe permitir editar la información de los agentes autorizados por la organización, actualizando los datos y la foto.
+● RF026: El sistema debe permitir modificar las cédulas de los productores, validando unicidad y formato.
+● RF026.1: El sistema debe permitir filtrar el listado de cédulas de productores por Región y Subregión para su edición.
+● RF026.2: El sistema debe permitir eliminar (lógicamente) una cédula de productor de la lista de edición, mediante confirmación.
+
+Gestión de Registros de Productor y Siembra
+● RF027: El sistema debe permitir listar los registros de productores (siembras), mostrando filtros por período, región, cosecha, estado y subregión.
+● RF028: El sistema debe permitir editar un registro de productor existente, modificando datos generales, período, cosecha, estado y otros campos relevantes.
+● RF028.1: El sistema debe permitir ver la foto del productor durante la edición del registro.
+● RF029: El sistema debe permitir registrar y editar los detalles de siembra asociados a un productor, incluyendo ubicación, estimaciones, cosecha, comentarios y validaciones.
+● RF030: El sistema debe permitir asociar el registro de siembra a organizaciones, permitiendo seleccionar y modificar las asociaciones.
+● RF031: El sistema debe permitir ver estadísticas asociadas al registro del productor, mostrando información relevante y actualizada.
+
+Gestión de Compras de Cosecha
+● RF032: El sistema debe permitir listar las compras de cosecha, mostrando filtros por período, región, estado y subregión.
+● RF033: El sistema debe permitir editar los datos de una compra de cosecha realizada a un productor independiente, actualizando cantidades, precios y agentes.
+● RF034: El sistema debe permitir editar los datos de una compra de cosecha realizada por medio de una organización, incluyendo el detalle por productor y la actualización de saldos.
+
+Configuración Avanzada del Sistema
+● RF035: El sistema debe permitir administrar los consecutivos de compras, permitiendo agregar, modificar y listar consecutivos por región y subregión.
+● RF036: El sistema debe permitir administrar los períodos de siembra y cosecha, permitiendo agregar, modificar, eliminar y definir el período actual.
+● RF037: El sistema debe permitir administrar los tipos de semilla, permitiendo agregar, modificar y eliminar registros asociados a cultivos.
+● RF038: El sistema debe permitir administrar los sistemas de siembra, permitiendo agregar, modificar y eliminar registros.
+
+Ayuda
+● RF039: El sistema debe proveer acceso a un manual de usuario, accesible desde el menú de ayuda.
+● RF040: El sistema debe permitir descargar el manual de usuario en formato digital (PDF u otro), desde la opción correspondiente.
+
+Nota: Todos los requisitos funcionales deben ser implementados considerando validaciones, mensajes claros al usuario, seguridad de la información y cumplimiento de los flujos descritos en la documentación de procesos.

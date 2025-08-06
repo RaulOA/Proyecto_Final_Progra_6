@@ -1,0 +1,278 @@
+﻿<!-- 
+Autor: Raul Ortega Acuña
+Archivo: ReadMe.html
+Solución: Claudes 2.0
+Proyecto: Claudes_2._0.Server
+Ruta: Claudes 2.0\Claudes_2._0.Server\ReadMe.html
+
+Descripción o propósito del archivo:
+Página de bienvenida y documentación inicial para el proyecto Claudes 2.0 (ASP.NET Core 9 + Angular 19). Incluye instrucciones de instalación, tecnologías utilizadas, características principales y datos de acceso por defecto.
+
+Historial de cambios:
+1. 25/07/2025 - Adaptación completa a Claudes 2.0, traducción al español y actualización de referencias y enlaces.
+
+Alertas Críticas:
+- 25/07/2025 - Revisar que todos los enlaces externos apunten a recursos oficiales o del proyecto Claudes 2.0.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Claudes 2.0 - Proyecto de inicio ASP.NET Core 9.0 / Angular 19</title>
+    <style type="text/css">
+        body { 
+            margin: 0 50px 2em 50px;
+            padding: 0;
+            border: 0;
+            color: #1E1E1E;
+            font-size: 13px;
+            font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.45;
+        }
+
+        .footer {
+            position: fixed;
+            height: 2em;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+            .footer h3 {
+                margin: 0;
+            }
+
+            .footer a {
+                text-decoration: none;
+            }
+
+        .logo {
+            float: right
+        }
+
+            .logo img {
+                position: fixed;
+                margin: 0;
+                right: 20px;
+                bottom: 20px;
+                height: 139px;
+                width: 150px;
+                border: 0;
+                opacity: 0.5;
+            }
+
+                .logo img:hover {
+                    opacity: 1.0;
+                }
+
+        .sponsor-container {
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .sponsor-text {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .sponsor-btn {
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+            text-decoration: none;
+            display: inline-block;
+            padding: 5px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid;
+            border-radius: 6px;
+            appearance: none;
+            color: #24292e;
+            background-color: #fafbfc;
+            border-color: rgba(27,31,35,.15);
+            box-shadow: 0 1px 0 rgba(27,31,35,.04),inset 0 1px 0 rgba(255,255,255,.25);
+            transition: background-color .2s cubic-bezier(0.3, 0, 0.5, 1);
+        }
+
+            .sponsor-btn:hover,
+            .sponsor-btn:focus {
+                background-color: #f3f4f6;
+                transition-duration: .1s;
+            }
+
+                .sponsor-btn:hover .sponsor-btn-icon,
+                .sponsor-btn:focus .sponsor-btn-icon {
+                    transform: scale(1.1);
+                }
+
+        .sponsor-btn-icon {
+            height: 16px;
+            width: 16px;
+            box-sizing: border-box;
+            transition: transform .15s cubic-bezier(0.2, 0, 0.13, 2);
+            transform: scale(1);
+            margin-right: 8px !important;
+            display: inline-block;
+            overflow: visible !important;
+            fill: currentColor;
+            color: #6a737d;
+            vertical-align: text-bottom;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <div class="logo">
+                <a target="_blank" href="https://github.com/RaulOA/Claudes-2.0">
+                    <img alt="Logo" src="../Claudes_2._0.client/public/images/logo-black.png" />
+                </a>
+            </div>
+            <div>
+                <h1 id="header"><strong>Bienvenido a Claudes 2.0 - Proyecto de inicio ASP.NET Core / Angular</strong></h1>
+                <p>
+                    Plantilla de inicio para el desarrollo rápido de aplicaciones.<br />
+                    Esta aplicación proporciona una base conveniente para crear soluciones con ASP.NET Core 9.0 y Angular 19.
+                </p>
+                <p>
+                    <a target="_blank" href="https://github.com/RaulOA/Claudes-2.0">Repositorio oficial</a>
+                    |
+                    <a target="_blank" href="https://twitter.com/RaulOA_Dev">Sígueme</a> para actualizaciones importantes
+                </p>
+            </div>
+        </div>
+        <div class="sponsor-container">
+            <p class="sponsor-text">Apoya este proyecto en Github y contribuye a su desarrollo.</p>
+            <a class="sponsor-btn" aria-label="Sponsor @RaulOA" target="_top" href="https://github.com/sponsors/RaulOA">
+                <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="sponsor-btn-icon octicon octicon-heart icon-sponsor color-fg-sponsors mr-2">
+                    <path d="m8 14.25.345.666a.75.75 0 0 1-.69 0l-.008-.004-.018-.01a7.152 7.152 0 0 1-.31-.17 22.055 22.055 0 0 1-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.066 22.066 0 0 1-3.744 2.584l-.018.01-.006.003h-.002ZM4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.58 20.58 0 0 0 8 13.393a20.58 20.58 0 0 0 3.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 0 1-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5Z"></path>
+                </svg>
+                <span>Patrocinar</span>
+            </a>
+        </div>
+        <div>
+            <h2 id="technologies">Tecnologías:</h2>
+            <ul>
+                <li>Páginas plantilla con <a href="https://angular.dev" target="_blank" rel="nofollow">Angular 19</a> y <a href="https://www.typescriptlang.org" target="_blank" rel="nofollow">TypeScript</a></li>
+                <li>API RESTful Backend usando <a href="https://docs.microsoft.com/es-es/aspnet/core" target="_blank" rel="nofollow">ASP.NET Core 9.0</a> Web API</li>
+                <li>Base de datos con <a href="https://docs.microsoft.com/es-es/ef/core" target="_blank" rel="nofollow">Entity Framework Core</a></li>
+                <li>Autenticación/Autorización basada en OIDC/OAuth2 y <a href="https://learn.microsoft.com/es-es/aspnet/core/security/authentication/identity-configuration?view=aspnetcore-7.0" target="_blank" rel="nofollow">ASP.NET Core Identity</a></li>
+                <li>Documentación de API usando <a href="https://swagger.io" target="_blank" rel="nofollow">Swagger</a></li>
+                <li>Frontend construido con <a href="https://angular.dev/cli" target="_blank" rel="nofollow">Angular CLI</a></li>
+                <li>Tematización con <a href="http://getbootstrap.com" target="_blank" rel="nofollow">Bootstrap 5</a></li>
+            </ul>
+        </div>
+        <div>
+            <h2 id="features">Características:</h2>
+            <ul>
+                <li>Proyecto base simple y listo para desarrollo rápido de aplicaciones</li>
+                <li>Estructura completa backend y frontend con gestión de usuarios y roles basada en permisos</li>
+                <li>Código limpio y sencillo en Angular/ASP.NET Core</li>
+                <li>Capa de acceso a datos con patrón Repositorio y Unidad de Trabajo</li>
+                <li>Base de datos Code First</li>
+                <li>Diseño API RESTful</li>
+                <li>Servicios de Diálogo y Notificaciones</li>
+                <li>Página y servicio de configuración</li>
+                <li>Internacionalización integrada</li>
+                <li>Tematización con SASS</li>
+                <li>API de correo lista para usar</li>
+                <li>Manejo de Access y Refresh Tokens con WebStorage (autenticación Bearer) - Sin Cookies</li>
+                <li>APIs CRUD</li>
+                <li>etc.</li>
+            </ul>
+        </div>
+        <div>
+            <h2 id="installation">Instalación</h2>
+            <ul>
+                <li>
+                    [OPCIÓN 1] Clona el <a target="_blank" href="https://github.com/RaulOA/Claudes-2.0">repositorio en GitHub</a> y edítalo con tu editor favorito (Visual Studio, Visual Studio Code, etc.)
+                </li>
+                <li>
+                    [OPCIÓN 2] Descarga el proyecto desde el repositorio oficial y sigue las instrucciones del README para la configuración inicial.
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2 id="installation-notes">Notas de instalación</h2>
+            <ul>
+                <li>
+                    Al crear un nuevo proyecto, espera a que se restauren todas las dependencias: ejecuta "dotnet restore" para el proyecto ASP.NET y "npm install" para el proyecto Angular.<br />
+                    Si usas Visual Studio esto es automático, revisa la barra de estado o la ventana de salida para confirmar que la restauración ha finalizado antes de ejecutar la aplicación por primera vez.
+                </li>
+                <li>
+                    Si encuentras errores, ejecuta manualmente los pasos de compilación y verifica dónde ocurre el problema.<br />
+                    Abre la terminal y ejecuta:<br />
+                    1. 'dotnet restore' en las carpetas de los proyectos - Restaura paquetes NuGet<br />
+                    2. 'npm install' en el proyecto con package.json - Restaura paquetes npm<br />
+                    3. Ejecuta la aplicación nuevamente - Verifica que todo funcione correctamente<br />
+                </li>
+                <li>
+                    Si ejecutas el cliente (Angular) en una dirección/dominio diferente al backend, configura el <code>baseUrl</code> del cliente para que coincida con el del servidor.<br />
+                    Esto se realiza en <em>environment.ts</em> del proyecto Angular.<br />
+                    Ejemplo: <code>baseUrl: "http://tuservidorbackend.com"</code> O <code>baseUrl: "http://localhost:5050"</code>
+                </li>
+                <li>
+                    Para ayuda y soporte, abre una <a target="_blank" href="https://github.com/RaulOA/Claudes-2.0/issues">incidencia en GitHub</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2 id="login">Acceso</h2>
+            <p>INICIA SESIÓN CON NOMBRE DE USUARIO O CORREO ELECTRÓNICO</p>
+            <blockquote>
+                <ul>
+                    <li>
+                        <strong>Cuenta Administrador por defecto</strong>
+                        <ul>
+                            <li>Usuario: admin</li>
+                            <li>Email:    admin@claudes20.com</li>
+                            <li>Contraseña: tempP@ss123</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Cuenta Estándar por defecto</strong>
+                        <ul>
+                            <li>Usuario: user</li>
+                            <li>Email:    user@claudes20.com</li>
+                            <li>Contraseña: tempP@ss123</li>
+                        </ul>
+                    </li>
+                </ul>
+            </blockquote>
+        </div>
+        <div>
+            <h2 id="documentation">Documentación</h2>
+            <ul>
+                <li><a target="_blank" href="https://github.com/RaulOA/Claudes-2.0">Documentación y overview de Claudes 2.0</a></li>
+                <li><a target="_blank" href="https://learn.microsoft.com/es-es/aspnet/core/">¿Qué es ASP.NET Core?</a></li>
+                <li><a target="_blank" href="https://docs.microsoft.com/es-es/ef/core/">Trabajando con datos (EF Core)</a></li>
+                <li><a target="_blank" href="https://documentation.openiddict.com/guides/index.html">Guía de OpenIddict</a></li>
+                <li><a target="_blank" href="https://angular.dev/overview">Documentación de Angular</a></li>
+                <li><a target="_blank" href="https://github.com/angular/angular-cli/wiki">Angular CLI Wiki</a></li>
+                <li><a target="_blank" href="https://getbootstrap.com/docs/5.2/getting-started/introduction">Introducción a Bootstrap</a></li>
+                <li><a target="_blank" href="http://sass-lang.com/guide">Guía de SASS</a></li>
+            </ul>
+        </div>
+        <div>
+            <h2 id="license">Licencia</h2>
+            <p>Liberado bajo la <a target="_blank" href="https://github.com/RaulOA/Claudes-2.0/blob/main/LICENSE">Licencia MIT</a>.</p>
+            <a target="_blank" href="mailto:raul.ortega.ac@gmail.com">Contacto</a>
+            |
+            <a target="_blank" href="https://twitter.com/RaulOA_Dev">Sígueme</a>
+        </div>
+        <div class="footer">
+            <h3 id="rate-it">
+                <em>
+                    Si este proyecto te ha sido útil, por favor califícalo en el repositorio.
+                </em>
+            </h3>
+        </div>
+    </div>
+</body>
+</html>

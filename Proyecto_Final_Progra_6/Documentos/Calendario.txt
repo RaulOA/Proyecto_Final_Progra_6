@@ -1,0 +1,27 @@
+﻿Calendario de tareas y entregables
+
+| Sección / Entregable                                      | Fecha límite sugerida | Semana | Notas clave                                                                 |
+|-----------------------------------------------------------|----------------------|--------|-----------------------------------------------------------------------------|
+👍| 0. Revisión y preparación inicial                         | 29/07 (hoy)          | 12     | Dejar el entorno listo y el repo creado antes de avanzar.                   |
+| 1. Renombrar referencias a QuickApp y similares           | 30/07                | 12     | Renombrar y probar que todo funcione. Commit/push tras cambios.             |
+| 2. Definir entidades principales y relaciones             | 31/07                | 12     | Modelos listos, relaciones y limpieza de entidades innecesarias.            |
+| 3. Crystal Reports: instalación, integración y pruebas    | 01/08                | 12     | Instalar, probar integración y dejar un reporte de prueba funcional.        |
+| 4. Crear y aplicar migraciones de base de datos           | 02/08                | 12     | Migraciones generadas y aplicadas, base de datos lista.                     |
+| 5. Implementar CRUD completo (backend y frontend)         | 05/08                | 13     | CRUD funcional, pruebas básicas, limpieza de código innecesario.            |
+| 6. Autenticación y roles                                  | 06/08                | 13     | Roles y permisos configurados y probados.                                   |
+| 7. Consumo de APIs y seguridad (Angular)                  | 07/08                | 13     | Servicios Angular adaptados, pruebas de integración.                        |
+| 8. Diseño responsivo e intuitivo                          | 08/08                | 13     | Personalización de UI, pruebas en diferentes dispositivos.                  |
+| 9. Dashboard informativo                                  | 09/08                | 13     | KPIs y gráficos funcionales y probados.                                     |
+| 10. Reportes con Crystal Reports                          | 10/08                | 13     | Reportes finales listos, exportación a PDF y filtros probados.              |
+| Revisión general y pruebas finales                        | 11/08 - 12/08        | 13-14  | Pruebas integrales, revisión de requisitos, ajustes finales.                |
+| Documentación técnica (manual PDF)                        | 12/08                | 14     | Manual técnico completo y revisado.                                         |
+| Video demo / Presentación                                 | 13/08                | 14     | Video grabado y revisado, presentación lista.                               |
+| Entrega final (todo listo y subido a GitHub)              | 14/08                | 14     | Revisión final, push de todo, entrega de enlaces y archivos.                |
+
+---
+Sugerencias adicionales
+
+• Commits y push: Realiza un commit y push al finalizar cada sección/tarea importante, usando los mensajes sugeridos en el TaskList.
+• Pruebas: Reserva tiempo para pruebas integrales y revisión de requisitos antes de los entregables.
+• Documentación y video: No dejes la documentación y el video para el último día; avanza en paralelo si es posible.
+• Buffer: Si terminas una tarea antes, avanza con la siguiente o usa el tiempo para pruebas y mejoras.

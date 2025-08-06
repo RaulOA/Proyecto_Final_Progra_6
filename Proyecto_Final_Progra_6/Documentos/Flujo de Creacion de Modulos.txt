@@ -1,0 +1,327 @@
+1. Backend: Archivos a crear o modificar
+a) Entidad (Model/Entity)
+•	Ubicación: Claudes_2._0.Core\Models\<NuevaCarpetaOExistente>
+•	Acción: Crea una clase que represente la entidad de dominio, heredando de BaseEntity si aplica.
+•	Ejemplo:
+
+public class RegistroX : BaseEntity
+{
+    public string Campo1 { get; set; }
+    public int Campo2 { get; set; }
+    // ...otros campos y relaciones
+  }
+
+  b) Interfaz y Repositorio
+•	Ubicación: Claudes_2._0.Core\Services\<Modulo>
+•	Acción:
+•	Define una interfaz para el servicio (ej: IRegistroXService).
+•	Implementa la lógica de acceso a datos y negocio en la clase de servicio.
+•	Ejemplo:
+
+public interface IRegistroXService
+{
+    Task<IEnumerable<RegistroX>> GetAllAsync();
+    Task<RegistroX?> GetByIdAsync(int id);
+    Task<RegistroX> CreateAsync(RegistroX entity);
+    Task UpdateAsync(RegistroX entity);
+    Task DeleteAsync(int id);
+  }
+
+  c) Servicio (Lógica de Negocio)
+•	Ubicación: Claudes_2._0.Core\Services\<Modulo>\RegistroXService.cs
+•	Acción: Implementa la interfaz, usando ApplicationDbContext para acceso a datos.
+d) DTOs (ViewModels)
+•	Ubicación: Claudes_2._0.Server\ViewModels\<Modulo>
+•	Acción:
+•	Crea DTOs para entrada (ej: RegistroXCreateVM) y salida (ej: RegistroXVM).
+•	Usa AutoMapper para mapear entre entidad y DTO.
+e) Controlador API
+•	Ubicación: Claudes_2._0.Server\Controllers\RegistroXController.cs
+•	Acción:
+•	Crea un controlador RESTful con endpoints CRUD.
+•	Usa [ApiController], [Route("api/[controller]")] y [Authorize(...)] según corresponda.
+•	Inyecta el servicio y el mapper.
+•	Documenta con comentarios XML para Swagger.
+f) Validaciones
+•	Acción:
+•	Usa atributos de validación en los DTOs ([Required], [StringLength], etc.).
+•	Valida en el controlador con ModelState.IsValid.
+g) Migraciones EF Core
+•	Acción:
+•	Agrega la entidad al DbContext.
+•	Ejecuta Add-Migration y Update-Database para crear la tabla.
+h) Swagger/OpenAPI
+•	Acción:
+•	Documenta los endpoints con comentarios XML.
+•	Verifica que los endpoints aparecen correctamente en Swagger UI.
+i) Inyección de dependencias
+•	Ubicación: Program.cs o Startup.cs
+•	Acción:
+•	Registra el servicio con services.AddScoped<IRegistroXService, RegistroXService>();
+---
+2. Frontend: Archivos involucrados
+a) Componente Angular
+•	Ubicación: src/app/components/registro-x/
+•	Acción:
+•	Crea el componente con su HTML, TS y SCSS.
+•	Implementa formulario reactivo (ReactiveFormsModule).
+•	Usa validaciones de Angular.
+b) Servicio Angular
+•	Ubicación: src/app/services/registro-x.service.ts
+•	Acción:
+•	Implementa métodos para consumir el API (getAll, getById, create, update, delete).
+•	Usa HttpClient y maneja errores.
+c) Rutas y navegación
+•	Ubicación: src/app/app-routing.module.ts
+•	Acción:
+•	Agrega rutas protegidas con canActivate según roles/permisos.
+d) Menú lateral y visibilidad
+•	Ubicación: src/app/app.component.html o menú correspondiente.
+•	Acción:
+•	Muestra el enlace solo si el usuario tiene permiso, usando authService.userHasRole(...) o userHasPermission(...).
+---
+3. Control de acceso
+a) Backend
+•	Usa [Authorize(Roles = "...")] o [Authorize(Policy = "...")] en el controlador o endpoints.
+b) Frontend
+•	Controla la visibilidad de componentes y rutas usando métodos como authService.userHasRole('Admin') o permisos específicos.
+---
+4. Buenas prácticas
+•	Validaciones:
+•	Valida tanto en backend (atributos y lógica) como en frontend (Angular Validators).
+•	Migraciones:
+•	Mantén el esquema actualizado y versionado.
+•	Separación de capas:
+•	No mezcles lógica de negocio en el controlador.
+•	Swagger:
+•	Documenta todos los endpoints y modelos.
+•	Inyección de dependencias:
+•	Usa DI para servicios y repositorios.
+•	Manejo de errores:
+•	Devuelve mensajes claros y consistentes.
+•	Auditoría:
+•	Si aplica, registra usuario y fecha de creación/modificación.
+---
+5. Pruebas funcionales recomendadas
+•	Flujo de datos:
+•	Crea un registro desde el formulario y verifica que llega a la base de datos.
+•	Visibilidad:
+•	Prueba con usuarios de distintos roles/permisos que solo vean lo que corresponde.
+•	Swagger:
+•	Verifica que los endpoints nuevos aparecen y funcionan en Swagger UI.
+•	Validaciones:
+•	Prueba errores de validación tanto en frontend como backend.
+•	Pruebas de integración:
+•	Opcionalmente, implementa pruebas automáticas para endpoints y servicios.
+---
+Resumen visual del flujo
+
+[Angular Form] ? [Angular Service] ? [API Controller] ? [Service] ? [Repository/DbContext] ? [DB]
+        ?                ?
+   [Validaciones]   [DTOs/VMs]
+        ?                ?
+[Control de acceso] [Swagger]
+
+-------------------------------------------------------------------------------------------------------
+
+1. AutoMapper
+¿Para qué sirve?
+Convierte automáticamente objetos de un tipo a otro (por ejemplo, de entidad a DTO/ViewModel y viceversa).
+Ejemplo real:
+Cuando recibes datos de la base de datos (entidad) y necesitas enviarlos al frontend como un modelo más simple (ViewModel).
+
+// En un controlador
+var userVM = _mapper.Map<UserVM>(userEntity);
+
+¿Cuándo lo manipula el programador?
+•	Al crear nuevos modelos o DTOs.
+•	Al modificar la estructura de datos que viaja entre backend y frontend.
+•	Al agregar nuevos mapeos en MappingProfile.cs.
+---
+2. FluentValidation
+¿Para qué sirve?
+Permite validar datos de entrada de manera clara y reutilizable, separando la lógica de validación del modelo.
+Ejemplo real:
+Validar que un email sea válido antes de guardar un usuario.
+
+public class UserVMValidator : AbstractValidator<UserVM>
+{
+    public UserVMValidator()
+    {
+        RuleFor(x => x.Email).NotEmpty().EmailAddress();
+    }
+}
+
+¿Cuándo lo manipula el programador?
+•	Al definir reglas de validación para formularios o modelos.
+•	Al agregar nuevas validaciones para datos de entrada.
+---
+3. MailKit
+¿Para qué sirve?
+Enviar correos electrónicos desde la aplicación (por ejemplo, notificaciones, confirmaciones, recuperación de contraseña).
+Ejemplo real:
+Enviar un correo de bienvenida al crear un usuario.
+
+await _emailSender.SendEmailAsync("Nombre", "correo@dominio.com", "Asunto", "Mensaje");
+
+¿Cuándo lo manipula el programador?
+•	Al implementar funcionalidades que requieran enviar emails.
+•	Al personalizar plantillas de correo.
+---
+4. OpenIddict (OIDC/OAuth2)
+¿Para qué sirve?
+Gestiona la autenticación y autorización segura de usuarios usando estándares modernos (OpenID Connect/OAuth2).
+Ejemplo real:
+Permitir que los usuarios inicien sesión y obtengan un token de acceso.
+
+// Configuración en OidcServerConfig.cs y Program.cs
+builder.Services.AddOpenIddict()...
+
+¿Cuándo lo manipula el programador?
+•	Al configurar el login, permisos y roles.
+•	Al agregar nuevos clientes (por ejemplo, una nueva SPA o app móvil).
+---
+5. Quartz
+¿Para qué sirve?
+Permite programar tareas automáticas (jobs) que se ejecutan en segundo plano, como enviar reportes diarios o limpiar datos antiguos.
+Ejemplo real:
+Programar el envío de un resumen diario por correo.
+
+builder.Services.AddQuartz(options => { ... });
+
+¿Cuándo lo manipula el programador?
+•	Al crear o modificar tareas automáticas.
+•	Al ajustar la frecuencia de ejecución de jobs.
+---
+6. Serilog
+¿Para qué sirve?
+Registrar logs (eventos, errores, advertencias) en archivos para auditoría y diagnóstico.
+Ejemplo real:
+Guardar un error cuando falla el acceso a la base de datos.
+
+_logger.LogError(ex, "Error accediendo a la base de datos");
+
+¿Cuándo lo manipula el programador?
+•	Al agregar nuevos mensajes de log en el código.
+•	Al configurar el formato o destino de los logs.
+---
+7. Swashbuckle (Swagger/OpenAPI)
+¿Para qué sirve?
+Genera documentación interactiva de la API, permitiendo probar los endpoints desde el navegador.
+Ejemplo real:
+Ver y probar los endpoints en /swagger.
+
+builder.Services.AddSwaggerGen(...);
+
+¿Cuándo lo manipula el programador?
+•	Al documentar nuevos endpoints.
+•	Al personalizar la documentación de la API.
+---
+8. Microsoft.AspNetCore.JsonPatch
+¿Para qué sirve?
+Permite actualizar parcialmente recursos usando el método HTTP PATCH (útil para editar solo algunos campos).
+Ejemplo real:
+Actualizar solo el email de un usuario sin enviar todo el objeto.
+
+public async Task<IActionResult> PatchUser([FromBody] JsonPatchDocument<UserVM> patch)
+
+¿Cuándo lo manipula el programador?
+•	Al implementar endpoints PATCH.
+•	Al definir qué campos pueden ser modificados parcialmente.
+---
+9. Entity Framework Core (EF Core)
+¿Para qué sirve?
+ORM para interactuar con la base de datos usando clases C# en vez de SQL directo.
+Ejemplo real:
+Obtener todos los clientes de la base de datos.
+
+var clientes = await _context.Customers.ToListAsync();
+
+¿Cuándo lo manipula el programador?
+•	Al crear, leer, actualizar o eliminar datos.
+•	Al definir nuevas entidades o relaciones.
+•	Al ejecutar migraciones para actualizar el esquema de la base de datos.
+---
+10. Microsoft.AspNetCore.SpaProxy
+¿Para qué sirve?
+Permite que el backend y el frontend (Angular) trabajen juntos durante el desarrollo, redirigiendo peticiones automáticamente.
+Ejemplo real:
+Cuando ejecutas ambos proyectos, el backend redirige las rutas de Angular automáticamente.
+¿Cuándo lo manipula el programador?
+•	Generalmente solo al configurar el proyecto por primera vez o al cambiar la integración entre backend y frontend.
+---
+
+-------------------------------------------------------------------------
+
+Aquí tienes un resumen de los archivos y rutas dependientes o relacionados para cada tecnología, herramienta, librería o dependencia principal utilizada en el proyecto del servidor:
+---
+1. AutoMapper
+•	Configuración de mapeos:
+•	Claudes_2._0.Server\Configuration\MappingProfile.cs
+•	Registro en servicios:
+•	Claudes_2._0.Server\Program.cs (línea: builder.Services.AddAutoMapper(typeof(Program));)
+•	Uso en controladores y servicios:
+•	Cualquier controlador que inyecte IMapper (ejemplo: UserRoleController.cs, CustomerController.cs, etc.)
+---
+2. FluentValidation
+•	Registro en servicios:
+•	Claudes_2._0.Server\Program.cs (aunque no se ve explícito en el fragmento, normalmente se registra aquí)
+•	Ubicación de validadores personalizados:
+•	Por convención, en Claudes_2._0.Server\Validation\ o junto a los ViewModels.
+•	Uso en controladores:
+•	Controladores que validan modelos usando [ApiController] y validaciones automáticas de modelos.
+---
+3. MailKit
+•	Implementación de envío de correo:
+•	Claudes_2._0.Server\Services\Email\EmailSender.cs (implementa IEmailSender)
+•	Registro en servicios:
+•	Claudes_2._0.Server\Program.cs (línea: builder.Services.AddScoped<IEmailSender, EmailSender>();)
+•	Plantillas de correo:
+•	Claudes_2._0.Server\Services\Email\EmailTemplates.cs
+•	Claudes_2._0.Server\Services\Email\*.template
+---
+4. OpenIddict (OIDC/OAuth2)
+•	Configuración y registro de clientes:
+•	Claudes_2._0.Server\Configuration\OidcServerConfig.cs
+•	Configuración de servicios:
+•	Claudes_2._0.Server\Program.cs (sección builder.Services.AddOpenIddict())
+•	Tablas y migraciones:
+•	Claudes_2._0.Server\Migrations\20241114121916_Initial.cs (tablas OpenIddictApplications, OpenIddictTokens, etc.)
+•	Controladores relacionados:
+•	Claudes_2._0.Server\Controllers\AuthorizationController.cs
+---
+5. Quartz (Tareas programadas)
+•	Configuración de servicios:
+•	Claudes_2._0.Server\Program.cs (sección builder.Services.AddQuartz(...))
+•	Jobs personalizados:
+•	Por convención, en Claudes_2._0.Server\Services\Jobs\ (si existen).
+---
+6. Serilog (Logging a archivos)
+•	Configuración de logging:
+•	Claudes_2._0.Server\Program.cs (línea: builder.Logging.AddFile(builder.Configuration.GetSection("Logging"));)
+•	Configuración adicional:
+•	Puede estar en appsettings.json (no mostrado aquí).
+---
+7. Swashbuckle (Swagger/OpenAPI)
+•	Configuración de Swagger:
+•	Claudes_2._0.Server\Program.cs (sección builder.Services.AddSwaggerGen(...))
+•	Filtros y seguridad:
+•	Claudes_2._0.Server\Authorization\SwaggerAuthorizeOperationFilter.cs
+---
+8. Microsoft.AspNetCore.JsonPatch
+•	Uso en controladores para operaciones PATCH:
+•	Claudes_2._0.Server\Controllers\UserAccountController.cs (y otros controladores que acepten JsonPatchDocument)
+---
+9. Entity Framework Core (EF Core)
+•	Contexto de base de datos:
+•	Claudes_2._0.Core\Infrastructure\ApplicationDbContext.cs
+•	Migraciones:
+•	Claudes_2._0.Server\Migrations\*.cs
+•	Configuración de servicios:
+•	Claudes_2._0.Server\Program.cs (sección builder.Services.AddDbContext<ApplicationDbContext>(...))
+---
+10. Microsoft.AspNetCore.SpaProxy
+•	Configuración de integración SPA:
+•	Claudes_2._0.Server\Claudes_2._0.Server.csproj (propiedades <SpaRoot>, <SpaProxyLaunchCommand>, <SpaProxyServerUrl>)
+•	Claudes_2._0.Server\Program.cs (puede haber lógica para servir archivos estáticos y fallback a Angular)
+---

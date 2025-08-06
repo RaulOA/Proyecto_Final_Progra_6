@@ -1,0 +1,605 @@
+﻿# TaskList para el desarrollo del Sistema de Inventario y Ventas de Librería Universitaria
+# Orden de tareas, pasos detallados, prompts, comandos de referencia y pruebas para cada requisito funcional
+# Incluye limpieza de código, pruebas de funcionalidad, adecuación de nombres/referencias, Crystal Reports y control de versiones con Git en VS2022
+
+---
+
+👍 ========================================================================================================================
+
+## 0. Revisión y preparación inicial
+
+**Descripción:**  
+En esta sección se revisan y documentan las dependencias, versiones y compatibilidad del proyecto, asegurando que todo el entorno (incluyendo Crystal Reports) sea adecuado para el desarrollo. Además, se inicializa el control de versiones con Git y se realiza el primer commit y push al repositorio remoto.
+**Objetivo:**  
+Garantizar que la base tecnológica es estable y compatible antes de realizar cualquier cambio estructural, y dejar un respaldo inicial del estado del proyecto.
+**Importancia del momento:**  
+Es fundamental validar la compatibilidad y tener un respaldo antes de modificar o eliminar cualquier componente, para poder regresar fácilmente en caso de errores.
+**Resultados esperados:**  
+- Entorno validado y documentado.
+- Repositorio Git inicializado y sincronizado con GitHub.
+- Primer commit y push realizados.
+
+---
+
+### 0.1. Revisión preventiva de dependencias y compatibilidad
+Prompt:  
+> "Verifica las dependencias, versiones de .NET, Angular y paquetes instalados, asegurando compatibilidad con Crystal Reports y los requisitos del proyecto."
+Comando:  
+- text_search: ["TargetFramework", "PackageReference", "crystal", "angular.json", "package.json"]
+
+**Cómo probar:**  
+- Revisa que todas las dependencias sean compatibles y estén actualizadas.
+- Documenta cualquier incompatibilidad antes de avanzar.
+
+### 0.2. Inicializar repositorio Git (si no existe) y primer commit
+**Acción manual:**  
+- En VS2022, abre la pestaña __Git Changes__.
+- Si el repositorio no está inicializado, selecciona __Create Git Repository__.
+- Añade todos los archivos iniciales.
+- Realiza un commit con el mensaje:
+  - **Título:** `Proyecto base QuickApp para Librería Universitaria`
+  - **Descripción:** `Commit inicial con la estructura base del proyecto, dependencias y configuración original.`
+
+### 0.3. Crear repositorio remoto en GitHub y primer push
+**Acción manual:**  
+- En __Git Changes__, selecciona __Publish to GitHub__.
+- Usa como nombre sugerido: `LibreriaUniversitaria` o similar.
+- Añade una descripción breve:  
+  `Sistema de Inventario y Ventas para Librería Universitaria basado en QuickApp (.NET 9 + Angular).`
+- Realiza el push inicial.
+
+---
+
+Verificación de dependencias y compatibilidad según los requerimientos:
+1.	.NET y Backend:
+•	El backend usa .NET 9.0 (net9.0), que es superior al mínimo requerido (.NET 6).
+•	Entity Framework Core está presente (Microsoft.EntityFrameworkCore.SqlServer v9.0.0).
+•	El proyecto es compatible con SQL Server y usa ASP.NET Core.
+2.	Frontend Angular:
+•	El frontend utiliza Angular 19 (@angular/core v19.0.1), que es superior al mínimo requerido (Angular 15).
+•	Las dependencias y herramientas de Angular están actualizadas y alineadas con Angular 19.
+3.	Paquetes y librerías:
+•	Chart.js (chart.js v4.4.6) y ng2-charts están instalados para dashboards y KPIs.
+•	No se observa referencia directa a Crystal Reports en los archivos de proyecto. Crystal Reports para .NET suele requerir instalación manual de librerías o paquetes NuGet específicos, que no están presentes actualmente.
+4.	Compatibilidad general:
+•	Todas las versiones de los paquetes principales cumplen o superan los requisitos del archivo Requerimientos.txt.
+•	No hay conflictos de versiones aparentes entre Angular, .NET y los paquetes instalados.
+Observación importante:
+Para cumplir completamente con los requisitos, es necesario agregar la integración de Crystal Reports en el backend (ASP.NET Core). Actualmente, no hay dependencias ni configuraciones relacionadas con Crystal Reports en el proyecto.
+
+========================================================================================================================
+
+## 1. Renombrar referencias a QuickApp y similares
+
+**Descripción:**  
+Se identifican y renombran todas las referencias a "QuickApp" o nombres similares en el código, recursos y documentación, adaptándolas al nuevo nombre del sistema.
+
+**Objetivo:**  
+Eliminar toda referencia a la plantilla original para personalizar el proyecto y evitar confusiones futuras.
+
+**Importancia del momento:**  
+Renombrar al inicio evita inconsistencias y problemas de referencias en los siguientes pasos, especialmente al crear nuevas entidades y funcionalidades.
+
+**Resultados esperados:**  
+- Todas las referencias a "QuickApp" han sido reemplazadas.
+- El proyecto compila y funciona correctamente bajo el nuevo nombre.
+- Commit y push realizados tras el cambio.
+
+---
+
+### 1.1. Buscar todas las referencias a "QuickApp" o nombres similares
+Prompt:  
+> "Busca todas las referencias a 'QuickApp' o nombres similares en la solución (clases, namespaces, comentarios, archivos, recursos, etc.)."
+Comando:  
+- text_search: ["QuickApp", "quickapp"]
+
+**Cómo probar:**  
+- Revisa los resultados y asegúrate de que todas las referencias sean identificadas.
+
+---
+
+Se encontraron referencias a "QuickApp" o nombres similares en los siguientes lugares de la solución:
+1.	Comentarios y metadatos de archivos:
+•	En varios encabezados de archivos (quickapp@ebenmonney.com, plantillas, copyright).
+2.	Clases y constantes:
+•	OidcServerConfig.cs: constante QuickAppClientID = "quickapp_spa".
+3.	Recursos y documentación:
+•	Enlaces y menciones en ReadMe.html y en la interfaz de usuario (index.html), incluyendo referencias a la plantilla y documentación de QuickApp.
+4.	Archivos TypeScript:
+•	Encabezados de componentes y archivos principales (main.ts, search-box.component.ts).
+No se encontraron namespaces o clases principales con el nombre "QuickApp", pero sí constantes, comentarios, correos y enlaces relacionados con la plantilla QuickApp de ebenmonney.com.
+
+---
+
+### 1.2. Renombrar referencias por un nombre congruente con el proyecto (ejemplo: "LibreriaUniversitaria" o el que elijas)
+Prompt:  
+> "Sugiere y realiza el renombrado de todas las referencias encontradas a 'QuickApp' por el nombre elegido para el sistema, siguiendo la convención de la plantilla."
+
+**Cómo probar:**  
+- Compila la solución y verifica que no existan errores de referencia.
+- Revisa que los nombres sean coherentes y sigan la convención de la plantilla.
+
+### 1.3. Actualizar recursos, archivos y documentación interna
+Prompt:  
+> "Actualiza recursos, archivos de configuración, comentarios y documentación interna para reflejar el nuevo nombre del sistema."
+
+**Cómo probar:**  
+- Busca en la solución que no queden menciones a "QuickApp" o similares.
+- Verifica que la documentación y los recursos sean claros y actualizados.
+
+### 1.4. Prueba preventiva tras renombrado
+**Acción manual:**  
+- Compila y ejecuta la solución (backend y frontend).
+- Navega por las rutas principales y verifica que no existan errores de referencia, rutas rotas o recursos faltantes.
+- Si hay errores, documenta y corrige antes de continuar.
+
+### 1.5. Commit y push tras renombrado
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Renombrado de referencias QuickApp a LibreriaUniversitaria`
+  - **Descripción:** `Se reemplazaron todas las referencias a QuickApp por LibreriaUniversitaria en código, recursos y documentación.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 2. Definir entidades principales y relaciones
+
+**Descripción:**  
+Se analizan los modelos existentes, se eliminan los innecesarios y se crean las entidades principales (Libro, Categoría, Venta, Cliente, Proveedor) junto con sus relaciones usando EF Core.
+
+**Objetivo:**  
+Establecer la base de datos y la estructura de datos que soportará toda la lógica de negocio del sistema.
+
+**Importancia del momento:**  
+Definir las entidades y relaciones al inicio permite que el resto del desarrollo (CRUD, reportes, dashboard) se construya sobre una base sólida y coherente.
+
+**Resultados esperados:**  
+- Modelos y entidades innecesarias eliminadas.
+- Nuevas entidades y relaciones correctamente definidas.
+- Commit y push realizados tras estos cambios.
+
+---
+
+### 2.1. Analizar modelos existentes y estructura de datos
+Prompt:  
+> "Busca y muestra los modelos de datos actuales y el DbContext para entender la estructura base."
+Comando:  
+- text_search: ["model", "DbContext", "entity"]
+
+**Cómo probar:**  
+- Verifica que los modelos listados correspondan a la funcionalidad deseada.
+- Identifica modelos que no serán necesarios y márcalos para eliminación.
+
+### 2.2. Eliminar modelos y entidades innecesarias
+Prompt:  
+> "Identifica y elimina los modelos y entidades que no serán utilizados en el nuevo sistema de inventario y ventas."
+Comando:  
+- text_search: ["model", "entity", "DbSet"]
+
+**Cómo probar:**  
+- Compila la solución y verifica que no existan referencias rotas a los modelos eliminados.
+
+### 2.3. Commit y push tras limpieza de modelos
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Eliminación de modelos y entidades no utilizados`
+  - **Descripción:** `Se eliminaron modelos y entidades que no forman parte del sistema de inventario y ventas.`
+- Realiza un push al repositorio remoto.
+
+### 2.4. Crear entidades principales (Libro, Categoría, Venta, Cliente, Proveedor)
+Prompt:  
+> "Genera el código para las entidades Libro, Categoría, Venta, Cliente y Proveedor, siguiendo la convención y estilo de los modelos existentes."
+
+**Cómo probar:**  
+- Revisa que los archivos de modelo se hayan creado correctamente y que el DbContext los incluya.
+
+### 2.5. Definir relaciones (uno a muchos, muchos a muchos) usando EF Core
+Prompt:  
+> "Agrega las relaciones necesarias entre las entidades (uno a muchos, muchos a muchos) en los modelos y el DbContext."
+
+**Cómo probar:**  
+- Revisa que las propiedades de navegación y claves foráneas estén correctamente definidas en los modelos.
+
+### 2.6. Prueba preventiva tras cambios de modelos
+**Acción manual:**  
+- Compila la solución y ejecuta pruebas unitarias (si existen) para asegurar que los cambios en modelos no rompen la lógica existente.
+- Documenta cualquier error antes de avanzar.
+
+### 2.7. Commit y push tras definición de entidades y relaciones
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Definición de entidades principales y relaciones`
+  - **Descripción:** `Se crearon las entidades principales y se definieron las relaciones necesarias usando EF Core.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 3. Crystal Reports: instalación, integración y pruebas
+
+**Descripción:**  
+Se instala la versión adecuada de Crystal Reports, se integra en el proyecto y se realiza una prueba de generación de reporte.
+
+**Objetivo:**  
+Asegurar que la funcionalidad de reportes estará disponible y es compatible con el entorno antes de avanzar con la lógica de negocio que dependa de ella.
+
+**Importancia del momento:**  
+Integrar Crystal Reports temprano permite detectar incompatibilidades o problemas de configuración antes de que el sistema dependa de los reportes.
+
+**Resultados esperados:**  
+- Crystal Reports instalado y funcional en Visual Studio.
+- Proyecto configurado para soportar reportes.
+- Commit y push realizados tras la integración.
+
+---
+
+### 3.1. Instrucciones de instalación de Crystal Reports Developer Edition
+Prompt:  
+> "Proporciona instrucciones detalladas para instalar la versión adecuada de Crystal Reports compatible con .NET 9 y Visual Studio 2022."
+
+**Cómo probar:**  
+- Instala Crystal Reports siguiendo las instrucciones y verifica que el diseñador y los ensamblados estén disponibles en Visual Studio.
+
+### 3.2. Commit tras instalación y configuración de dependencias
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Instalación y configuración de Crystal Reports`
+  - **Descripción:** `Se documentó la instalación y se agregaron las dependencias necesarias para Crystal Reports.`
+- Realiza un push al repositorio remoto.
+
+### 3.3. Configuración e integración de Crystal Reports en el proyecto
+Prompt:  
+> "Busca y muestra ejemplos de integración de Crystal Reports en proyectos .NET Core/9, incluyendo configuración de dependencias y referencias necesarias."
+Comando:  
+- text_search: ["crystal report", "report", "pdf", "export"]
+
+Prompt:  
+> "Integra Crystal Reports en el backend, asegurando que los ensamblados y dependencias estén correctamente configurados."
+
+**Cómo probar:**  
+- Compila el backend y verifica que puedes agregar y visualizar un reporte de prueba en el diseñador.
+
+### 3.4. Prueba preventiva tras integración
+**Acción manual:**  
+- Crea un reporte de prueba y ejecútalo desde el backend.
+- Verifica que no existan errores de dependencias o incompatibilidades.
+
+### 3.5. Commit y push tras integración de Crystal Reports
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Integración de Crystal Reports en el backend`
+  - **Descripción:** `Se integró Crystal Reports y se verificó la generación de reportes de prueba.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 4. Crear y aplicar migraciones de base de datos
+
+**Descripción:**  
+Se generan y aplican las migraciones iniciales para las nuevas entidades y relaciones, actualizando la base de datos.
+
+**Objetivo:**  
+Reflejar la estructura de datos definida en el modelo dentro de la base de datos real.
+
+**Importancia del momento:**  
+Aplicar migraciones después de definir entidades asegura que la base de datos esté lista para pruebas y desarrollo de lógica de negocio.
+
+**Resultados esperados:**  
+- Migraciones generadas y aplicadas correctamente.
+- Base de datos actualizada y verificada.
+- Commit y push realizados tras las migraciones.
+
+---
+
+### 4.1. Generar migración inicial para las nuevas entidades y relaciones
+**Acción manual:**  
+- Ejecutar en terminal:  
+  `dotnet ef migrations add AddLibreriaEntities`
+- Verificar que la migración se haya generado correctamente.
+
+**Cómo probar:**  
+- Revisa el archivo de migración generado para confirmar que incluye las tablas y relaciones esperadas.
+
+### 4.2. Aplicar la migración a la base de datos
+**Acción manual:**  
+- Ejecutar en terminal:  
+  `dotnet ef database update`
+- Confirmar que las tablas y relaciones se crearon en SQL Server.
+
+**Cómo probar:**  
+- Usa SQL Server Management Studio o Azure Data Studio para verificar la estructura de la base de datos.
+
+### 4.3. Commit y push tras migraciones
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Migraciones iniciales de base de datos`
+  - **Descripción:** `Se generaron y aplicaron las migraciones iniciales para las nuevas entidades y relaciones.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 5. Implementar CRUD completo
+
+**Descripción:**  
+Se implementan los controladores y servicios backend para CRUD de cada entidad, así como los formularios y servicios Angular en el frontend. Se eliminan los componentes y servicios innecesarios.
+
+**Objetivo:**  
+Permitir la gestión completa de las entidades principales desde la interfaz y la API, asegurando la funcionalidad básica del sistema.
+
+**Importancia del momento:**  
+El CRUD es la base de la interacción con los datos; implementarlo tras la estructura de datos y migraciones garantiza coherencia y funcionalidad.
+
+**Resultados esperados:**  
+- Endpoints y formularios CRUD funcionales para todas las entidades.
+- Componentes y servicios innecesarios eliminados.
+- Commit y push realizados tras cada bloque de cambios.
+
+---
+
+### 5.1. Backend: Crear controladores y servicios para cada entidad
+Prompt:  
+> "Busca ejemplos de controladores y servicios existentes para CRUD."
+Comando:  
+- text_search: ["controller", "service", "CRUD"]
+
+Prompt:  
+> "Genera controladores y servicios para las entidades nuevas, siguiendo el patrón y estilo encontrados."
+
+**Cómo probar:**  
+- Usa herramientas como Postman o Swagger para probar los endpoints CRUD de cada entidad.
+- Verifica que las operaciones básicas (crear, leer, actualizar, eliminar) funcionen correctamente.
+
+### 5.2. Eliminar controladores y servicios innecesarios
+Prompt:  
+> "Identifica y elimina los controladores y servicios que ya no sean útiles para el nuevo sistema."
+Comando:  
+- text_search: ["controller", "service"]
+
+**Cómo probar:**  
+- Compila y verifica que no existan rutas o servicios huérfanos.
+
+### 5.3. Commit y push tras CRUD backend
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `CRUD backend para entidades principales`
+  - **Descripción:** `Se implementaron controladores y servicios CRUD para las entidades principales y se eliminaron los innecesarios.`
+- Realiza un push al repositorio remoto.
+
+### 5.4. Frontend: Crear formularios reactivos, validaciones y rutas protegidas
+Prompt:  
+> "Busca componentes y servicios Angular existentes relacionados con formularios y rutas."
+Comando:  
+- text_search: ["component", "form", "route", "angular"]
+
+Prompt:  
+> "Genera componentes, formularios y servicios Angular para las nuevas entidades, con validaciones y rutas protegidas."
+
+**Cómo probar:**  
+- Navega por la aplicación y verifica que los formularios funcionen correctamente y validen los datos.
+- Asegúrate de que las rutas estén protegidas según el rol del usuario.
+
+### 5.5. Eliminar componentes y formularios innecesarios en Angular
+Prompt:  
+> "Identifica y elimina los componentes y formularios de Angular que ya no sean útiles para el nuevo sistema."
+Comando:  
+- text_search: ["component", "form"]
+
+**Cómo probar:**  
+- Compila el frontend y verifica que no existan errores de rutas o referencias a componentes eliminados.
+
+### 5.6. Commit y push tras CRUD frontend
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `CRUD frontend para entidades principales`
+  - **Descripción:** `Se implementaron formularios y servicios Angular para las entidades principales y se eliminaron los innecesarios.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 6. Autenticación y roles
+
+**Descripción:**  
+Se revisa y ajusta la autenticación, se crean los roles necesarios (Administrador, Vendedor, Cliente) y se restringen vistas/acciones según el rol.
+
+**Objetivo:**  
+Asegurar la seguridad y la correcta segmentación de permisos en el sistema.
+
+**Importancia del momento:**  
+Configurar roles después del CRUD permite proteger las operaciones y vistas sensibles desde el inicio.
+
+**Resultados esperados:**  
+- Roles y permisos correctamente configurados.
+- Acceso restringido según el tipo de usuario.
+- Commit y push realizados tras la configuración.
+
+---
+
+### 6.1. Revisar sistema de usuarios/roles existente
+Prompt:  
+> "Busca la implementación actual de autenticación, roles y permisos."
+Comando:  
+- text_search: ["auth", "role", "permission", "user"]
+
+**Cómo probar:**  
+- Inicia sesión con diferentes tipos de usuario y verifica los permisos actuales.
+
+### 6.2. Crear y asignar roles (Administrador, Vendedor, Cliente)
+Prompt:  
+> "Agrega los roles Administrador, Vendedor y Cliente al sistema, y ajusta la lógica para restringir vistas/acciones según el rol."
+
+**Cómo probar:**  
+- Crea usuarios de cada tipo y verifica que solo puedan acceder a las vistas y acciones permitidas.
+
+### 6.3. Commit y push tras configuración de roles
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Configuración de roles y permisos`
+  - **Descripción:** `Se configuraron los roles Administrador, Vendedor y Cliente, y se ajustaron las restricciones de acceso.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 7. Consumo de APIs y seguridad
+
+**Descripción:**  
+Se adaptan o crean los servicios Angular para consumir los nuevos endpoints CRUD, asegurando el uso de JWT para autenticación.
+
+**Objetivo:**  
+Garantizar que el frontend interactúe de forma segura y eficiente con el backend.
+
+**Importancia del momento:**  
+Hacerlo después de tener CRUD y roles permite probar la seguridad y la funcionalidad de extremo a extremo.
+
+**Resultados esperados:**  
+- Servicios Angular funcionales y seguros.
+- Commit y push realizados tras la integración.
+
+---
+
+### 7.1. Adaptar servicios Angular para consumir los nuevos endpoints
+Prompt:  
+> "Busca servicios Angular existentes para consumo de APIs y manejo de JWT."
+Comando:  
+- text_search: ["http", "service", "interceptor", "jwt"]
+
+Prompt:  
+> "Genera o adapta servicios Angular para consumir los endpoints CRUD de las nuevas entidades, usando JWT para autenticación."
+
+**Cómo probar:**  
+- Realiza operaciones CRUD desde el frontend y verifica que los datos se actualicen correctamente en la base de datos.
+
+### 7.2. Commit y push tras integración de servicios Angular
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Integración de servicios Angular para consumo de APIs`
+  - **Descripción:** `Se adaptaron los servicios Angular para consumir los nuevos endpoints CRUD con JWT.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 8. Diseño responsivo e intuitivo
+
+**Descripción:**  
+Se personaliza la interfaz, menús y dashboard para la temática de librería, asegurando responsividad y buena experiencia de usuario.
+
+**Objetivo:**  
+Ofrecer una interfaz atractiva, coherente y fácil de usar, alineada con la temática del sistema.
+
+**Importancia del momento:**  
+Personalizar el diseño tras tener la funcionalidad básica permite adaptar la UI a las necesidades reales del sistema.
+
+**Resultados esperados:**  
+- Interfaz personalizada y responsiva.
+- Commit y push realizados tras la personalización.
+
+---
+
+### 8.1. Adaptar el diseño base a la temática de librería
+Prompt:  
+> "Busca archivos de estilos, menús y plantillas principales del frontend."
+Comando:  
+- text_search: ["style", "menu", "layout", "template"]
+
+Prompt:  
+> "Sugiere y genera cambios para personalizar la interfaz, menús y dashboard con la temática de librería."
+
+**Cómo probar:**  
+- Visualiza la aplicación en diferentes dispositivos y resoluciones para asegurar la responsividad y coherencia visual.
+
+### 8.2. Commit y push tras personalización de diseño
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Personalización de diseño y temática de librería`
+  - **Descripción:** `Se personalizó la interfaz, menús y dashboard para la temática de librería universitaria.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 9. Dashboard informativo
+
+**Descripción:**  
+Se agregan KPIs y gráficos relevantes al dashboard usando Chart.js o ngx-charts, mostrando información clave del sistema.
+
+**Objetivo:**  
+Brindar una visión rápida y visual del estado del sistema (ventas, stock, productos más vendidos, etc.).
+
+**Importancia del momento:**  
+Agregar el dashboard tras tener datos y funcionalidad permite mostrar información real y útil.
+
+**Resultados esperados:**  
+- Dashboard funcional con KPIs y gráficos.
+- Commit y push realizados tras la integración.
+
+---
+
+### 9.1. Mostrar KPIs y gráficos relevantes
+Prompt:  
+> "Busca el código actual del dashboard y la integración de gráficos."
+Comando:  
+- text_search: ["dashboard", "chart", "kpi"]
+
+Prompt:  
+> "Agrega KPIs y gráficos (ventas del día, stock bajo, productos más vendidos) usando Chart.js o ngx-charts."
+
+**Cómo probar:**  
+- Accede al dashboard y verifica que los KPIs y gráficos muestren información real y actualizada.
+
+### 9.2. Commit y push tras integración de dashboard
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Dashboard informativo con KPIs y gráficos`
+  - **Descripción:** `Se agregaron KPIs y gráficos al dashboard usando Chart.js o ngx-charts.`
+- Realiza un push al repositorio remoto.
+
+---
+
+========================================================================================================================
+## 10. Reportes con Crystal Reports
+
+**Descripción:**  
+Se crean y exponen al menos dos reportes (ventas por periodo, inventario bajo) con Crystal Reports, exportables a PDF y con filtros, integrados en el backend y expuestos por endpoint seguro.
+
+**Objetivo:**  
+Permitir la generación y descarga de reportes profesionales para análisis y toma de decisiones.
+
+**Importancia del momento:**  
+Implementar los reportes al final asegura que toda la información y lógica necesaria ya está disponible y probada.
+
+**Resultados esperados:**  
+- Reportes funcionales, exportables y protegidos.
+- Commit y push realizados tras la integración de reportes.
+
+---
+
+### 10.1. Crear y exponer reportes funcionales
+Prompt:  
+> "Genera al menos 2 reportes (ventas por periodo, inventario bajo) con Crystal Reports, exportables a PDF y con filtros, integrados en el backend y expuestos por endpoint seguro."
+
+**Cómo probar:**  
+- Genera los reportes desde la aplicación, aplica filtros y descarga los archivos PDF. Verifica que los datos sean correctos y el acceso esté protegido.
+
+### 10.2. Commit y push tras integración de reportes
+**Acción manual:**  
+- En __Git Changes__, realiza un commit con:
+  - **Título:** `Integración de reportes Crystal Reports`
+  - **Descripción:** `Se integraron reportes de ventas por periodo e inventario bajo, exportables a PDF y con filtros.`
+- Realiza un push al repositorio remoto.
+
+========================================================================================================================
+
+# Notas finales
+
+- Si una tarea es extensa o compleja, divídela en subtareas más simples y ejecuta cada una por separado.
+- En cada paso, utiliza el prompt y comando indicados para que la IA busque y adapte el código según la estructura real de la solución.
+- Las acciones manuales (como ejecutar migraciones o instalar Crystal Reports) están claramente indicadas.
+- Si surge algún error o inconsistencia, solicita ayuda con un prompt específico para depuración.
+- Antes de avanzar a la siguiente tarea, prueba la funcionalidad generada y asegúrate de que no existan errores ni referencias a código eliminado o nombres antiguos.
+- Realiza pruebas preventivas tras cada cambio estructural importante (renombrado, eliminación, integración de dependencias, migraciones, etc.) para minimizar riesgos de errores en tareas futuras.
+- Realiza commits y push frecuentes, especialmente después de cambios estructurales, integración de dependencias, migraciones, o implementación de funcionalidades clave. Usa títulos y descripciones claros y concisos para cada commit.
