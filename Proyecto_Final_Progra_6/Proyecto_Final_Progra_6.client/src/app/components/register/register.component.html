@@ -1,0 +1,218 @@
+<div class="d-flex h-90">
+  <div class="register-container m-auto">
+    <div class="card boxshadow">
+      <div class="card-header bg-success text-white">
+        <i class="fa fa-user-plus" aria-hidden="true"></i> {{ 'register.RegisterUser' | translate }}
+      </div>
+      <div class="card-body">
+        <div class="col-md-10 offset-md-1 px-md-3">
+          <form [formGroup]="registerForm" class="register" (ngSubmit)="register()" novalidate>
+            
+            <!-- ======================================================== INICIO - CAMPOS OBLIGATORIOS ================================================== -->
+            <!-- Sección de campos obligatorios para el registro -->
+            <!-- ************************************************************************************************************************************************ -->
+            
+            <!-- Campo Usuario -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="register-username">
+                {{ 'register.Username' | translate }} <span class="text-danger">*</span>
+              </label>
+              <div class="col-md-8">
+                <input type="text" id="register-username" name="username" 
+                       [placeholder]="'register.UsernamePlaceholder' | translate"
+                       autocomplete="username" class="form-control"
+                       [ngClass]="{'is-valid': userName?.valid && userName?.touched, 'is-invalid' : userName?.invalid && userName?.touched}"
+                       formControlName="userName" />
+                @if (userName?.invalid && userName?.touched) {
+                  <span class="invalid-feedback">
+                    @if (userName?.errors?.['required']) {
+                      {{ 'register.alerts.UsernameRequired' | translate }}
+                    }
+                    @if (userName?.errors?.['minlength'] || userName?.errors?.['maxlength']) {
+                      {{ 'register.alerts.EnterUsername' | translate }}
+                    }
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Campo Email -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="register-email">
+                {{ 'register.Email' | translate }} <span class="text-danger">*</span>
+              </label>
+              <div class="col-md-8">
+                <input type="email" id="register-email" name="email" 
+                       [placeholder]="'register.EmailPlaceholder' | translate"
+                       autocomplete="email" class="form-control"
+                       [ngClass]="{'is-valid': email?.valid && email?.touched, 'is-invalid' : email?.invalid && email?.touched}"
+                       formControlName="email" />
+                @if (email?.invalid && email?.touched) {
+                  <span class="invalid-feedback">
+                    @if (email?.errors?.['required']) {
+                      {{ 'register.alerts.EmailRequired' | translate }}
+                    }
+                    @if (email?.errors?.['email']) {
+                      {{ 'register.alerts.InvalidEmail' | translate }}
+                    }
+                    @if (email?.errors?.['maxlength']) {
+                      {{ 'register.alerts.EnterEmail' | translate }}
+                    }
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Campo Contraseña -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="register-password">
+                {{ 'register.Password' | translate }} <span class="text-danger">*</span>
+              </label>
+              <div class="col-md-8">
+                <input type="password" id="register-password" name="password" 
+                       [placeholder]="'register.PasswordPlaceholder' | translate"
+                       autocomplete="new-password" class="form-control"
+                       [ngClass]="{'is-valid': password?.valid && password?.touched, 'is-invalid' : password?.invalid && password?.touched}"
+                       formControlName="password" />
+                @if (password?.invalid && password?.touched) {
+                  <span class="invalid-feedback">
+                    @if (password?.errors?.['required']) {
+                      {{ 'register.alerts.NewPasswordRequired' | translate }}
+                    }
+                    @if (password?.errors?.['minlength']) {
+                      {{ 'register.alerts.EnterNewValidPassword' | translate }}
+                    }
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Campo Confirmar Contraseña -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="register-confirm-password">
+                {{ 'register.ConfirmPassword' | translate }} <span class="text-danger">*</span>
+              </label>
+              <div class="col-md-8">
+                <input type="password" id="register-confirm-password" name="confirmPassword" 
+                       [placeholder]="'register.ConfirmPasswordPlaceholder' | translate"
+                       autocomplete="new-password" class="form-control"
+                       [ngClass]="{'is-valid': confirmPassword?.valid && confirmPassword?.touched && !hasPasswordMismatch, 'is-invalid' : (confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch}"
+                       formControlName="confirmPassword" />
+                @if ((confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch) {
+                  <span class="invalid-feedback">
+                    @if (confirmPassword?.errors?.['required']) {
+                      {{ 'register.alerts.ConfirmationPasswordRequired' | translate }}
+                    }
+                    @if (hasPasswordMismatch) {
+                      {{ 'register.alerts.NewAndConfirmationPasswordMismatch' | translate }}
+                    }
+                  </span>
+                }
+              </div>
+            </div>
+            
+            <!-- ======================================================== FIN - CAMPOS OBLIGATORIOS ===================================================== -->
+
+            <!-- ======================================================== INICIO - CAMPOS OPCIONALES ==================================================== -->
+            <!-- Sección de campos opcionales para información adicional del usuario -->
+            <!-- ************************************************************************************************************************************************ -->
+            
+            <!-- Campo Nombre Completo -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="register-fullname">
+                Nombre Completo:
+              </label>
+              <div class="col-md-8">
+                <input type="text" id="register-fullname" name="fullname" 
+                       placeholder="Ingresa tu nombre completo"
+                       class="form-control"
+                       [ngClass]="{'is-valid': fullName?.valid && fullName?.touched && fullName?.value, 'is-invalid' : fullName?.invalid && fullName?.touched}"
+                       formControlName="fullName" />
+                @if (fullName?.invalid && fullName?.touched) {
+                  <span class="invalid-feedback">
+                    Máximo 200 caracteres permitidos
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Campo Cargo/Puesto -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="register-jobtitle">
+                Cargo/Puesto:
+              </label>
+              <div class="col-md-8">
+                <input type="text" id="register-jobtitle" name="jobtitle" 
+                       placeholder="Ingresa tu cargo o puesto"
+                       class="form-control"
+                       [ngClass]="{'is-valid': jobTitle?.valid && jobTitle?.touched && jobTitle?.value, 'is-invalid' : jobTitle?.invalid && jobTitle?.touched}"
+                       formControlName="jobTitle" />
+                @if (jobTitle?.invalid && jobTitle?.touched) {
+                  <span class="invalid-feedback">
+                    Máximo 200 caracteres permitidos
+                  </span>
+                }
+              </div>
+            </div>
+
+            <!-- Campo Teléfono -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="register-phone">
+                Teléfono:
+              </label>
+              <div class="col-md-8">
+                <input type="tel" id="register-phone" name="phone" 
+                       placeholder="Ingresa tu número de teléfono"
+                       class="form-control"
+                       [ngClass]="{'is-valid': phoneNumber?.valid && phoneNumber?.touched && phoneNumber?.value, 'is-invalid' : phoneNumber?.invalid && phoneNumber?.touched}"
+                       formControlName="phoneNumber" />
+                @if (phoneNumber?.invalid && phoneNumber?.touched) {
+                  <span class="invalid-feedback">
+                    Máximo 50 caracteres permitidos
+                  </span>
+                }
+              </div>
+            </div>
+            
+            <!-- ======================================================== FIN - CAMPOS OPCIONALES ======================================================= -->
+
+            <!-- ======================================================== INICIO - BOTONES DE ACCIÓN ===================================================== -->
+            <!-- Botones de registro y navegación -->
+            <!-- ************************************************************************************************************************************************ -->
+            <div class="mb-3 row">
+              <div class="offset-md-4 col-md-8">
+                <div class="d-flex align-items-stretch gap-2">
+                  <button type="submit" class="btn btn-success text-nowrap" [disabled]="isLoading || registerForm.invalid">
+                    @if (isLoading) {
+                      <i class='fa fa-circle-o-notch fa-spin'></i> {{ 'register.Processing' | translate }}
+                    }
+                    @else {
+                      <i class="fa fa-user-plus"></i> {{ 'register.Register' | translate }}
+                    }
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary" (click)="resetForm()" [disabled]="isLoading">
+                    <i class="fa fa-refresh"></i> Limpiar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Enlaces de navegación -->
+            <div class="row">
+              <div class="offset-md-4 col-md-8">
+                <div class="text-center">
+                  <p class="mb-2">{{ 'register.LoginIntro' | translate }}</p>
+                  <a routerLink="/login" class="btn btn-outline-primary">
+                    <i class="fa fa-sign-in"></i> {{ 'register.Login' | translate }}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- ======================================================== FIN - BOTONES DE ACCIÓN ======================================================== -->
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

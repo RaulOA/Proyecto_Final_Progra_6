@@ -2,7 +2,7 @@
   <div class="login-container m-auto">
     <div class="card boxshadow">
       <div class="card-header bg-primary text-white">
-        <i class="fa fa-lock" aria-hidden="true"></i> Login
+        <i class="fa fa-lock" aria-hidden="true"></i> {{ 'login.Login' | translate }}
         @if (isModal) {
           <button type="button" class="btn-close btn-close-white fs-sm float-end" aria-label="Close"
                   (click)="closeModal()" tabindex="-1"></button>
@@ -10,64 +10,96 @@
       </div>
       <div class="card-body">
         <div class="col-md-10 offset-md-1 px-md-3">
-          @if (formResetToggle) {
-            <form class="login" name="loginForm" #f="ngForm" novalidate
-                  (ngSubmit)="f.form.valid ? login() :
-                            (!username.valid && showErrorAlert('Username is required', 'Please enter a valid username'));
-                            (!password.valid && showErrorAlert('Password is required', 'Please enter a valid password'))">
-              <div class="mb-3 row">
-                <label class="col-form-label text-md-end col-md-4" for="login-username">Username:</label>
-                <div class="col-md-8">
-                  <input type="text" id="login-username" name="username" placeholder="Enter username"
-                         autocomplete="username" class="form-control"
-                         [ngClass]="{'is-valid': f.submitted && username.valid, 'is-invalid' : f.submitted && !username.valid}"
-                         [(ngModel)]="userLogin.userName" #username="ngModel" required />
-                  @if (f.submitted && !username.valid) {
-                    <span class="invalid-feedback">
-                      Username is required
-                    </span>
-                  }
+          <form [formGroup]="loginForm" class="login" (ngSubmit)="login()" novalidate>
+            <!-- ======================================================== INICIO - CAMPO USUARIO ========================================================= -->
+            <!-- Campo de entrada para el nombre de usuario con validaciones reactivas -->
+            <!-- ************************************************************************************************************************************************ -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="login-username">{{ 'login.Username' | translate }}</label>
+              <div class="col-md-8">
+                <input type="text" id="login-username" name="username" 
+                       [placeholder]="'login.UsernamePlaceholder' | translate"
+                       autocomplete="username" class="form-control"
+                       [ngClass]="{'is-valid': userName?.valid && userName?.touched, 'is-invalid' : userName?.invalid && userName?.touched}"
+                       formControlName="userName" />
+                @if (userName?.invalid && userName?.touched) {
+                  <span class="invalid-feedback">
+                    {{ 'login.alerts.UsernameRequired' | translate }}
+                  </span>
+                }
+              </div>
+            </div>
+            <!-- ======================================================== FIN - CAMPO USUARIO ============================================================ -->
+
+            <!-- ======================================================== INICIO - CAMPO CONTRASEÑA ===================================================== -->
+            <!-- Campo de entrada para la contraseña con validaciones reactivas -->
+            <!-- ************************************************************************************************************************************************ -->
+            <div class="mb-3 row">
+              <label class="col-form-label text-md-end col-md-4" for="login-password">{{ 'login.Password' | translate }}</label>
+              <div class="col-md-8">
+                <input type="password" id="login-password" name="password" 
+                       [placeholder]="'login.PasswordPlaceholder' | translate"
+                       autocomplete="current-password" class="form-control"
+                       [ngClass]="{'is-valid': password?.valid && password?.touched, 'is-invalid' : password?.invalid && password?.touched}"
+                       formControlName="password" />
+                @if (password?.invalid && password?.touched) {
+                  <span class="invalid-feedback">
+                    {{ 'login.alerts.PasswordRequired' | translate }}
+                  </span>
+                }
+              </div>
+            </div>
+            <!-- ======================================================== FIN - CAMPO CONTRASEÑA ======================================================== -->
+
+            <!-- ======================================================== INICIO - RECORDARME ========================================================== -->
+            <!-- Checkbox para recordar la sesión del usuario -->
+            <!-- ************************************************************************************************************************************************ -->
+            <div class="mb-3 row">
+              <div class="offset-md-4 col-md-8">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="login-rememberme" 
+                         formControlName="rememberMe">
+                  <label class="form-check-label" for="login-rememberme">{{ 'login.RememberMe' | translate }}</label>
                 </div>
               </div>
-              <div class="mb-3 row">
-                <label class="col-form-label text-md-end col-md-4" for="login-password">Password:</label>
-                <div class="col-md-8">
-                  <input type="password" id="login-password" name="password" placeholder="Enter password"
-                         autocomplete="current-password" class="form-control"
-                         [ngClass]="{'is-valid': f.submitted && password.valid, 'is-invalid' : f.submitted && !password.valid}"
-                         [(ngModel)]="userLogin.password" #password="ngModel" required />
-                  @if (f.submitted && !password.valid) {
-                    <span class="invalid-feedback">
-                      Password is required
-                    </span>
-                  }
+            </div>
+            <!-- ======================================================== FIN - RECORDARME ============================================================= -->
+
+            <!-- ======================================================== INICIO - BOTÓN DE LOGIN ====================================================== -->
+            <!-- Botón de envío del formulario con estado de carga -->
+            <!-- ************************************************************************************************************************************************ -->
+            <div class="mb-3 row">
+              <div class="offset-md-4 col-md-8">
+                <div class="d-flex align-items-stretch">
+                  <button type="submit" class="btn btn-primary text-nowrap" [disabled]="isLoading">
+                    @if (isLoading) {
+                      <i class='fa fa-circle-o-notch fa-spin'></i> {{ 'login.LoggingIn' | translate }}
+                    }
+                    @else {
+                      {{ 'login.Login' | translate }}
+                    }
+                  </button>
                 </div>
               </div>
-              <div class="mb-3 row">
-                <div class="offset-md-4 col-md-8">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="login-rememberme" name="rememberMe"
-                           [(ngModel)]="userLogin.rememberMe">
-                    <label class="form-check-label" for="login-rememberme">Remember me</label>
-                  </div>
+            </div>
+            <!-- ======================================================== FIN - BOTÓN DE LOGIN ========================================================= -->
+
+            <!-- ======================================================== INICIO - ENLACES DE REGISTRO =================================================== -->
+            <!-- Enlaces para registro y recuperación de contraseña -->
+            <!-- ************************************************************************************************************************************************ -->
+            <div class="row">
+              <div class="offset-md-4 col-md-8">
+                <div class="text-center">
+                  <p class="mb-2">{{ 'login.RegisterIntro' | translate }}</p>
+                  <a routerLink="/register" class="btn btn-outline-secondary">{{ 'login.Register' | translate }}</a>
+                </div>
+                <div class="text-center mt-3">
+                  <a href="#" class="text-muted">{{ 'login.RecoverPassword' | translate }}</a>
                 </div>
               </div>
-              <div class="mb-3 row">
-                <div class="offset-md-4 col-md-8">
-                  <div class="d-flex align-items-stretch">
-                    <button type="submit" class="btn btn-primary text-nowrap" [disabled]="isLoading">
-                      @if (isLoading) {
-                        <i class='fa fa-circle-o-notch fa-spin'></i> {{'Logging in...'}}
-                      }
-                      @else {
-                        {{'Login'}}
-                      }
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          }
+            </div>
+            <!-- ======================================================== FIN - ENLACES DE REGISTRO ====================================================== -->
+          </form>
         </div>
       </div>
     </div>

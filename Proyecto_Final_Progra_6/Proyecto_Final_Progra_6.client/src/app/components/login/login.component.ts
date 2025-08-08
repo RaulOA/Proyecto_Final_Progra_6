@@ -1,13 +1,29 @@
-// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+// ================================================================================
+// Autor: Raul Ortega Acuña
+// Archivo: login.component.ts
+// Solución: Proyecto_Final_Progra_6
+// Proyecto: Proyecto_Final_Progra_6.client
+// Ruta: Proyecto_Final_Progra_6.client\src\app\components\login\login.component.ts
+//
+// Descripción o propósito del archivo:
+// Componente Angular para la pantalla de autenticación (Login) que utiliza 
+// formularios reactivos con validaciones. Integra con el servicio de 
+// autenticación y maneja la redirección de usuarios autenticados.
+//
+// Historial de cambios:
+// 1. 08/08/2025 - Conversión de formularios template-driven a reactive forms.
+//               - Actualización de documentación según estándares del proyecto.
+//
+// Alertas Críticas:
+// - Ninguna
+// ================================================================================
 
 import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AlertService, MessageSeverity, DialogType } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
@@ -19,25 +35,25 @@ import { UserLogin } from '../../models/user-login.model';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss',
-    imports: [FormsModule, NgClass]
+    imports: [ReactiveFormsModule, NgClass, RouterLink, TranslateModule]
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
   private alertService = inject(AlertService);
   private authService = inject(AuthService);
   private configurations = inject(ConfigurationService);
+  private formBuilder = inject(FormBuilder);
 
-  userLogin = new UserLogin();
+  loginForm!: FormGroup;
   isLoading = false;
-  formResetToggle = true;
-  modalClosedCallback: (() => void) | undefined;
   loginStatusSubscription: Subscription | undefined;
+  modalClosedCallback: (() => void) | undefined;
 
   @Input()
   isModal = false;
 
   ngOnInit() {
-    this.userLogin.rememberMe = this.authService.rememberMe;
+    this.buildForm();
 
     if (this.getShouldRedirect()) {
       this.authService.redirectLoginUser();
@@ -52,6 +68,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.loginStatusSubscription?.unsubscribe();
+  }
+
+  private buildForm() {
+    this.loginForm = this.formBuilder.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+      rememberMe: [this.authService.rememberMe]
+    });
   }
 
   getShouldRedirect() {
@@ -69,23 +93,30 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.isLoading = true;
-    this.alertService.startLoadingMessage('', 'Attempting login...');
+    if (this.loginForm.invalid) {
+      this.markFormGroupTouched();
+      return;
+    }
 
-    this.authService.loginWithPassword(this.userLogin.userName, this.userLogin.password, this.userLogin.rememberMe)
+    this.isLoading = true;
+    this.alertService.startLoadingMessage('', 'login.alerts.AttemptingLogin');
+
+    const formValue = this.loginForm.value;
+    
+    this.authService.loginWithPassword(formValue.userName, formValue.password, formValue.rememberMe)
       .subscribe({
         next: user => {
           setTimeout(() => {
             this.alertService.stopLoadingMessage();
             this.isLoading = false;
-            this.reset();
+            this.resetForm();
 
             if (!this.isModal) {
-              this.alertService.showMessage('Login', `Welcome ${user.userName}!`, MessageSeverity.success);
+              this.alertService.showMessage('login.alerts.Login', `login.alerts.Welcome`, MessageSeverity.success);
             } else {
-              this.alertService.showMessage('Login', `Session for ${user.userName} restored!`, MessageSeverity.success);
+              this.alertService.showMessage('login.alerts.Login', `login.alerts.UserSessionRestored`, MessageSeverity.success);
               setTimeout(() => {
-                this.alertService.showStickyMessage('Session Restored', 'Please try your last operation again', MessageSeverity.default);
+                this.alertService.showStickyMessage('login.alerts.SessionRestored', 'login.alerts.RetryLastOperation', MessageSeverity.default);
               }, 500);
 
               this.closeModal();
@@ -102,10 +133,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             const errorMessage = Utilities.getHttpResponseMessage(error);
 
             if (errorMessage) {
-              this.alertService.showStickyMessage('Unable to login', this.mapLoginErrorMessage(errorMessage), MessageSeverity.error, error);
+              this.alertService.showStickyMessage('login.alerts.UnableToLogin', this.mapLoginErrorMessage(errorMessage), MessageSeverity.error, error);
             } else {
-              this.alertService.showStickyMessage('Unable to login',
-                'An error occurred whilst logging in, please try again later.\nError: ' + Utilities.stringify(error), MessageSeverity.error, error);
+              this.alertService.showStickyMessage('login.alerts.UnableToLogin',
+                'login.alerts.LoginErrorOccurred', MessageSeverity.error, error);
             }
           }
 
@@ -116,14 +147,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
+  private markFormGroupTouched() {
+    Object.keys(this.loginForm.controls).forEach(key => {
+      const control = this.loginForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
   offerBackendDevServer() {
     if (Utilities.checkIsLocalHost(location.origin) && Utilities.checkIsLocalHost(this.configurations.baseUrl)) {
       this.alertService.showDialog(
-        'Dear Developer!<br />' +
-        'It appears your backend Web API server is inaccessible or not running...<br />' +
-        'Would you want to temporarily switch to the fallback development API server below? (Or specify another)', DialogType.prompt, value => {
+        'login.alerts.DeveloperDemoApiNotice', DialogType.prompt, value => {
           this.configurations.baseUrl = value as string;
-          this.alertService.showStickyMessage('API Changed!', 'The target Web API has been changed to: ' + value, MessageSeverity.warn);
+          this.alertService.showStickyMessage('login.alerts.ApiChanged', 'login.alerts.ApiChangedTo', MessageSeverity.warn);
         },
         null,
         null,
@@ -134,17 +170,29 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   mapLoginErrorMessage(error: string) {
     if (error === 'invalid_username_or_password') {
-      return 'Invalid username or password';
+      return 'login.alerts.InvalidUsernameOrPassword';
     }
 
     return error;
   }
 
   reset() {
-    this.formResetToggle = false;
+    this.resetForm();
+  }
 
-    setTimeout(() => {
-      this.formResetToggle = true;
+  resetForm() {
+    this.loginForm.reset({
+      userName: '',
+      password: '',
+      rememberMe: this.authService.rememberMe
     });
   }
+
+  // ======================================================== INICIO - GETTERS PARA VALIDACIÓN =========================================================
+  // Getters para acceder fácilmente a los controles del formulario y sus estados de validación
+  // **********************************************************************************************************************************************
+  get userName() { return this.loginForm.get('userName'); }
+  get password() { return this.loginForm.get('password'); }
+  get rememberMe() { return this.loginForm.get('rememberMe'); }
+  // ======================================================== FIN - GETTERS PARA VALIDACIÓN ============================================================
 }
