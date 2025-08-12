@@ -1,0 +1,112 @@
+// ================================================================================
+// Autor: Raul Ortega Acuña
+// Archivo: register.component.scss
+// Solución: Proyecto_Final_Progra_6
+// Proyecto: Proyecto_Final_Progra_6.client
+// Ruta: Proyecto_Final_Progra_6.client\src\app\components\register\register.component.scss
+//
+// Descripción o propósito del archivo:
+// Estilos específicos para el componente de registro de usuarios.
+// Mantiene consistencia visual con el componente de login y aprovecha
+// las clases de Bootstrap para un diseño responsivo.
+//
+// Historial de cambios:
+// 1. 08/08/2025 - Creación inicial de estilos para el componente de registro.
+//
+// Alertas Críticas:
+// - Ninguna
+// ================================================================================
+
+// ======================================================== INICIO - CONTENEDOR PRINCIPAL =========================================================
+// Estilos para el contenedor principal del formulario de registro
+// **********************************************************************************************************************************************
+.register-container {
+  width: 100%;
+  max-width: 600px; // Más ancho que el login debido a más campos
+  
+  .card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    
+    .card-header {
+      border-bottom: none;
+      font-weight: bold;
+      padding: 1.5rem;
+      
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+    
+    .card-body {
+      padding: 2rem;
+    }
+  }
+}
+// ======================================================== FIN - CONTENEDOR PRINCIPAL ============================================================
+
+// ======================================================== INICIO - FORMULARIO ====================================================================
+// Estilos específicos para el formulario de registro
+// **********************************************************************************************************************************************
+.register {
+  .form-control {
+    border-radius: 5px;
+    padding: 0.75rem;
+    
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+      border-color: #28a745;
+    }
+  }
+  
+  .btn {
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    
+    &.btn-success {
+      &:disabled {
+        opacity: 0.6;
+      }
+    }
+  }
+  
+  .text-danger {
+    font-weight: bold;
+  }
+  
+  .invalid-feedback {
+    display: block;
+    margin-top: 0.25rem;
+  }
+}
+// ======================================================== FIN - FORMULARIO =======================================================================
+
+// ======================================================== INICIO - RESPONSIVE ====================================================================
+// Ajustes para diferentes tamaños de pantalla
+// **********************************************************************************************************************************************
+@media (max-width: 768px) {
+  .register-container {
+    max-width: 95%;
+    margin: 1rem auto;
+    
+    .card-body {
+      padding: 1rem;
+    }
+    
+    .col-md-4, .col-md-8 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    
+    .offset-md-4 {
+      margin-left: 0;
+    }
+    
+    label {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+// ======================================================== FIN - RESPONSIVE =======================================================================

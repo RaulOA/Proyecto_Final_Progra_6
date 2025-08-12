@@ -1,8 +1,22 @@
-// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+// ================================================================================
+// Autor: Raul Ortega Acuña
+// Archivo: app.routes.ts
+// Solución: Proyecto_Final_Progra_6
+// Proyecto: Proyecto_Final_Progra_6.client
+// Ruta: Proyecto_Final_Progra_6.client\src\app\app.routes.ts
+//
+// Descripción o propósito del archivo:
+// Configuración de rutas principales de la aplicación Angular.
+// Define las rutas protegidas con AuthGuard y las rutas públicas
+// para autenticación y páginas informativas.
+//
+// Historial de cambios:
+// 1. 08/08/2025 - Adición de ruta para registro de usuarios.
+//               - Actualización de documentación según estándares del proyecto.
+//
+// Alertas Críticas:
+// - Ninguna
+// ================================================================================
 
 import { Routes } from '@angular/router';
 import { AuthGuard } from './services/auth-guard';
@@ -18,6 +32,11 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent),
     title: 'Login'
+  },
+  {
+    path: 'register',
+    loadComponent: () => import('./components/register/register.component').then(m => m.RegisterComponent),
+    title: 'Register'
   },
   {
     path: 'customers',
