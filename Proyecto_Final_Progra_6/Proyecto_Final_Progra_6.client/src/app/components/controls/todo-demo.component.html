@@ -1,3 +1,23 @@
+<!--
+Autor: Raul Ortega Acuña
+Archivo: todo-demo.component.html
+Solución: Proyecto_Final_Progra_6
+Proyecto: Proyecto_Final_Progra_6.client
+Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/components/controls/todo-demo.component.html
+
+Descripción o propósito del archivo:
+Componente visual para la gestión de tareas tipo "To-Do". Permite buscar, agregar, editar, marcar como completadas/importantes y eliminar tareas. Utiliza ngx-datatable para mostrar la lista y plantillas para edición en línea y modal.
+
+Historial de cambios:
+1. 27/04/2024 - Se añadió encabezado de documentación y secciones según estándares del proyecto. Se documentaron propósitos y estructura.
+
+Alertas Críticas:
+- 27/04/2024 - No se detectan alertas críticas en la estructura HTML. Validar que los textos de traducción existan en los archivos de recursos.
+-->
+
+<!-- ======================================================== INICIO - BARRA DE HERRAMIENTAS Y BÚSQUEDA ========================================================
+// Sección superior con barra de búsqueda y acciones principales (ocultar completadas, agregar tarea).
+********************************************************************************************************************************************** -->
 <div class="row control-box">
   <div class="col-lg-8">
     <div class="search-box">
@@ -19,6 +39,11 @@
     </ul>
   </div>
 </div>
+<!-- ======================================================== FIN - BARRA DE HERRAMIENTAS Y BÚSQUEDA ========================================================= -->
+
+<!-- ======================================================== INICIO - TABLA DE TAREAS (ngx-datatable) ========================================================
+// Tabla principal que muestra la lista de tareas con opciones de edición y acciones rápidas.
+********************************************************************************************************************************************** -->
 <ngx-datatable class="material colored-header sm table-hover"
                [loadingIndicator]="loadingIndicator"
                [rows]="rows"
@@ -29,7 +54,11 @@
                [scrollbarV]="verticalScrollbar()"
                [columnMode]="'force'">
 </ngx-datatable>
+<!-- ======================================================== FIN - TABLA DE TAREAS (ngx-datatable) ========================================================= -->
 
+<!-- ======================================================== INICIO - PLANTILLAS DE CELDAS Y ACCIONES ========================================================
+// Plantillas para personalizar encabezados, estado, nombre, descripción y acciones de cada tarea.
+********************************************************************************************************************************************** -->
 <ng-template #statusHeaderTemplate>
   <i class="fa fa-check-square-o"></i>
 </ng-template>
@@ -48,7 +77,7 @@
            (keydown.escape)="editing[row.$$index + '-name'] = false"/>
   }
   @else {
-    <span class="inline-label" [class.completed]="row.completed" attr.title="Double click to edit - {{value}}"
+    <span class="inline-label" [class.completed]="row.completed" attr.title="Doble clic para editar - {{value}}"
           (dblclick)="editing[row.$$index + '-name'] = true">
       {{value}}
     </span>
@@ -63,7 +92,7 @@
            (keydown.escape)="editing[row.$$index + '-description'] = false"/>
   }
   @else {
-    <span class="inline-label" [class.completed]="row.completed" attr.title="Double click to edit - {{value}}"
+    <span class="inline-label" [class.completed]="row.completed" attr.title="Doble clic para editar - {{value}}"
           (dblclick)="editing[row.$$index + '-description'] = true">
       {{value}}
     </span>
@@ -80,21 +109,24 @@
     <i [ngClass]="row.important ? 'fa fa-bookmark' : 'fa fa-bookmark-o'"></i>
   </a>
 </ng-template>
+<!-- ======================================================== FIN - PLANTILLAS DE CELDAS Y ACCIONES ========================================================= -->
 
-
+<!-- ======================================================== INICIO - MODAL DE EDICIÓN/CREACIÓN DE TAREA ====================================================
+// Modal para crear o editar una tarea, con validaciones y campos requeridos.
+********************************************************************************************************************************************** -->
 <ng-template #editorModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title"><i class="fa fa-tasks"></i> {{'todoDemo.editor.NewTask' | translate}}</h5>
-    <button type="button" class="btn-close fs-sm" title="Close" (click)="modal.close()" tabindex="-1"></button>
+    <button type="button" class="btn-close fs-sm" title="Cerrar" (click)="modal.close()" tabindex="-1"></button>
   </div>
   <div class="modal-body">
     @if (formResetToggle) {
       <form name="taskEditorForm" #f="ngForm" novalidate (ngSubmit)="f.form.valid ? save() && modal.close() :
-                        (!taskName.valid && showErrorAlert('Task name is required', 'Please enter a name for the task'));">
+                        (!taskName.valid && showErrorAlert('El nombre de la tarea es obligatorio', 'Por favor ingrese un nombre para la tarea'));">
         <div class="mb-3 row">
           <label class="col-form-label col-md-3" for="taskName">{{'todoDemo.editor.Name' | translate}}:</label>
           <div class="col-md-9">
-            <input appAutofocus type="text" id="taskName" name="taskName" placeholder="Enter task name" class="form-control"
+            <input appAutofocus type="text" id="taskName" name="taskName" placeholder="Ingrese el nombre de la tarea" class="form-control"
                    [ngClass]="{'is-valid': f.submitted && taskName.valid, 'is-invalid' : f.submitted && !taskName.valid}"
                    [(ngModel)]="taskEdit.name" #taskName="ngModel" required />
             @if (f.submitted && !taskName.valid) {
@@ -107,7 +139,7 @@
         <div class="mb-3 row description-form-group">
           <label class="col-form-label col-md-3" for="taskDescription">{{'todoDemo.editor.Description' | translate}}:</label>
           <div class="col-md-9">
-            <input type="text" id="taskDescription" name="taskDescription" placeholder="Enter task description"
+            <input type="text" id="taskDescription" name="taskDescription" placeholder="Ingrese la descripción de la tarea"
                    class="form-control" [(ngModel)]="taskEdit.description" />
           </div>
         </div>
@@ -132,3 +164,4 @@
     }
   </div>
 </ng-template>
+<!-- ======================================================== FIN - MODAL DE EDICIÓN/CREACIÓN DE TAREA ===================================================== -->
