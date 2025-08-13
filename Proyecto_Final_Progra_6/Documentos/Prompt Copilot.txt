@@ -39,13 +39,14 @@ Alertas Críticas:
 - Si es relevante incluir un pequeño comentario descriptivo de la funcion de alguna linea o seccion de código, debe hacerse en español y al lado del código o en una línea arriba de la sección comentada según convenga.
 - Utiliza las convenciones de nomenclatura de C# y el resto de tecnologías del stack para documentacion XML segun sea el origen del archivo.
 - No eliminar las secciones comentadas como "Notas Importantes" o cometarios del código, ya que contienen información relevante para el mantenimiento, configuracion, uso, desarrollo o descripcion.
-- Divide el código en grandes secciones, cada una debe contener encabezado y pie explicativo usando el siguiente formato:
+
 -En el o los archivos analizados se deben remplazar todas las referencias a ebenmonney, emonney, quickapp, Quick Application, Copyright, template, o cualquier otro termino relacionado o que con la plantilla original o proyecto QuickApp por Libreria Universidad, o mi nombre como programador (Raul O.A según corresponda siempre y cuando no tengan dependencias o referencias asociadas que se vallan a romper.
 -Si existe texto en ingles debe ser traducido al español, a menos que sea un nombre de variable o propiedad que no deba ser traducido.
 - Los metadatos deben ser congruentes con el contenido del archivo y actualizados según corresponda.
 - Repositorio del proyecto: https://github.com/RaulOA/Libreria-Universidad 
 - si existen url en comentarios o documentación, deben ser actualizadas a la url del repositorio del proyecto o a la url de la documentación oficial de .NET 9, Angular 17, OpenIddict, etc. según corresponda.
 
+- Divide el código en grandes secciones, cada una debe contener encabezado y pie explicativo usando el siguiente formato:
 ======================================================== INICIO - NOMBRE DE LA SECCIÓN =========================================================
 // Descripción breve del propósito de esta sección.
 **********************************************************************************************************************************************

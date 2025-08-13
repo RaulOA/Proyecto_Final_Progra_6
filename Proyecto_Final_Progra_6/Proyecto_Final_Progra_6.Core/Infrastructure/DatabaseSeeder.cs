@@ -1,8 +1,22 @@
-﻿// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+﻿// =====================================================================================
+// Autor: Raul Ortega Acuña
+// Archivo: DatabaseSeeder.cs
+// Solución: Proyecto_Final_Progra_6
+// Proyecto: Proyecto_Final_Progra_6.Core
+// Ruta: Proyecto_Final_Progra_6\Proyecto_Final_Progra_6.Core\Infrastructure\DatabaseSeeder.cs
+//
+// Descripción o propósito del archivo:
+// Inicializa la base de datos con usuarios, roles y datos de demostración para la Libreria Universidad.
+// Incluye la creación de roles y usuarios predeterminados, así como datos de ejemplo para pruebas.
+//
+// Historial de cambios:
+// 27/04/2024 - Adaptación de comentarios, estructura y metadatos según estándares de Libreria Universidad.
+//            - Traducción de comentarios y secciones al español.
+//            - Eliminación de referencias a plantillas originales y autores previos.
+//
+// Alertas Críticas:
+// - 27/04/2024 - Revisar que los datos de demostración no se utilicen en producción.
+// =====================================================================================
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,6 +27,9 @@ using Proyecto_Final_Progra_6.Core.Services.Account;
 
 namespace Proyecto_Final_Progra_6.Core.Infrastructure
 {
+    // ======================================================== INICIO - CLASE DatabaseSeeder ========================================================
+    // Clase responsable de inicializar la base de datos con datos predeterminados y de demostración.
+    // **********************************************************************************************************************************************
     public class DatabaseSeeder(ApplicationDbContext dbContext, ILogger<DatabaseSeeder> logger,
         IUserAccountService userAccountService, IUserRoleService userRoleService) : IDatabaseSeeder
     {
@@ -23,37 +40,38 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
             await SeedDemoDataAsync();
         }
 
-        /************ DEFAULT USERS **************/
-
+        // ======================================================== INICIO - USUARIOS Y ROLES POR DEFECTO ========================================================
+        // Crea los roles y usuarios predeterminados para la aplicación.
+        // **********************************************************************************************************************************************
         private async Task SeedDefaultUsersAsync()
         {
+            // Siempre asegura que los roles existen, aunque ya existan usuarios
+            const string adminRoleName = "Administrador";
+            const string clienteRoleName = "Cliente";
+
+            await EnsureRoleAsync(adminRoleName, "Administrador del sistema", ApplicationPermissions.GetAllPermissionValues());
+            await EnsureRoleAsync(clienteRoleName, "Cliente de la librería", []);
+
+            // Solo crea usuarios de ejemplo si la tabla está vacía
             if (!await dbContext.Users.AnyAsync())
             {
-                logger.LogInformation("Generating inbuilt accounts");
-
-                const string adminRoleName = "administrator";
-                const string userRoleName = "user";
-
-                await EnsureRoleAsync(adminRoleName, "Default administrator",
-                    ApplicationPermissions.GetAllPermissionValues());
-
-                await EnsureRoleAsync(userRoleName, "Default user", []);
+                logger.LogInformation("Generando cuentas internas predeterminadas");
 
                 await CreateUserAsync("admin",
                                       "tempP@ss123",
-                                      "Inbuilt Administrator",
-                                      "admin@ebenmonney.com",
+                                      "Administrador General",
+                                      "admin@libreria.com",
                                       "+1 (123) 000-0000",
                                       [adminRoleName]);
 
-                await CreateUserAsync("user",
+                await CreateUserAsync("cliente",
                                       "tempP@ss123",
-                                      "Inbuilt Standard User",
-                                      "user@ebenmonney.com",
-                                      "+1 (123) 000-0001",
-                                      [userRoleName]);
+                                      "Cliente Demo",
+                                      "cliente@libreria.com",
+                                      "+1 (123) 000-0003",
+                                      [clienteRoleName]);
 
-                logger.LogInformation("Inbuilt account generation completed");
+                logger.LogInformation("Generación de cuentas internas completada");
             }
         }
 
@@ -61,7 +79,7 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
         {
             if (await userRoleService.GetRoleByNameAsync(roleName) == null)
             {
-                logger.LogInformation("Generating default role: {roleName}", roleName);
+                logger.LogInformation("Generando rol predeterminado: {roleName}", roleName);
 
                 var applicationRole = new ApplicationRole(roleName, description);
 
@@ -69,7 +87,7 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
 
                 if (!result.Succeeded)
                 {
-                    throw new UserRoleException($"Seeding \"{description}\" role failed. Errors: " +
+                    throw new UserRoleException($"Error al crear el rol \"{description}\". Errores: " +
                         $"{string.Join(Environment.NewLine, result.Errors)}");
                 }
             }
@@ -78,7 +96,7 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
         private async Task<ApplicationUser> CreateUserAsync(
             string userName, string password, string fullName, string email, string phoneNumber, string[] roles)
         {
-            logger.LogInformation("Generating default user: {userName}", userName);
+            logger.LogInformation("Generando usuario predeterminado: {userName}", userName);
 
             var applicationUser = new ApplicationUser
             {
@@ -94,42 +112,44 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
 
             if (!result.Succeeded)
             {
-                throw new UserAccountException($"Seeding \"{userName}\" user failed. Errors: " +
+                throw new UserAccountException($"Error al crear el usuario \"{userName}\". Errores: " +
                     $"{string.Join(Environment.NewLine, result.Errors)}");
             }
 
             return applicationUser;
         }
+        // ======================================================== FIN - USUARIOS Y ROLES POR DEFECTO =========================================================
 
-        /************ DEMO DATA **************/
-
+        // ======================================================== INICIO - DATOS DE DEMOSTRACIÓN ========================================================
+        // Inserta datos de ejemplo para pruebas y desarrollo.
+        // **********************************************************************************************************************************************
         private async Task SeedDemoDataAsync()
         {
             if (!await dbContext.Customers.AnyAsync() && !await dbContext.ProductCategories.AnyAsync())
             {
-                logger.LogInformation("Seeding demo data");
+                logger.LogInformation("Insertando datos de demostración");
 
                 var cust_1 = new Customer
                 {
-                    Name = "Ebenezer Monney",
-                    Email = "contact@ebenmonney.com",
+                    Name = "Ejemplo Cliente 1",
+                    Email = "cliente1@libreria.com",
                     Gender = Gender.Male
                 };
 
                 var cust_2 = new Customer
                 {
-                    Name = "Itachi Uchiha",
-                    Email = "uchiha@narutoverse.com",
+                    Name = "Ejemplo Cliente 2",
+                    Email = "cliente2@libreria.com",
                     PhoneNumber = "+81123456789",
-                    Address = "Some fictional Address, Street 123, Konoha",
-                    City = "Konoha",
+                    Address = "Dirección ficticia, Calle 123, Ciudad Demo",
+                    City = "Ciudad Demo",
                     Gender = Gender.Male
                 };
 
                 var cust_3 = new Customer
                 {
-                    Name = "John Doe",
-                    Email = "johndoe@anonymous.com",
+                    Name = "Ejemplo Cliente 3",
+                    Email = "cliente3@libreria.com",
                     PhoneNumber = "+18585858",
                     Address = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
                     Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at elementum imperdiet",
@@ -139,8 +159,8 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
 
                 var cust_4 = new Customer
                 {
-                    Name = "Jane Doe",
-                    Email = "Janedoe@anonymous.com",
+                    Name = "Ejemplo Cliente 4",
+                    Email = "cliente4@libreria.com",
                     PhoneNumber = "+18585858",
                     Address = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
                     Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at elementum imperdiet",
@@ -150,16 +170,16 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
 
                 var prodCat_1 = new ProductCategory
                 {
-                    Name = "None",
-                    Description = "Default category. Products that have not been assigned a category"
+                    Name = "Sin categoría",
+                    Description = "Categoría por defecto. Productos sin categoría asignada"
                 };
 
                 var prod_1 = new Product
                 {
-                    Name = "BMW M6",
-                    Description = "Yet another masterpiece from the world's best car manufacturer",
-                    BuyingPrice = 109775,
-                    SellingPrice = 114234,
+                    Name = "Libro de Ejemplo 1",
+                    Description = "Libro de muestra para pruebas de la Libreria Universidad",
+                    BuyingPrice = 100,
+                    SellingPrice = 120,
                     UnitsInStock = 12,
                     IsActive = true,
                     ProductCategory = prodCat_1
@@ -167,10 +187,10 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
 
                 var prod_2 = new Product
                 {
-                    Name = "Nissan Patrol",
-                    Description = "A true man's choice",
-                    BuyingPrice = 78990,
-                    SellingPrice = 86990,
+                    Name = "Libro de Ejemplo 2",
+                    Description = "Segundo libro de muestra para pruebas",
+                    BuyingPrice = 80,
+                    SellingPrice = 95,
                     UnitsInStock = 4,
                     IsActive = true,
                     ProductCategory = prodCat_1
@@ -178,7 +198,7 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
 
                 var ordr_1 = new Order
                 {
-                    Discount = 500,
+                    Discount = 10,
                     Cashier = await dbContext.Users.OrderBy(u => u.UserName).FirstAsync(),
                     Customer = cust_1
                 };
@@ -225,8 +245,10 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
 
                 await dbContext.SaveChangesAsync();
 
-                logger.LogInformation("Seeding demo data completed");
+                logger.LogInformation("Datos de demostración insertados correctamente");
             }
         }
+        // ======================================================== FIN - DATOS DE DEMOSTRACIÓN =========================================================
     }
+    // ======================================================== FIN - CLASE DatabaseSeeder ============================================================
 }

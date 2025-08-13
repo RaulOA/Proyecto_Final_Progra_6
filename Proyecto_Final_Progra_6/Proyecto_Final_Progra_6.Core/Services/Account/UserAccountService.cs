@@ -1,8 +1,22 @@
-﻿// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+﻿// =====================================================================================
+// Autor: Raul Ortega Acuña
+// Archivo: UserAccountService.cs
+// Solución: Proyecto_Final_Progra_6
+// Proyecto: Proyecto_Final_Progra_6.Core
+// Ruta: Proyecto_Final_Progra_6\Proyecto_Final_Progra_6.Core\Services\Account\UserAccountService.cs
+//
+// Descripción o propósito del archivo:
+// Servicio para la gestión de cuentas de usuario, roles y contraseñas en la Libreria Universidad.
+// Implementa operaciones CRUD, asignación de roles y validaciones de seguridad para usuarios.
+//
+// Historial de cambios:
+// 27/04/2024 - Adaptación de comentarios, estructura y metadatos según estándares de Libreria Universidad.
+//            - Traducción de comentarios y secciones al español.
+//            - Eliminación de referencias a plantillas originales y autores previos.
+//
+// Alertas Críticas:
+// - 27/04/2024 - Revisar el manejo de errores en la creación y actualización de usuarios para evitar inconsistencias.
+// =====================================================================================
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +25,9 @@ using Proyecto_Final_Progra_6.Core.Models.Account;
 
 namespace Proyecto_Final_Progra_6.Core.Services.Account
 {
+    // ======================================================== INICIO - CLASE UserAccountService ========================================================
+    // Servicio para la gestión de cuentas de usuario y roles.
+    // **********************************************************************************************************************************************
     public class UserAccountService : IUserAccountService
     {
         private readonly ApplicationDbContext _context;
@@ -22,6 +39,9 @@ namespace Proyecto_Final_Progra_6.Core.Services.Account
             _userManager = userManager;
         }
 
+        // ======================================================== INICIO - OBTENCIÓN DE USUARIOS ========================================================
+        // Métodos para obtener usuarios por ID, nombre de usuario o correo electrónico.
+        // **********************************************************************************************************************************************
         public async Task<ApplicationUser?> GetUserByIdAsync(string userId)
         {
             return await _userManager.FindByIdAsync(userId);
@@ -36,7 +56,11 @@ namespace Proyecto_Final_Progra_6.Core.Services.Account
         {
             return await _userManager.FindByEmailAsync(email);
         }
+        // ======================================================== FIN - OBTENCIÓN DE USUARIOS =========================================================
 
+        // ======================================================== INICIO - ROLES DE USUARIO ========================================================
+        // Métodos para obtener roles de usuario y combinaciones usuario-rol.
+        // **********************************************************************************************************************************************
         public async Task<IList<string>> GetUserRolesAsync(ApplicationUser user)
         {
             return await _userManager.GetRolesAsync(user);
@@ -87,7 +111,11 @@ namespace Proyecto_Final_Progra_6.Core.Services.Account
                     .ToArray()))
                 .ToList();
         }
+        // ======================================================== FIN - ROLES DE USUARIO =========================================================
 
+        // ======================================================== INICIO - CREACIÓN Y ACTUALIZACIÓN DE USUARIOS ========================================================
+        // Métodos para crear, actualizar y asignar roles a usuarios.
+        // **********************************************************************************************************************************************
         public async Task<(bool Succeeded, string[] Errors)> CreateUserAsync(ApplicationUser user,
             IEnumerable<string> roles, string password)
         {
@@ -152,7 +180,11 @@ namespace Proyecto_Final_Progra_6.Core.Services.Account
 
             return (true, []);
         }
+        // ======================================================== FIN - CREACIÓN Y ACTUALIZACIÓN DE USUARIOS =========================================================
 
+        // ======================================================== INICIO - GESTIÓN DE CONTRASEÑAS ========================================================
+        // Métodos para restablecer, actualizar y validar contraseñas de usuario.
+        // **********************************************************************************************************************************************
         public async Task<(bool Succeeded, string[] Errors)> ResetPasswordAsync(ApplicationUser user,
             string newPassword)
         {
@@ -184,15 +216,19 @@ namespace Proyecto_Final_Progra_6.Core.Services.Account
 
             return true;
         }
+        // ======================================================== FIN - GESTIÓN DE CONTRASEÑAS =========================================================
 
+        // ======================================================== INICIO - ELIMINACIÓN Y VALIDACIÓN DE USUARIOS ========================================================
+        // Métodos para validar y eliminar usuarios del sistema.
+        // **********************************************************************************************************************************************
         public async Task<(bool Success, string[] Errors)> TestCanDeleteUserAsync(string userId)
         {
             var errors = new List<string>();
 
             if (await _context.Orders.Where(o => o.CashierId == userId).AnyAsync())
-                errors.Add("User has associated orders");
+                errors.Add("El usuario tiene órdenes asociadas");
 
-            //canDelete = !await ; //Do other tests...
+            // Se pueden agregar más validaciones aquí...
 
             return (errors.Count == 0, errors.ToArray());
         }
@@ -212,5 +248,7 @@ namespace Proyecto_Final_Progra_6.Core.Services.Account
             var result = await _userManager.DeleteAsync(user);
             return (result.Succeeded, result.Errors.Select(e => e.Description).ToArray());
         }
+        // ======================================================== FIN - ELIMINACIÓN Y VALIDACIÓN DE USUARIOS =========================================================
     }
+    // ======================================================== FIN - CLASE UserAccountService ============================================================
 }

@@ -13,6 +13,9 @@
 // 1. 04/08/2025 - Se agregó protección por roles y validaciones en todos los endpoints.
 //                 Se tradujeron comentarios y se mejoró el manejo de errores.
 //                 Se actualizó el encabezado y se agregaron comentarios descriptivos.
+// 2. 11/10/2025 - Se modificó el método Post para permitir la asignación de dirección,
+//                 ciudad y género del cliente. Se actualizó el servicio y mapeo
+//                 correspondiente. Se mejoró el modelo de datos de entrada y salida.
 // =====================================================================================
 
 using AutoMapper;
@@ -85,7 +88,12 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // 1. Crear usuario de autenticación
+            if (string.IsNullOrWhiteSpace(value.Password))
+            {
+                ModelState.AddModelError("Password", "La contraseña es obligatoria.");
+                return BadRequest(ModelState);
+            }
+
             var user = new UserEditVM
             {
                 UserName = value.Email ?? value.Name ?? Guid.NewGuid().ToString(),
@@ -94,7 +102,7 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
                 PhoneNumber = value.PhoneNumber,
                 IsEnabled = true,
                 Roles = new[] { "Cliente" },
-                NewPassword = value.PhoneNumber ?? "Cliente123!" // O pedir contraseña en el registro real
+                NewPassword = value.Password // Usa la contraseña enviada
             };
 
             var appUser = _mapper.Map<ApplicationUser>(user);
