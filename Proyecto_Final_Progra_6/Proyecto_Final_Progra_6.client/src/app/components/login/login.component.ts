@@ -8,6 +8,7 @@ import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { AlertService, MessageSeverity, DialogType } from '../../services/alert.service';
 import { AuthService } from '../../services/auth.service';
@@ -18,14 +19,16 @@ import { UserLogin } from '../../models/user-login.model';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrl: './login.component.scss',
-    imports: [FormsModule, NgClass]
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [NgClass, FormsModule]
 })
 
 export class LoginComponent implements OnInit, OnDestroy {
   private alertService = inject(AlertService);
   private authService = inject(AuthService);
   private configurations = inject(ConfigurationService);
+  private router = inject(Router);
 
   userLogin = new UserLogin();
   isLoading = false;
@@ -146,5 +149,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.formResetToggle = true;
     });
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

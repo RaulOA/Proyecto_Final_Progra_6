@@ -54,6 +54,11 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'register',
+    loadComponent: () => import('./components/register/register.component').then(m => m.RegisterComponent),
+    title: 'Registro'
+  },
+  {
     path: '**',
     loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent),
     title: 'Page Not Found'

@@ -12,7 +12,7 @@ Desarrollar una aplicación web integral para la gestión de inventario y ventas d
 ### 2.1. Autenticación y Seguridad
 - Registro, inicio y cierre de sesión de usuarios mediante JWT.
 - Recuperación y cambio de contraseña.
-- Diferenciación de vistas y acciones según roles (Administrador, Vendedor, Cliente).
+- Diferenciación de vistas y acciones según roles (Administrador, Cliente).
 
 ### 2.2. Gestión de Entidades Principales
 - CRUD completo para:
@@ -99,7 +99,6 @@ Desarrollar una aplicación web integral para la gestión de inventario y ventas d
 ## 5. Roles y Permisos
 
 - **Administrador:** Acceso total a todas las funcionalidades, reportes y configuración.
-- **Vendedor:** Gestión de ventas, acceso limitado a inventario y reportes.
 - **Cliente:** Consulta de productos, historial de compras, acceso restringido.
 
 ---

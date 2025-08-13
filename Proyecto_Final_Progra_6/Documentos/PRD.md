@@ -12,7 +12,7 @@ Desarrollar una aplicación web integral para la gestión de inventario y ventas d
 ### 2.1. Autenticación y Seguridad
 - Registro, inicio y cierre de sesión de usuarios mediante JWT.
 - Recuperación y cambio de contraseña.
-- Diferenciación de vistas y acciones según roles (Administrador, Vendedor, Cliente).
+- Diferenciación de vistas y acciones según roles (Admin, Cliente).
 
 ### 2.2. Gestión de Entidades Principales
 - CRUD completo para:
@@ -20,7 +20,6 @@ Desarrollar una aplicación web integral para la gestión de inventario y ventas d
   - Categoría
   - Venta
   - Cliente
-  - Proveedor (opcional)
 - Validaciones de datos con FluentValidation.
 - Relaciones uno a muchos y muchos a muchos entre entidades.
 
@@ -77,7 +76,7 @@ Desarrollar una aplicación web integral para la gestión de inventario y ventas d
 
 ### Backend (ASP.NET Core 9)
 - Controllers: API REST para cada entidad y proceso.
-- Models: Entidades de dominio (Libro, Categoría, Venta, Cliente, Proveedor).
+- Models: Entidades de dominio (Libro, Categoría, Venta, Cliente).
 - Services: Lógica de negocio y servicios de aplicación.
 - Configuration: Seguridad, OIDC, mapeos.
 - Migrations: Migraciones EF Core.
@@ -98,8 +97,7 @@ Desarrollar una aplicación web integral para la gestión de inventario y ventas d
 
 ## 5. Roles y Permisos
 
-- **Administrador:** Acceso total a todas las funcionalidades, reportes y configuración.
-- **Vendedor:** Gestión de ventas, acceso limitado a inventario y reportes.
+- **Admin:** Acceso total a todas las funcionalidades, reportes y configuración.
 - **Cliente:** Consulta de productos, historial de compras, acceso restringido.
 
 ---

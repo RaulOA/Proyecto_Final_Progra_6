@@ -1,0 +1,66 @@
+<div class="d-flex h-90">
+  <div class="login-container m-auto">
+    <div class="card boxshadow">
+      <div class="card-header bg-primary text-white">
+        <i class="fa fa-user-plus" aria-hidden="true"></i> Registro de Cliente
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="register()" #f="ngForm" novalidate>
+          <div class="mb-3 row">
+            <label class="col-form-label col-md-4" for="name">Nombre:</label>
+            <div class="col-md-8">
+              <input type="text" id="name" name="name" class="form-control" [(ngModel)]="customer.name" required />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-form-label col-md-4" for="email">Email:</label>
+            <div class="col-md-8">
+              <input type="email" id="email" name="email" class="form-control" [(ngModel)]="customer.email" required />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-form-label col-md-4" for="password">Contraseña:</label>
+            <div class="col-md-8">
+              <input type="password" id="password" name="password" class="form-control" [(ngModel)]="customer.password" required />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-form-label col-md-4" for="phoneNumber">Teléfono:</label>
+            <div class="col-md-8">
+              <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" [(ngModel)]="customer.phoneNumber" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-form-label col-md-4" for="address">Dirección:</label>
+            <div class="col-md-8">
+              <input type="text" id="address" name="address" class="form-control" [(ngModel)]="customer.address" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-form-label col-md-4" for="city">Ciudad:</label>
+            <div class="col-md-8">
+              <input type="text" id="city" name="city" class="form-control" [(ngModel)]="customer.city" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="col-form-label col-md-4" for="gender">Género:</label>
+            <div class="col-md-8">
+              <select id="gender" name="gender" class="form-control" [(ngModel)]="customer.gender">
+                <option value="">Selecciona...</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="offset-md-4 col-md-8">
+              <button type="submit" class="btn btn-success" [disabled]="isLoading">Registrarse</button>
+            </div>
+          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger mt-2">{{errorMessage}}</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

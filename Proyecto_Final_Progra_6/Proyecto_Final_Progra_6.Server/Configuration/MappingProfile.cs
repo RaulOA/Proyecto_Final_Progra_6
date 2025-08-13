@@ -52,13 +52,22 @@ namespace Proyecto_Final_Progra_6.Server.Configuration
                 .ConvertUsing(s => ((PermissionVM)ApplicationPermissions.GetPermissionByValue(s.ClaimValue))!);
 
             CreateMap<Customer, CustomerVM>()
-                .ReverseMap();
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString()))
+                .ReverseMap()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => ParseGender(src.Gender)));
 
             CreateMap<Product, ProductVM>()
                 .ReverseMap();
 
             CreateMap<Order, OrderVM>()
                 .ReverseMap();
+        }
+
+        private static Proyecto_Final_Progra_6.Core.Models.Gender ParseGender(string? gender)
+        {
+            if (Enum.TryParse<Proyecto_Final_Progra_6.Core.Models.Gender>(gender, out var result))
+                return result;
+            return Proyecto_Final_Progra_6.Core.Models.Gender.None;
         }
     }
 }
