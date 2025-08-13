@@ -282,7 +282,9 @@
     "DashboardBanner": "Dashboard Banner:",
     "DashboardBannerHint": "Show demo information banner widget on the dashboard",
     "ResetDefault": "Reset default",
-    "SetDefault": "Set as default"
+    "SetDefault": "Set as default",
+    "DashboardProducts": "Dashboard Products:",
+    "DashboardProductsHint": "Show products/books widget on the dashboard"
   },
   "users": {
     "management": {
@@ -378,5 +380,18 @@
       "Important": "Mark as important",
       "AddTask": "Add Task"
     }
-  }
+  },
+  "productsDemo": {
+    "management": {
+      "Search": "Search for product..."
+    },
+    "table": {
+      "Name": "Name",
+      "Description": "Description",
+      "Price": "Price",
+      "Stock": "Stock",
+      "NoProducts": "No products found"
+    }
+  },
+  "AddToCart": "Add to cart"
 }

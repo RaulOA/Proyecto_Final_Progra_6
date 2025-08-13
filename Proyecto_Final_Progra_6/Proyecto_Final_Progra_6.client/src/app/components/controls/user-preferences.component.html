@@ -1,3 +1,24 @@
+<!--
+Autor: Raul Ortega Acuña
+Archivo: user-preferences.component.html
+Solución: Proyecto_Final_Progra_6
+Proyecto: Proyecto_Final_Progra_6.client
+Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/components/controls/user-preferences.component.html
+
+Descripción o propósito del archivo:
+Componente visual para la gestión de preferencias de usuario. Permite seleccionar idioma, página de inicio, tema visual y opciones de visualización del dashboard. Incluye controles para restablecer y guardar preferencias por defecto.
+
+Historial de cambios:
+1. 27/04/2024 - Se añadió encabezado de documentación y secciones según estándares del proyecto. Se documentaron propósitos y estructura.
+2. 27/04/2024 - Documentación mejorada y secciones delimitadas según Prompt Copilot.txt. Se revisaron comentarios y formato.
+
+Alertas Críticas:
+- 27/04/2024 - Validar que los textos de traducción existan en los archivos de recursos y que los permisos canViewCustomers, canViewProducts y canViewOrders estén correctamente gestionados desde el componente TypeScript.
+-->
+
+<!-- ======================================================== INICIO - BOTÓN RECARGAR PREFERENCIAS ========================================================
+     Permite recargar las preferencias del usuario desde el servidor.
+********************************************************************************************************************************************** -->
 <div>
   <div class="row">
     <label for="refreshButton" class="col-sm-3 col-form-label">{{'preferences.ReloadPreferences' | translate}} </label>
@@ -16,7 +37,11 @@
       <hr class="hr-separator info-separator" />
     </div>
   </div>
-
+  <!-- ======================================================== FIN - BOTÓN RECARGAR PREFERENCIAS ========================================================= -->
+  
+  <!-- ======================================================== INICIO - SELECCIÓN DE IDIOMA ========================================================
+       Permite seleccionar el idioma preferido del usuario.
+********************************************************************************************************************************************** -->
   <div class="row">
     <label for="language" class="col-sm-3 col-form-label">{{'preferences.Language' | translate}} </label>
     <div class="col-sm-4">
@@ -43,7 +68,11 @@
       <hr class="hr-separator info-separator" />
     </div>
   </div>
-
+  <!-- ======================================================== FIN - SELECCIÓN DE IDIOMA ========================================================= -->
+  
+  <!-- ======================================================== INICIO - SELECCIÓN DE PÁGINA DE INICIO ========================================================
+       Permite elegir la página de inicio predeterminada al ingresar al sistema.
+********************************************************************************************************************************************** -->
   <div class="row">
     <label for="homePage" class="col-sm-3 col-form-label">{{'preferences.HomePage' | translate}} </label>
     <div class="col-sm-4">
@@ -53,13 +82,13 @@
           <small class="text-muted"><i>({{'preferences.Default' | translate}})</i></small>
         </ng-option>
         @if (canViewCustomers) {
-          <ng-option [value]="'/customers'"><i class=" fa fa-handshake-o"></i> {{'preferences.Customers' | translate}}</ng-option>
+        <ng-option [value]="'/customers'"><i class=" fa fa-handshake-o"></i> {{'preferences.Customers' | translate}}</ng-option>
         }
         @if (canViewProducts) {
-          <ng-option [value]="'/products'"><i class=" fa fa-truck"></i> {{'preferences.Products' | translate}}</ng-option>
+        <ng-option [value]="'/products'"><i class=" fa fa-truck"></i> {{'preferences.Products' | translate}}</ng-option>
         }
         @if (canViewOrders) {
-          <ng-option [value]="'/orders'"><i class=" fa fa-shopping-cart"></i> {{'preferences.Orders' | translate}}</ng-option>
+        <ng-option [value]="'/orders'"><i class=" fa fa-shopping-cart"></i> {{'preferences.Orders' | translate}}</ng-option>
         }
         <ng-option [value]="'/about'"><i class=" fa fa-info-circle"></i> {{'preferences.About' | translate}}</ng-option>
         <ng-option [value]="'/settings'"><i class=" fa fa-cog"></i> {{'preferences.Settings' | translate}}</ng-option>
@@ -75,17 +104,21 @@
       <hr class="hr-separator info-separator" />
     </div>
   </div>
-
+  <!-- ======================================================== FIN - SELECCIÓN DE PÁGINA DE INICIO ========================================================= -->
+  
+  <!-- ======================================================== INICIO - SELECCIÓN DE TEMA ========================================================
+       Permite seleccionar el tema visual de la aplicación.
+********************************************************************************************************************************************** -->
   <div class="row">
     <label for="defaultTheme" class="col-sm-3 col-form-label">{{'preferences.Theme' | translate}} </label>
     <div class="col-sm-4">
       <ng-select id="defaultTheme" [(ngModel)]="configurations.themeId" [searchable]="false" [clearable]="false" class="form-control theme-picker">
         @for (theme of themeManager.themes; track theme) {
-          <ng-option [value]="theme.id">
-            <div class="theme-item" style="background-color: {{theme.background}}; color: {{theme.color}}">
-              {{'preferences.' + theme.name + 'Theme' | translate}} <span class="small">{{theme.isDark ? '(Dark)' : ''}}</span>
-            </div>
-          </ng-option>
+        <ng-option [value]="theme.id">
+          <div class="theme-item" style="background-color: {{theme.background}}; color: {{theme.color}}">
+            {{'preferences.' + theme.name + 'Theme' | translate}} <span class="small">{{theme.isDark ? '(Dark)' : ''}}</span>
+          </div>
+        </ng-option>
         }
       </ng-select>
     </div>
@@ -99,7 +132,11 @@
       <hr class="hr-separator info-separator" />
     </div>
   </div>
-
+  <!-- ======================================================== FIN - SELECCIÓN DE TEMA ========================================================= -->
+  
+  <!-- ======================================================== INICIO - OPCIONES DE DASHBOARD ========================================================
+       Permite activar o desactivar elementos visuales del dashboard: estadísticas, notificaciones, tareas, banner.
+********************************************************************************************************************************************** -->
   <div class="row">
     <label class="col-sm-3 col-form-label" for="dashboardStatistics">{{'preferences.DashboardStatistics' | translate}} </label>
     <div class="col-sm-4">
@@ -112,7 +149,6 @@
       <p class="form-control-plaintext text-muted small">{{'preferences.DashboardStatisticsHint' | translate}}</p>
     </div>
   </div>
-  <!--  -->
 
   <div class="row">
     <div class="col-md-12">
@@ -134,7 +170,6 @@
       <p class="form-control-plaintext text-muted small">{{'preferences.DashboardNotificationsHint' | translate}}</p>
     </div>
   </div>
-  <!--  -->
 
   <div class="row">
     <div class="col-md-12">
@@ -154,8 +189,6 @@
       <p class="form-control-plaintext text-muted small">{{'preferences.DashboardTodoHint' | translate}}</p>
     </div>
   </div>
-  <!--  -->
-
 
   <div class="row">
     <div class="col-md-12">
@@ -175,15 +208,36 @@
       <p class="form-control-plaintext text-muted small">{{'preferences.DashboardBannerHint' | translate}}</p>
     </div>
   </div>
-  <!--  -->
 
+  <div class="row">
+    <div class="col-md-12">
+      <hr class="hr-sub-separator" />
+    </div>
+  </div>
 
+  <div class="row">
+    <label class="col-sm-3 col-form-label" for="dashboardProducts">{{'preferences.DashboardProducts' | translate}} </label>
+    <div class="col-sm-4">
+      <div class="form-check form-switch fs-5 pt-sm-1">
+        <input name="dashboardProducts" [(ngModel)]="configurations.showDashboardProducts" class="form-check-input"
+               type="checkbox" id="dashboardProducts">
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <p class="form-control-plaintext text-muted small">{{'preferences.DashboardProductsHint' | translate}}</p>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-md-12">
       <hr class="hr-separator hr-last-separator" />
     </div>
   </div>
+  <!-- ======================================================== FIN - OPCIONES DE DASHBOARD ========================================================= -->
+  
+  <!-- ======================================================== INICIO - BOTONES DE ACCIÓN ========================================================
+       Permite restablecer preferencias por defecto o guardar como predeterminadas.
+********************************************************************************************************************************************** -->
   <div class="row">
     <div class="offset-sm-3 col-sm-9">
       <div class="d-flex flex-row flex-wrap">
@@ -197,3 +251,4 @@
     </div>
   </div>
 </div>
+<!-- ======================================================== FIN - BOTONES DE ACCIÓN ========================================================= -->

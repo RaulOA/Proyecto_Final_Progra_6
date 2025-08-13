@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 	ProjectSection(SolutionItems) = preProject
 		Proyecto_Final_Progra_6\Documentos\Analisis_Frontend_Completo.md = Proyecto_Final_Progra_6\Documentos\Analisis_Frontend_Completo.md
 		Proyecto_Final_Progra_6\Documentos\Bitacora_Tareas.md = Proyecto_Final_Progra_6\Documentos\Bitacora_Tareas.md
+		Proyecto_Final_Progra_6\Documentos\Guia_Crear_Widget_Dashboard.md = Proyecto_Final_Progra_6\Documentos\Guia_Crear_Widget_Dashboard.md
 		Proyecto_Final_Progra_6\Documentos\Guia_Pruebas_Manual_Swagger.md = Proyecto_Final_Progra_6\Documentos\Guia_Pruebas_Manual_Swagger.md
 		Historia Usuario.md = Historia Usuario.md
 		Proyecto_Final_Progra_6\Documentos\Historia Usuario.md = Proyecto_Final_Progra_6\Documentos\Historia Usuario.md

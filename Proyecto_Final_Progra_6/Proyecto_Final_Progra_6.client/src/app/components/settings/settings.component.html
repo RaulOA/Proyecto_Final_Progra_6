@@ -1,12 +1,39 @@
+<!--
+Autor: Raul Ortega Acuña
+Archivo: settings.component.html
+Solución: Proyecto_Final_Progra_6
+Proyecto: Proyecto_Final_Progra_6.client
+Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/components/settings/settings.component.html
+
+Descripción o propósito del archivo:
+Vista principal de configuración de usuario. Permite gestionar el perfil, preferencias, usuarios y roles según permisos. Utiliza navegación vertical con pestañas y componentes hijos para cada sección.
+
+Historial de cambios:
+1. 27/04/2024 - Se añadió encabezado de documentación y secciones según estándares del proyecto. Se documentaron propósitos y estructura.
+
+Alertas Críticas:
+- 27/04/2024 - Validar que los textos de traducción existan en los archivos de recursos y que los permisos canViewUsers/canViewRoles estén correctamente gestionados desde el componente TypeScript.
+-->
+
+<!-- ======================================================== INICIO - ENCABEZADO DE LA PÁGINA DE CONFIGURACIÓN ========================================================
+     Encabezado visual de la página de configuración de usuario.
+********************************************************************************************************************************************** -->
 <header class="pageHeader">
   <h3><i class="fa fa-cog fa-lg page-caption" aria-hidden="true"></i> {{'pageHeader.Settings' | translate}}</h3>
 </header>
+<!-- ======================================================== FIN - ENCABEZADO DE LA PÁGINA DE CONFIGURACIÓN ========================================================= -->
 
+<!-- ======================================================== INICIO - CONTENEDOR PRINCIPAL DE PESTAÑAS ========================================================
+     Contenedor principal con navegación vertical de pestañas para gestionar perfil, preferencias, usuarios y roles.
+********************************************************************************************************************************************** -->
 <div [@fadeInOut]>
   <div class="d-sm-flex flex-row mb-2">
     <ul ngbNav #tab="ngbNav" class="nav nav-tabs nav-tabs--vertical nav-tabs--left"
         [activeId]="activeTab" [orientation]="'vertical'" [animation]="false"
         (activeIdChange)="showDatatable = false" (shown)="showDatatable = true">
+      <!-- ================================ INICIO - PESTAÑA PERFIL DE USUARIO ================================
+           Permite ver y editar información del perfil de usuario.
+      ******************************************************************************************************* -->
       <li [ngbNavItem]="profileTab">
         <a ngbNavLink routerLink="." [fragment]="profileTab">
           <i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> {{'settings.tab.Profile' | translate}}
@@ -19,6 +46,11 @@
           </div>
         </ng-template>
       </li>
+      <!-- ================================ FIN - PESTAÑA PERFIL DE USUARIO ================================ -->
+
+      <!-- ================================ INICIO - PESTAÑA PREFERENCIAS DE USUARIO ================================
+           Permite modificar preferencias personales del usuario.
+      ************************************************************************************************************ -->
       <li [ngbNavItem]="preferencesTab">
         <a ngbNavLink routerLink="." [fragment]="preferencesTab">
           <i class="fa fa-sliders fa-fw" aria-hidden="true"></i> {{'settings.tab.Preferences' | translate}}
@@ -31,6 +63,11 @@
           </div>
         </ng-template>
       </li>
+      <!-- ================================ FIN - PESTAÑA PREFERENCIAS DE USUARIO ================================ -->
+
+      <!-- ================================ INICIO - PESTAÑA GESTIÓN DE USUARIOS ================================
+           Visible solo si el usuario tiene permisos (canViewUsers). Permite gestionar usuarios del sistema.
+      ********************************************************************************************************* -->
       @if (canViewUsers) {
         <li [ngbNavItem]="usersTab">
           <a ngbNavLink routerLink="." [fragment]="usersTab">
@@ -47,6 +84,11 @@
           </ng-template>
         </li>
       }
+      <!-- ================================ FIN - PESTAÑA GESTIÓN DE USUARIOS ================================ -->
+
+      <!-- ================================ INICIO - PESTAÑA GESTIÓN DE ROLES ================================
+           Visible solo si el usuario tiene permisos (canViewRoles). Permite gestionar roles y permisos.
+      ****************************************************************************************************** -->
       @if (canViewRoles) {
         <li [ngbNavItem]="rolesTab">
           <a ngbNavLink routerLink="." [fragment]="rolesTab">
@@ -63,7 +105,9 @@
           </ng-template>
         </li>
       }
+      <!-- ================================ FIN - PESTAÑA GESTIÓN DE ROLES ================================ -->
     </ul>
     <div [ngbNavOutlet]="tab" class="w-100"></div>
   </div>
 </div>
+<!-- ======================================================== FIN - CONTENEDOR PRINCIPAL DE PESTAÑAS ========================================================= -->

@@ -281,6 +281,8 @@
     "DashboardTodoHint": "Mostrar widget de tareas pendientes de demostración en el panel",
     "DashboardBanner": "Banner del Panel:",
     "DashboardBannerHint": "Mostrar widget de banner informativo de demostración en el panel",
+    "DashboardProducts": "Productos del Panel:",
+    "DashboardProductsHint": "Mostrar widget de productos/libros en el panel",
     "ResetDefault": "Restablecer valores",
     "SetDefault": "Establecer como predeterminado"
   },
@@ -378,5 +380,18 @@
       "Important": "Marcar como importante",
       "AddTask": "Agregar Tarea"
     }
-  }
+  },
+  "productsDemo": {
+    "management": {
+      "Search": "Buscar producto..."
+    },
+    "table": {
+      "Name": "Nombre",
+      "Description": "Descripción",
+      "Price": "Precio",
+      "Stock": "Stock",
+      "NoProducts": "No se encontraron productos"
+    }
+  },
+  "AddToCart": "Agregar al carrito"
 }
