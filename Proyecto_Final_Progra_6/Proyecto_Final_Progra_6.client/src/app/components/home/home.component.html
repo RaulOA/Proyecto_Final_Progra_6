@@ -1,10 +1,38 @@
+<!--
+Autor: Raul Ortega Acuña
+Archivo: home.component.html
+Solución: Proyecto_Final_Progra_6
+Proyecto: Proyecto_Final_Progra_6.client
+Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/components/home/home.component.html
+
+Descripción o propósito del archivo:
+Vista principal del dashboard de la aplicación. Permite mostrar, ocultar y reorganizar widgets interactivos como estadísticas, notificaciones, tareas y banners, según las preferencias del usuario. Cumple con los estándares de documentación y estructura definidos para Libreria Universidad.
+
+Historial de cambios:
+1. 27/04/2024 - Documentación y división en secciones según lineamientos de Libreria Universidad.
+
+Alertas Críticas:
+- 27/04/2024 - No se detectaron alertas críticas en la lógica de presentación. Se recomienda validar la accesibilidad de los widgets y el correcto manejo de drag & drop en dispositivos móviles.
+-->
+
+<!-- ======================================================== INICIO - ENCABEZADO DEL DASHBOARD =========================================================
+     Encabezado visual del dashboard, muestra el título principal de la página.
+********************************************************************************************************************************************** -->
 <header class="pageHeader">
   <h3>
     <i class="fa fa-tachometer fa-lg page-caption" aria-hidden="true"></i> {{'pageHeader.Dashboard' | translate}}
   </h3>
 </header>
+<!-- ======================================================== FIN - ENCABEZADO DEL DASHBOARD ============================================================ -->
+
+<!-- ======================================================== INICIO - CONTENEDOR PRINCIPAL DE WIDGETS ==================================================
+     Contenedor principal que gestiona la visualización y el orden de los widgets del dashboard.
+********************************************************************************************************************************************** -->
 <div [@fadeInOut]>
   <div #widgetsContainer cdkDropList (cdkDropListDropped)="drop($event)" class="row">
+    <!-- ===================== INICIO - MENSAJE SIN WIDGETS =====================
+         Sección que muestra un mensaje cuando no hay widgets activos en el dashboard.
+    *********************************************************************** -->
     @if (!configurations.showDashboardStatistics && !configurations.showDashboardNotifications &&
          !configurations.showDashboardTodo && !configurations.showDashboardBanner) {
       <div class="col-12 my-5">
@@ -19,11 +47,15 @@
         </div>
       </div>
     }
+    <!-- ===================== FIN - MENSAJE SIN WIDGETS ======================= -->
 
+    <!-- ===================== INICIO - WIDGET DE ESTADÍSTICAS =================
+         Widget que muestra estadísticas generales del sistema.
+    *********************************************************************** -->
     @if (configurations.showDashboardStatistics) {
       <div id="dashboardStatistics" #dashboardStatistics class="col-12 mb-4 widget-container px-0"
            cdkDrag [cdkDragStartDelay]="dragStartDelay">
-        <button type="button" class="btn-close" aria-label="Close" title="Close"
+        <button type="button" class="btn-close" aria-label="Close" title="Cerrar"
                 (click)="configurations.showDashboardStatistics = false"></button>
         <div class="card card-body bg-light">
           <h5 class="text-muted d-inline-block">{{'home.StatisticsTitle' | translate}}</h5>
@@ -33,38 +65,52 @@
         </div>
       </div>
     }
+    <!-- ===================== FIN - WIDGET DE ESTADÍSTICAS ==================== -->
 
+    <!-- ===================== INICIO - WIDGET DE NOTIFICACIONES ===============
+         Widget que muestra las notificaciones recientes del usuario.
+    *********************************************************************** -->
     @if (configurations.showDashboardNotifications) {
       <div id="dashboardNotifications" #dashboardNotifications class="col-12 mb-4 widget-container px-0"
            cdkDrag [cdkDragStartDelay]="dragStartDelay">
-        <button type="button" class="btn-close" aria-label="Close" title="Close"
+        <button type="button" class="btn-close" aria-label="Close" title="Cerrar"
                 (click)="configurations.showDashboardNotifications = false"></button>
         <div #dragPlaceholder *cdkDragPlaceholder class="widget-container-placeholder mb-4"
              [style.minHeight.px]="getPlaceholderMinHeight(dragPlaceholder, dashboardNotifications)"></div>
         <app-notifications-viewer></app-notifications-viewer>
       </div>
     }
+    <!-- ===================== FIN - WIDGET DE NOTIFICACIONES ================== -->
 
+    <!-- ===================== INICIO - WIDGET DE TAREAS (TODO) ================
+         Widget que muestra la lista de tareas pendientes del usuario.
+    *********************************************************************** -->
     @if (configurations.showDashboardTodo) {
       <div id="dashboardTodo" #dashboardTodo class="col-12 mb-4 pt-1 widget-container px-0"
            cdkDrag [cdkDragStartDelay]="dragStartDelay">
-        <button type="button" class="btn-close extra-down" aria-label="Close" title="Close"
+        <button type="button" class="btn-close extra-down" aria-label="Close" title="Cerrar"
                 (click)="configurations.showDashboardTodo = false"></button>
         <div #dragPlaceholder *cdkDragPlaceholder class="widget-container-placeholder mb-4"
              [style.minHeight.px]="getPlaceholderMinHeight(dragPlaceholder, dashboardTodo)"></div>
         <app-todo-demo></app-todo-demo>
       </div>
     }
+    <!-- ===================== FIN - WIDGET DE TAREAS (TODO) =================== -->
 
+    <!-- ===================== INICIO - WIDGET DE BANNER =======================
+         Widget que muestra un banner informativo o promocional.
+    *********************************************************************** -->
     @if (configurations.showDashboardBanner) {
       <div id="dashboardBanner" #dashboardBanner class="col-12 mb-4 widget-container no-shadow px-0"
            cdkDrag [cdkDragStartDelay]="dragStartDelay">
-        <button type="button" class="btn-close" aria-label="Close" title="Close"
+        <button type="button" class="btn-close" aria-label="Close" title="Cerrar"
                 (click)="configurations.showDashboardBanner = false"></button>
         <div #dragPlaceholder *cdkDragPlaceholder class="widget-container-placeholder mb-4"
              [style.minHeight.px]="getPlaceholderMinHeight(dragPlaceholder, dashboardBanner)"></div>
         <app-banner-demo></app-banner-demo>
       </div>
     }
+    <!-- ===================== FIN - WIDGET DE BANNER ========================== -->
   </div>
 </div>
+<!-- ======================================================== FIN - CONTENEDOR PRINCIPAL DE WIDGETS ===================================================== -->

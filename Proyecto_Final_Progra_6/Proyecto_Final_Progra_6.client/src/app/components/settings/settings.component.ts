@@ -1,8 +1,18 @@
-// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+// Autor: Raul Ortega Acuña
+// Archivo: settings.component.ts
+// Solución: Proyecto_Final_Progra_6
+// Proyecto: Proyecto_Final_Progra_6.client
+// Ruta: Proyecto_Final_Progra_6\Proyecto_Final_Progra_6.client\src\app\components\settings\settings.component.ts
+
+// Descripción o propósito del archivo:
+// Componente de configuración de la aplicación Angular. Permite la gestión de pestañas de perfil, preferencias, usuarios y roles.
+// Incluye lógica para determinar permisos de visualización y manejo de suscripciones de fragmentos de ruta.
+
+// Historial de cambios:
+// 1. 05/10/2023 - Estructura inicial y configuración de pestañas y permisos.
+
+// Alertas Críticas:
+// - Ninguna alerta crítica identificada hasta el momento.
 
 import { Component, inject, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -19,14 +29,14 @@ import { UsersManagementComponent } from '../controls/users-management.component
 import { RolesManagementComponent } from '../controls/roles-management.component';
 
 @Component({
-    selector: 'app-settings',
-    templateUrl: './settings.component.html',
-    styleUrl: './settings.component.scss',
-    animations: [fadeInOut],
-    imports: [
-        RouterLink, TranslateModule, NgbNavModule,
-        UserInfoComponent, UserPreferencesComponent, UsersManagementComponent, RolesManagementComponent
-    ]
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrl: './settings.component.scss',
+  animations: [fadeInOut],
+  imports: [
+    RouterLink, TranslateModule, NgbNavModule,
+    UserInfoComponent, UserPreferencesComponent, UsersManagementComponent, RolesManagementComponent
+  ]
 })
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   private router = inject(Router);
@@ -38,9 +48,11 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly usersTab = 'users';
   readonly rolesTab = 'roles';
   activeTab = '';
-  showDatatable = false; // Delays showing the table until tab is shown so column widths are calculated correctly
+  showDatatable = false; // Retrasa la visualización de la tabla hasta que se muestre la pestaña para calcular correctamente los anchos de columna
   fragmentSubscription: Subscription | undefined;
 
+  // ======================================================== INICIO - MÉTODOS DEL CICLO DE VIDA =========================================================
+  // Métodos del ciclo de vida del componente Angular.
   ngOnInit() {
     this.fragmentSubscription = this.route.fragment.subscribe(fragment => this.setActiveTab(fragment));
   }
@@ -52,7 +64,10 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.fragmentSubscription?.unsubscribe();
   }
+  // ========================================================= FIN - MÉTODOS DEL CICLO DE VIDA ==========================================================
 
+  // ======================================================== INICIO - MÉTODOS AUXILIARES =========================================================
+  // Métodos auxiliares para la gestión de pestañas y permisos.
   setActiveTab(fragment: string | null) {
     fragment = fragment?.toLowerCase() ?? this.profileTab;
 
@@ -72,4 +87,5 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   get canViewRoles() {
     return this.accountService.userHasPermission(Permissions.viewRoles);
   }
+  // ========================================================= FIN - MÉTODOS AUXILIARES ==========================================================
 }
