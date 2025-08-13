@@ -1,120 +1,124 @@
 # Guía para Crear un Widget en el Dashboard (Angular)
 
-Esta guía documenta los pasos reales y comprobados para crear, registrar y controlar un nuevo widget en el dashboard de la aplicación Angular, usando como referencia el widget de productos. Se irá completando con ejemplos y recomendaciones específicas para el proyecto.
+Esta guía documenta los pasos estandarizados y buenas prácticas para crear, registrar y controlar un nuevo widget en el dashboard de la aplicación Angular. El procedimiento es general y aplicable a cualquier widget, asegurando coherencia, internacionalización y mantenibilidad.
 
 ---
 
 ## 1. Crear el componente del widget
 - Ubica el nuevo componente en `src/app/components/controls/`.
-- Ejemplo real: `products-demo.component.ts`, `products-demo.component.html`, `products-demo.component.scss`.
+- Ejemplo: `mi-widget.component.ts`, `mi-widget.component.html`, `mi-widget.component.scss`.
 - El componente debe ser standalone y tener su lógica, template y estilos propios.
 
 ## 2. Registrar el widget en el dashboard
 - Importa el componente en `home.component.ts`:
   ```typescript
-  import { ProductsDemoComponent } from '../controls/products-demo.component';
+  import { MiWidgetComponent } from '../controls/mi-widget.component';
   ```
 - Agrega el componente al array `imports` del decorador `@Component` en `home.component.ts`.
 - En `home.component.html`, inserta el selector del widget dentro del contenedor de widgets:
   ```html
-  @if (configurations.showDashboardProducts) {
-    <div id="dashboardProducts" ...>
-      <app-products-demo></app-products-demo>
+  @if (configurations.showDashboardMiWidget) {
+    <div id="dashboardMiWidget" ...>
+      <app-mi-widget></app-mi-widget>
     </div>
   }
   ```
-- Controla la visibilidad con la propiedad `showDashboardProducts` de la configuración.
+- Controla la visibilidad con una propiedad de configuración (ej: `showDashboardMiWidget`).
 
 ## 3. Agregar el switch de preferencias
 - En `user-preferences.component.html`, agrega un switch para mostrar/ocultar el widget:
   ```html
   <div class="row">
-    <label ... for="dashboardProducts">{{'preferences.DashboardProducts' | translate}} </label>
+    <label ... for="dashboardMiWidget">{{'preferences.DashboardMiWidget' | translate}} </label>
     <div class="col-sm-4">
       <div class="form-check form-switch fs-5 pt-sm-1">
-        <input name="dashboardProducts" [(ngModel)]="configurations.showDashboardProducts" class="form-check-input"
-               type="checkbox" id="dashboardProducts">
+        <input name="dashboardMiWidget" [(ngModel)]="configurations.showDashboardMiWidget" class="form-check-input"
+               type="checkbox" id="dashboardMiWidget">
       </div>
     </div>
     <div class="col-sm-5">
-      <p ...>{{'preferences.DashboardProductsHint' | translate}}</p>
+      <p ...>{{'preferences.DashboardMiWidgetHint' | translate}}</p>
     </div>
   </div>
   ```
 - El switch enlaza directamente con la propiedad de configuración.
 
 ## 4. Permisos (si aplica)
-- El permiso para productos está definido en `src/app/models/permission.model.ts`:
+- Define el permiso en `src/app/models/permission.model.ts`:
   ```typescript
   export class Permissions {
-    public static readonly viewProducts: PermissionValues = 'products.view';
+    public static readonly viewMiWidget: PermissionValues = 'miwidget.view';
   }
   ```
 - El control de visibilidad por permisos debe implementarse en el componente de preferencias si se requiere.
 
 ## 5. Traducciones
-- Las claves de traducción para el widget y el switch deben estar en los archivos de idioma, por ejemplo en `public/locale/es.json` y `public/locale/en.json`:
+- Agrega las claves de traducción para el widget y el switch en los archivos de idioma (`public/locale/es.json`, `public/locale/en.json`, etc.):
   ```json
   "preferences": {
     ...
-    "DashboardProducts": "Productos del Panel:",
-    "DashboardProductsHint": "Mostrar widget de productos/libros en el panel"
+    "DashboardMiWidget": "Mi Widget en el Panel:",
+    "DashboardMiWidgetHint": "Mostrar el widget personalizado en el panel"
   }
   ```
 - Ejemplo en inglés:
   ```json
   "preferences": {
     ...
-    "DashboardProducts": "Dashboard Products:",
-    "DashboardProductsHint": "Show products/books widget on the dashboard"
+    "DashboardMiWidget": "Dashboard MyWidget:",
+    "DashboardMiWidgetHint": "Show custom widget on the dashboard"
   }
   ```
 
 ## 6. Persistencia y configuración
-- La propiedad `showDashboardProducts` debe estar definida y persistida en el servicio de configuración (`configuration.service.ts`).
+- La propiedad de visibilidad debe estar definida y persistida en el servicio de configuración (`configuration.service.ts`).
 
 ## 7. Pruebas y validación
 - Verifica que el widget se muestre/oculte correctamente desde las preferencias.
 - Asegúrate de que la preferencia se guarda y restaura correctamente.
 
 ## 8. Etiquetas y traducciones internas del widget
-- Si el widget tiene barra de búsqueda, columnas de tabla, mensajes de vacío, etc., define un espacio de nombres propio en los archivos de idioma (por ejemplo, `productsDemo`).
+- Si el widget tiene barra de búsqueda, columnas de tabla, mensajes de vacío, botones, etc., define un espacio de nombres propio en los archivos de idioma (ejemplo: `miWidgetDemo`).
 - Ejemplo en español (`es.json`):
   ```json
-  "productsDemo": {
+  "miWidgetDemo": {
     "management": {
-      "Search": "Buscar producto..."
+      "Search": "Buscar elemento..."
     },
     "table": {
       "Name": "Nombre",
       "Description": "Descripción",
       "Price": "Precio",
       "Stock": "Stock",
-      "NoProducts": "No se encontraron productos"
+      "AddToCart": "Agregar al carrito",
+      "NoProducts": "No se encontraron elementos",
+      "Loading": "Cargando elementos..."
     }
   },
   ```
 - Ejemplo en inglés (`en.json`):
   ```json
-  "productsDemo": {
+  "miWidgetDemo": {
     "management": {
-      "Search": "Search for product..."
+      "Search": "Search for item..."
     },
     "table": {
       "Name": "Name",
       "Description": "Description",
       "Price": "Price",
       "Stock": "Stock",
-      "NoProducts": "No products found"
+      "AddToCart": "Add to cart",
+      "NoProducts": "No items found",
+      "Loading": "Loading items..."
     }
   },
   ```
-- Usa estas claves en las plantillas del widget para mantener consistencia y facilitar la traducción.
+- Usa estas claves en las plantillas del widget para mantener consistencia y facilitar la traducción. Si agregas nuevas acciones o columnas, sigue este patrón.
 
 ---
 
 **Notas:**
-- Esta guía refleja el estado real y comprobado en los archivos del proyecto.
+- Esta guía es un procedimiento estándar y comprobado para cualquier widget.
 - Mantén la coherencia visual y funcional con el resto de widgets.
 - Documenta cualquier lógica especial o integración adicional.
 - Si el widget requiere pasos adicionales (como endpoints, integración con otros servicios, etc.), agrégalos aquí conforme avances.

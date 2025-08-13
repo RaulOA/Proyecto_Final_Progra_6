@@ -390,8 +390,9 @@
       "Description": "Description",
       "Price": "Price",
       "Stock": "Stock",
-      "NoProducts": "No products found"
+      "AddToCart": "Add to cart",
+      "NoProducts": "No products found",
+      "Loading": "Loading products..."
     }
-  },
-  "AddToCart": "Add to cart"
+  }
 }

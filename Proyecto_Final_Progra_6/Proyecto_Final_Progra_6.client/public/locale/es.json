@@ -390,8 +390,9 @@
       "Description": "Descripción",
       "Price": "Precio",
       "Stock": "Stock",
-      "NoProducts": "No se encontraron productos"
+      "AddToCart": "Agregar al carrito",
+      "NoProducts": "No se encontraron productos",
+      "Loading": "Cargando productos..."
     }
-  },
-  "AddToCart": "Agregar al carrito"
+  }
 }
