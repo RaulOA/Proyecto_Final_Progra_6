@@ -1,0 +1,56 @@
+<!--
+Autor: Raul Ortega Acuña
+Archivo: products-demo.component.html
+Solución: Proyecto_Final_Progra_6
+Proyecto: Proyecto_Final_Progra_6.client
+Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/components/controls/products-demo.component.html
+
+Descripción:
+Widget visual para mostrar productos/libros en el dashboard. Permite buscar, visualizar y agregar productos al carrito.
+
+Historial de cambios:
+1. 2024-05-01 - Creación inicial del widget de productos para dashboard.
+-->
+
+<div class="row control-box">
+  <div class="col-lg-8">
+    <div class="search-box">
+      <app-search-box (searchChange)="onSearchChanged($event)" placeholder="{{'productsDemo.management.Search' | translate}}" />
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive mt-2">
+  <table class="table table-hover align-middle">
+    <thead>
+      <tr>
+        <th>{{'productsDemo.table.Name' | translate}}</th>
+        <th>{{'productsDemo.table.Description' | translate}}</th>
+        <th>{{'productsDemo.table.Price' | translate}}</th>
+        <th>{{'productsDemo.table.Stock' | translate}}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of filteredProducts">
+        <td>{{product.name}}</td>
+        <td>{{product.description}}</td>
+        <td>{{product.sellingPrice | currency}}</td>
+        <td>
+          <span [ngClass]="{'text-danger': product.unitsInStock < 1}">{{product.unitsInStock}}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" [disabled]="product.unitsInStock < 1" (click)="addToCart(product)">
+            <i class="fa fa-cart-plus"></i> {{'productsDemo.table.AddToCart' | translate}}
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="!loading && filteredProducts.length === 0">
+        <td colspan="5" class="text-center text-muted">{{'productsDemo.table.NoProducts' | translate}}</td>
+      </tr>
+      <tr *ngIf="loading">
+        <td colspan="5" class="text-center"><i class="fa fa-spinner fa-spin"></i> {{'productsDemo.table.Loading' | translate}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

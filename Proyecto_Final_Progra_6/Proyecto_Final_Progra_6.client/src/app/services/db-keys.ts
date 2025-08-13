@@ -23,6 +23,7 @@ export class DBkeys {
   public static readonly SHOW_DASHBOARD_NOTIFICATIONS = 'show_dashboard_notifications';
   public static readonly SHOW_DASHBOARD_TODO = 'show_dashboard_todo';
   public static readonly SHOW_DASHBOARD_BANNER = 'show_dashboard_banner';
+  public static readonly SHOW_DASHBOARD_PRODUCTS = 'showDashboardProducts';
 
   public static readonly USER_CONFIG_KEYS = 'user_config_keys';
 }

@@ -18,10 +18,11 @@ interface UserConfiguration {
   language: string | null;
   homeUrl: string | null;
   themeId: number | null;
-  showDashboardStatistics: boolean | null
+  showDashboardStatistics: boolean | null;
   showDashboardNotifications: boolean | null;
   showDashboardTodo: boolean | null;
   showDashboardBanner: boolean | null;
+  showDashboardProducts: boolean | null;
 }
 
 @Injectable({
@@ -95,6 +96,14 @@ export class ConfigurationService {
     return this._showDashboardBanner != null ? this._showDashboardBanner : ConfigurationService.defaultShowDashboardBanner;
   }
 
+  set showDashboardProducts(value: boolean) {
+    this._showDashboardProducts = value;
+    this.saveToLocalStore(value, DBkeys.SHOW_DASHBOARD_PRODUCTS);
+  }
+  get showDashboardProducts() {
+    return this._showDashboardProducts != null ? this._showDashboardProducts : ConfigurationService.defaultShowDashboardProducts;
+  }
+
   public static readonly appVersion = '9.19.0';
 
   // ***Specify default configurations here***
@@ -105,6 +114,7 @@ export class ConfigurationService {
   public static readonly defaultShowDashboardNotifications = true;
   public static readonly defaultShowDashboardTodo = false;
   public static readonly defaultShowDashboardBanner = true;
+  public static readonly defaultShowDashboardProducts = true;
   // ***End of defaults***
 
   public baseUrl = environment.baseUrl ?? Utilities.baseUrl();
@@ -117,6 +127,7 @@ export class ConfigurationService {
   private _showDashboardNotifications: boolean | null = null;
   private _showDashboardTodo: boolean | null = null;
   private _showDashboardBanner: boolean | null = null;
+  private _showDashboardProducts: boolean | null = null;
   private onConfigurationImported: Subject<void> = new Subject<void>();
 
   configurationImported$ = this.onConfigurationImported.asObservable();
@@ -154,6 +165,10 @@ export class ConfigurationService {
 
     if (this.localStorage.exists(DBkeys.SHOW_DASHBOARD_BANNER)) {
       this._showDashboardBanner = this.localStorage.getDataObject<boolean>(DBkeys.SHOW_DASHBOARD_BANNER);
+    }
+
+    if (this.localStorage.exists(DBkeys.SHOW_DASHBOARD_PRODUCTS)) {
+      this._showDashboardProducts = this.localStorage.getDataObject<boolean>(DBkeys.SHOW_DASHBOARD_PRODUCTS);
     }
   }
 
@@ -194,6 +209,10 @@ export class ConfigurationService {
       if (importValue.showDashboardBanner != null) {
         this.showDashboardBanner = importValue.showDashboardBanner;
       }
+
+      if (importValue.showDashboardProducts != null) {
+        this.showDashboardProducts = importValue.showDashboardProducts;
+      }
     }
 
     this.onConfigurationImported.next();
@@ -207,7 +226,8 @@ export class ConfigurationService {
       showDashboardStatistics: changesOnly ? this._showDashboardStatistics : this.showDashboardStatistics,
       showDashboardNotifications: changesOnly ? this._showDashboardNotifications : this.showDashboardNotifications,
       showDashboardTodo: changesOnly ? this._showDashboardTodo : this.showDashboardTodo,
-      showDashboardBanner: changesOnly ? this._showDashboardBanner : this.showDashboardBanner
+      showDashboardBanner: changesOnly ? this._showDashboardBanner : this.showDashboardBanner,
+      showDashboardProducts: changesOnly ? this._showDashboardProducts : this.showDashboardProducts
     };
 
     return JSON.stringify(exportValue);
@@ -221,6 +241,7 @@ export class ConfigurationService {
     this._showDashboardNotifications = null;
     this._showDashboardTodo = null;
     this._showDashboardBanner = null;
+    this._showDashboardProducts = null;
 
     this.localStorage.deleteData(DBkeys.LANGUAGE);
     this.localStorage.deleteData(DBkeys.THEME_ID);
@@ -229,6 +250,7 @@ export class ConfigurationService {
     this.localStorage.deleteData(DBkeys.SHOW_DASHBOARD_NOTIFICATIONS);
     this.localStorage.deleteData(DBkeys.SHOW_DASHBOARD_TODO);
     this.localStorage.deleteData(DBkeys.SHOW_DASHBOARD_BANNER);
+    this.localStorage.deleteData(DBkeys.SHOW_DASHBOARD_PRODUCTS);
 
     this.resetLanguage();
     this.resetTheme();

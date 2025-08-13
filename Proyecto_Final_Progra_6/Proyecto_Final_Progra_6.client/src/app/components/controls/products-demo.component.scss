@@ -1,0 +1,26 @@
+/*
+Autor: Raul Ortega Acuña
+Archivo: products-demo.component.scss
+Solución: Proyecto_Final_Progra_6
+Proyecto: Proyecto_Final_Progra_6.client
+Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/components/controls/products-demo.component.scss
+
+Descripción:
+Estilos para el widget de productos en el dashboard.
+
+Historial de cambios:
+1. 2024-05-01 - Creación inicial de estilos para el widget de productos.
+*/
+
+.table-responsive {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.text-danger {
+  font-weight: bold;
+}
