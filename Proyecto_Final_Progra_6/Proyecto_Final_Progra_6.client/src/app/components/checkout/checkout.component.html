@@ -1,0 +1,14 @@
+<div class="checkout-container">
+  <h3>Confirmar compra</h3>
+  <form (ngSubmit)="submitOrder()">
+    <div class="mb-3">
+      <label for="comments">Comentarios</label>
+      <textarea id="comments" [(ngModel)]="comments" name="comments" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="discount">Descuento</label>
+      <input id="discount" type="number" min="0" [(ngModel)]="discount" name="discount" class="form-control" />
+    </div>
+    <button class="btn btn-primary" type="submit" [disabled]="isLoading">Comprar</button>
+  </form>
+</div>

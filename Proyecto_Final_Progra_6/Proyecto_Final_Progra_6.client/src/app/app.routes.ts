@@ -1,12 +1,28 @@
-// ---------------------------------------
-// Email: quickapp@ebenmonney.com
-// Templates: www.ebenmonney.com/templates
-// (c) 2024 www.ebenmonney.com/mit-license
-// ---------------------------------------
+/*
+Autor: Raul Ortega Acuña
+Archivo: app.routes.ts
+Solución: Proyecto_Final_Progra_6
+Proyecto: Proyecto_Final_Progra_6.client
+Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/app.routes.ts
 
+Descripción o propósito del archivo:
+Definición de las rutas principales de la aplicación Angular para Libreria Universidad. Incluye protección de rutas mediante AuthGuard y configuración de títulos y redirecciones.
+
+Historial de cambios:
+1. 25/04/2024 - Adaptación a los estándares de Libreria Universidad. Comentarios y metadatos actualizados según Prompt Copilot.txt.
+
+Alertas Críticas:
+- 25/04/2024 - Se recomienda revisar la protección de rutas y la gestión de títulos para asegurar la experiencia de usuario y la seguridad.
+*/
+
+// ======================================================== INICIO - IMPORTACIONES Y DEPENDENCIAS ====================================================
+// Importación de dependencias y definición de rutas principales de la aplicación.
 import { Routes } from '@angular/router';
 import { AuthGuard } from './services/auth-guard';
+// ======================================================== FIN - IMPORTACIONES Y DEPENDENCIAS ========================================================
 
+// ======================================================== INICIO - DEFINICIÓN DE RUTAS =============================================================
+// Configuración de rutas protegidas y públicas para la aplicación Libreria Universidad.
 export const routes: Routes = [
   {
     path: '',
@@ -64,3 +80,4 @@ export const routes: Routes = [
     title: 'Page Not Found'
   }
 ];
+// ======================================================== FIN - DEFINICIÓN DE RUTAS ================================================================

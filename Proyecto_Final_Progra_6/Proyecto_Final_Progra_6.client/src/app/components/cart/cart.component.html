@@ -1,0 +1,27 @@
+<div class="cart-container">
+  <h3>Carrito de compras</h3>
+  <div *ngIf="cartItems.length === 0">El carrito está vacío.</div>
+  <table *ngIf="cartItems.length > 0" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of cartItems">
+        <td>{{ item.productId }}</td>
+        <td>
+          <input type="number" min="1" [value]="item.quantity" (change)="updateQuantity(item.productId, $event.target.valueAsNumber)" />
+        </td>
+        <td>{{ item.unitPrice | currency }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="remove(item.productId)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-warning" (click)="clear()" *ngIf="cartItems.length > 0">Vaciar carrito</button>
+</div>
