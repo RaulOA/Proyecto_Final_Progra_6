@@ -21,6 +21,8 @@ import { ProductEndpoint } from '../../services/product-endpoint.service';
 import { CartService } from '../../services/cart.service';
 import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { fadeInOut } from '../../services/animations';
+import { CommonModule } from '@angular/common';
+import { SearchBoxComponent } from './search-box.component';
 
 @Component({
   selector: 'app-products-demo',
@@ -28,7 +30,7 @@ import { fadeInOut } from '../../services/animations';
   styleUrl: './products-demo.component.scss',
   animations: [fadeInOut],
   standalone: true,
-  imports: [NgClass, FormsModule, TranslateModule]
+  imports: [NgClass, FormsModule, TranslateModule, CommonModule, SearchBoxComponent]
 })
 export class ProductsDemoComponent implements OnInit {
   private productEndpoint = inject(ProductEndpoint);
@@ -52,7 +54,7 @@ export class ProductsDemoComponent implements OnInit {
         this.filteredProducts = data;
         this.loading = false;
       },
-      error: (err) => {
+      error: () => {
         this.alertService.showMessage('Error', 'No se pudieron cargar los productos', MessageSeverity.error);
         this.loading = false;
       }
