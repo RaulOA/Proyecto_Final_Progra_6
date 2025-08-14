@@ -21,7 +21,7 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Administrador,Vendedor")]
+    [Authorize(Roles = "Administrador,Cliente")]
     public class OrderController : ControllerBase
     {
         private readonly IMapper _mapper;

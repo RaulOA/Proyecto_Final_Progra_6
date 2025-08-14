@@ -7,6 +7,7 @@
         <th>Producto</th>
         <th>Cantidad</th>
         <th>Precio</th>
+        <th>Descuento</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -17,6 +18,7 @@
           <input type="number" min="1" [value]="item.quantity" (change)="updateQuantity(item.productId, $event)" />
         </td>
         <td>{{ item.unitPrice | currency }}</td>
+        <td>{{ (item.quantity >= 5 ? (item.unitPrice * item.quantity * 0.05) : 0) | currency }}</td>
         <td>
           <button class="btn btn-danger btn-sm" (click)="remove(item.productId)">Eliminar</button>
         </td>
@@ -24,4 +26,7 @@
     </tbody>
   </table>
   <button class="btn btn-warning" (click)="clear()" *ngIf="cartItems.length > 0">Vaciar carrito</button>
+  <button class="btn btn-success ms-2" (click)="realizarPedido()" [disabled]="cartItems.length === 0 || isLoading" *ngIf="cartItems.length > 0">
+    {{ isLoading ? 'Procesando...' : 'Realizar pedido' }}
+  </button>
 </div>
