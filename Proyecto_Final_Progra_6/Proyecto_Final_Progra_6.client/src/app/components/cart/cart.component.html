@@ -7,7 +7,8 @@
         <th>Producto</th>
         <th>Cantidad</th>
         <th>Precio</th>
-        <th>Descuento</th>
+        <th>Descuento aplicado</th>
+        <th>Total por línea</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -15,10 +16,19 @@
       <tr *ngFor="let item of cartItems">
         <td>{{ item.productId }}</td>
         <td>
-          <input type="number" min="1" [value]="item.quantity" (change)="updateQuantity(item.productId, $event)" />
+          <input
+            type="number"
+            min="1"
+            [value]="item.quantity"
+            (change)="updateQuantity(item.productId, $event)"
+          />
+          <div *ngIf="getMensajeDescuento(item)" class="text-info small">
+            {{ getMensajeDescuento(item) }}
+          </div>
         </td>
         <td>{{ item.unitPrice | currency }}</td>
-        <td>{{ (item.quantity >= 5 ? (item.unitPrice * item.quantity * 0.05) : 0) | currency }}</td>
+        <td>{{ getDescuentoLinea(item) | currency }}</td>
+        <td>{{ getTotalLinea(item) | currency }}</td>
         <td>
           <button class="btn btn-danger btn-sm" (click)="remove(item.productId)">Eliminar</button>
         </td>
@@ -26,6 +36,7 @@
     </tbody>
   </table>
   <div *ngIf="cartItems.length > 0" class="mt-3">
+    <div><strong>Subtotal: {{ subtotal | currency }}</strong></div>
     <strong>Total a pagar: {{ totalAPagar | currency }}</strong>
   </div>
   <button class="btn btn-warning" (click)="clear()" *ngIf="cartItems.length > 0">Vaciar carrito</button>

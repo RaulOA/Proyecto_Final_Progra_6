@@ -18,6 +18,13 @@ export class CartComponent {
   cartItems: OrderDetail[] = [];
   isLoading = false;
 
+  // Descuento por producto (hardcodeado por ahora, pero preparado para ser variable por producto)
+  descuentoPorProducto: Record<number, { porcentaje: number, cantidadMinima: number }> = {
+    // Ejemplo: producto 1 y 2
+    1: { porcentaje: 5, cantidadMinima: 5 },
+    2: { porcentaje: 10, cantidadMinima: 3 }
+  };
+
   constructor(
     private cartService: CartService,
     private orderService: OrderService,
@@ -52,16 +59,13 @@ export class CartComponent {
       return;
     }
     this.isLoading = true;
-    // Lógica de descuento automática: 5% si compra 5 o más unidades de un producto
+    // Descuento solo por línea: 5% si compra 5 o más unidades de un producto
     const detalles = this.cartItems.map(item => ({
       ...item,
       discount: item.quantity >= 5 ? item.unitPrice * item.quantity * 0.05 : 0
     }));
-    // Descuento global: 10% si el total de productos supera 10 unidades
-    const totalUnidades = detalles.reduce((sum, d) => sum + d.quantity, 0);
-    const orderDiscount = totalUnidades >= 10 ? detalles.reduce((sum, d) => sum + d.unitPrice * d.quantity, 0) * 0.10 : 0;
     const order: Order = {
-      discount: orderDiscount,
+      discount: 0, // No se aplica descuento global
       comments: '',
       customerId: Number(user.id),
       orderDetails: detalles
@@ -80,13 +84,33 @@ export class CartComponent {
   }
 
   get totalAPagar(): number {
-    // Calcula el total a pagar considerando descuentos por línea y global
-    const subtotal = this.cartItems.reduce((sum, item) => {
-      const lineDiscount = item.quantity >= 5 ? item.unitPrice * item.quantity * 0.05 : 0;
-      return sum + (item.unitPrice * item.quantity - lineDiscount);
-    }, 0);
-    const totalUnidades = this.cartItems.reduce((sum, d) => sum + d.quantity, 0);
-    const globalDiscount = totalUnidades >= 10 ? subtotal * 0.10 : 0;
-    return subtotal - globalDiscount;
+    // Suma de los totales por línea (precio con descuento por producto)
+    return this.cartItems.reduce((sum, item) => sum + this.getTotalLinea(item), 0);
+  }
+
+  get subtotal(): number {
+    // Suma de los precios sin descuento
+    return this.cartItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+  }
+
+  getTotalLinea(item: OrderDetail): number {
+    const regla = this.descuentoPorProducto[item.productId];
+    if (!regla) return item.unitPrice * item.quantity;
+    const aplica = item.quantity >= regla.cantidadMinima;
+    const descuento = aplica ? item.unitPrice * item.quantity * (regla.porcentaje / 100) : 0;
+    return item.unitPrice * item.quantity - descuento;
+  }
+
+  getDescuentoLinea(item: OrderDetail): number {
+    const regla = this.descuentoPorProducto[item.productId];
+    if (!regla) return 0;
+    const aplica = item.quantity >= regla.cantidadMinima;
+    return aplica ? item.unitPrice * item.quantity * (regla.porcentaje / 100) : 0;
+  }
+
+  getMensajeDescuento(item: OrderDetail): string | null {
+    const regla = this.descuentoPorProducto[item.productId];
+    if (!regla) return null;
+    return `Compra ${regla.cantidadMinima} o más y obtén un ${regla.porcentaje}% de descuento en este producto.`;
   }
 }
