@@ -29,6 +29,7 @@ import { NotificationsViewerComponent } from '../controls/notifications-viewer.c
 import { TodoDemoComponent } from '../controls/todo-demo.component';
 import { BannerDemoComponent } from '../controls/banner-demo.component';
 import { ProductsDemoComponent } from '../controls/products-demo.component';
+import { CartComponent } from '../cart/cart.component';
 // *********************************************************************************************************************************************
 // Fin de importaciones y declaraciones globales.
 // ======================================================== FIN - IMPORTACIONES Y DECLARACIONES =========================================================
@@ -50,7 +51,7 @@ interface WidgetIndex { element: string, index: number }
   animations: [fadeInOut],
   imports: [
     CdkDropList, RouterLink, CdkDrag, CdkDragPlaceholder, StatisticsDemoComponent, NotificationsViewerComponent,
-    TodoDemoComponent, BannerDemoComponent, ProductsDemoComponent, TranslateModule
+    TodoDemoComponent, BannerDemoComponent, ProductsDemoComponent, CartComponent, TranslateModule
   ]
 })
 export class HomeComponent implements AfterViewInit {

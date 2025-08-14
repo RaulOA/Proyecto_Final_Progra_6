@@ -230,6 +230,25 @@ Alertas Críticas:
 
   <div class="row">
     <div class="col-md-12">
+      <hr class="hr-sub-separator" />
+    </div>
+  </div>
+
+  <div class="row">
+    <label class="col-sm-3 col-form-label" for="dashboardCart">{{'preferences.DashboardCart' | translate}} </label>
+    <div class="col-sm-4">
+      <div class="form-check form-switch fs-5 pt-sm-1">
+        <input name="dashboardCart" [(ngModel)]="configurations.showDashboardCart" class="form-check-input"
+               type="checkbox" id="dashboardCart">
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <p class="form-control-plaintext text-muted small">{{'preferences.DashboardCartHint' | translate}}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
       <hr class="hr-separator hr-last-separator" />
     </div>
   </div>

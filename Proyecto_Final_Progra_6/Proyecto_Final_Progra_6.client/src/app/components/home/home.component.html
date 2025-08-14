@@ -121,6 +121,20 @@ Alertas Críticas:
     </div>
     }
     <!-- ===================== FIN - WIDGET DE PRODUCTOS ======================= -->
+    <!-- ===================== INICIO - WIDGET DE CARRITO =====================
+       Widget que muestra el carrito de compras del usuario.
+  *********************************************************************** -->
+    @if (configurations.showDashboardCart) {
+    <div id="dashboardCart" #dashboardCart class="col-12 mb-4 pt-1 widget-container px-0"
+         cdkDrag [cdkDragStartDelay]="dragStartDelay">
+      <button type="button" class="btn-close extra-down" aria-label="Close" title="Cerrar"
+              (click)="configurations.showDashboardCart = false"></button>
+      <div #dragPlaceholder *cdkDragPlaceholder class="widget-container-placeholder mb-4"
+           [style.minHeight.px]="getPlaceholderMinHeight(dragPlaceholder, dashboardCart)"></div>
+      <app-cart></app-cart>
+    </div>
+    }
+    <!-- ===================== FIN - WIDGET DE CARRITO ======================= -->
   </div>
 </div>
 <!-- ======================================================== FIN - CONTENEDOR PRINCIPAL DE WIDGETS ===================================================== -->
