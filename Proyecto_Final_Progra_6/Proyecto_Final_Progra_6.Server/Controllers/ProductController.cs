@@ -21,7 +21,6 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Administrador")]
     public class ProductController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -35,6 +34,7 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
 
         // ======================================================== INICIO - OBTENER TODOS LOS PRODUCTOS ========================================================
         [HttpGet]
+        [Authorize(Roles = "Administrador,Cliente")]
         public IActionResult Get()
         {
             var products = _productService.GetAllProducts();
@@ -44,6 +44,7 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
 
         // ======================================================== INICIO - OBTENER PRODUCTO POR ID ============================================================
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Cliente")]
         public IActionResult Get(int id)
         {
             var product = _productService.GetProductById(id);
@@ -55,6 +56,7 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
 
         // ======================================================== INICIO - CREAR NUEVO PRODUCTO ==============================================================
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Post([FromBody] ProductVM value)
         {
             if (!ModelState.IsValid)
@@ -67,6 +69,7 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
 
         // ======================================================== INICIO - ACTUALIZAR PRODUCTO ===============================================================
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Put(int id, [FromBody] ProductVM value)
         {
             if (!ModelState.IsValid)
@@ -81,6 +84,7 @@ namespace Proyecto_Final_Progra_6.Server.Controllers
 
         // ======================================================== INICIO - ELIMINAR PRODUCTO ==================================================================
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Delete(int id)
         {
             var deleted = _productService.DeleteProduct(id);

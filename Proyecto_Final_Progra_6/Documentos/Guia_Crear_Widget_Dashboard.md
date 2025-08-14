@@ -16,6 +16,12 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
     ...
   })
   ```
+- **Importante:** Si el widget muestra datos protegidos por roles, asegúrate de que el endpoint backend permita el acceso solo a los roles requeridos usando `[Authorize(Roles = "..."))]` en el controlador o acción correspondiente. Por ejemplo, para exponer productos a Cliente y Administrador:
+  ```csharp
+  [HttpGet]
+  [Authorize(Roles = "Administrador,Cliente")]
+  public IActionResult Get() { ... }
+  ```
 
 ## 2. Registrar el widget en el dashboard
 - Importa el componente en `home.component.ts`:
