@@ -1,0 +1,27 @@
+<div *ngIf="order; else noOrder">
+  <h3>{{ 'orderSummary.Title' | translate }}</h3>
+  <p><strong>{{ 'orderSummary.OrderId' | translate }}:</strong> {{ order.orderId }}</p>
+  <p><strong>{{ 'orderSummary.Date' | translate }}:</strong> {{ order.date }}</p>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>{{ 'orderSummary.Product' | translate }}</th>
+        <th>{{ 'orderSummary.Quantity' | translate }}</th>
+        <th>{{ 'orderSummary.Price' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of order.products">
+        <td>{{ product.name }}</td>
+        <td>{{ product.quantity }}</td>
+        <td>{{ product.price | currency }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="text-end">
+    <strong>{{ 'orderSummary.Total' | translate }}: {{ order.total | currency }}</strong>
+  </div>
+</div>
+<ng-template #noOrder>
+  <div class="alert alert-info">{{ 'orderSummary.NoOrder' | translate }}</div>
+</ng-template>

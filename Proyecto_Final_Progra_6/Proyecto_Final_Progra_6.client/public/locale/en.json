@@ -284,7 +284,9 @@
     "ResetDefault": "Reset default",
     "SetDefault": "Set as default",
     "DashboardProducts": "Dashboard Products:",
-    "DashboardProductsHint": "Show products/books widget on the dashboard"
+    "DashboardProductsHint": "Show products/books widget on the dashboard",
+    "DashboardOrderSummary": "Dashboard Order Summary:",
+    "DashboardOrderSummaryHint": "Show confirmed order summary on the dashboard"
   },
   "users": {
     "management": {
@@ -394,5 +396,15 @@
       "NoProducts": "No products found",
       "Loading": "Loading products..."
     }
+  },
+  "orderSummary": {
+    "Title": "Order Summary",
+    "OrderId": "Order ID",
+    "Date": "Date",
+    "Product": "Product",
+    "Quantity": "Quantity",
+    "Price": "Price",
+    "Total": "Total",
+    "NoOrder": "No confirmed order to display."
   }
 }

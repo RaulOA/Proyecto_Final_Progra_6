@@ -7,12 +7,12 @@
 export type PermissionNames =
   'View Users' | 'Manage Users' |
   'View Roles' | 'Manage Roles' | 'Assign Roles' |
-  'View Products';
+  'View Products' | 'View Order Summary';
 
 export type PermissionValues =
   'users.view' | 'users.manage' |
   'roles.view' | 'roles.manage' | 'roles.assign' |
-  'products.view';
+  'products.view' | 'ordersummary.view';
 
 export interface Permission {
   name: PermissionNames;
@@ -30,4 +30,5 @@ export class Permissions {
   public static readonly assignRoles: PermissionValues = 'roles.assign';
 
   public static readonly viewProducts: PermissionValues = 'products.view';
+  public static readonly viewOrderSummary: PermissionValues = 'ordersummary.view';
 }

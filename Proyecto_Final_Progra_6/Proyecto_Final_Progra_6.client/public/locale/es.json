@@ -283,6 +283,8 @@
     "DashboardBannerHint": "Mostrar widget de banner informativo de demostración en el panel",
     "DashboardProducts": "Productos del Panel:",
     "DashboardProductsHint": "Mostrar widget de productos/libros en el panel",
+    "DashboardOrderSummary": "Resumen de pedido en el panel:",
+    "DashboardOrderSummaryHint": "Mostrar el resumen del pedido confirmado en el panel",
     "ResetDefault": "Restablecer valores",
     "SetDefault": "Establecer como predeterminado"
   },
@@ -394,5 +396,15 @@
       "NoProducts": "No se encontraron productos",
       "Loading": "Cargando productos..."
     }
+  },
+  "orderSummary": {
+    "Title": "Resumen del Pedido",
+    "OrderId": "ID del Pedido",
+    "Date": "Fecha",
+    "Product": "Producto",
+    "Quantity": "Cantidad",
+    "Price": "Precio",
+    "Total": "Total",
+    "NoOrder": "No hay pedido confirmado para mostrar."
   }
 }
