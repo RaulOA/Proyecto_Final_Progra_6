@@ -12,7 +12,7 @@ export class CartService {
     return this.cartItemsSubject.value;
   }
 
-  addToCart(product: Product, quantity: number = 1): void {
+  addToCart(product: Product, quantity = 1): void {
     const items = [...this.cartItemsSubject.value];
     const idx = items.findIndex(i => i.productId === product.id);
     if (idx > -1) {
@@ -22,7 +22,8 @@ export class CartService {
         productId: product.id,
         unitPrice: product.sellingPrice,
         quantity,
-        discount: 0
+        discount: 0,
+        product // Guarda el producto completo para acceso a discountPercent
       });
     }
     this.cartItemsSubject.next(items);

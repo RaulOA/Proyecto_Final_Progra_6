@@ -182,7 +182,8 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
                     SellingPrice = 120,
                     UnitsInStock = 12,
                     IsActive = true,
-                    ProductCategory = prodCat_1
+                    ProductCategory = prodCat_1,
+                    DiscountPercent = 5 // Descuento de 5%
                 };
 
                 var prod_2 = new Product
@@ -193,7 +194,8 @@ namespace Proyecto_Final_Progra_6.Core.Infrastructure
                     SellingPrice = 95,
                     UnitsInStock = 4,
                     IsActive = true,
-                    ProductCategory = prodCat_1
+                    ProductCategory = prodCat_1,
+                    DiscountPercent = 10 // Descuento de 10%
                 };
 
                 var ordr_1 = new Order

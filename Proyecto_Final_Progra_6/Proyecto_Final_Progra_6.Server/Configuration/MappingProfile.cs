@@ -57,7 +57,9 @@ namespace Proyecto_Final_Progra_6.Server.Configuration
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => ParseGender(src.Gender)));
 
             CreateMap<Product, ProductVM>()
-                .ReverseMap();
+                .ForMember(dest => dest.DiscountPercent, opt => opt.MapFrom(src => src.DiscountPercent));
+            CreateMap<ProductVM, Product>()
+                .ForMember(dest => dest.DiscountPercent, opt => opt.MapFrom(src => src.DiscountPercent));
 
             CreateMap<Order, OrderVM>()
                 .ReverseMap();

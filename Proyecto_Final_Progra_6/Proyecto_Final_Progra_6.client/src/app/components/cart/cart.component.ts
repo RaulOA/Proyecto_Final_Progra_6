@@ -18,13 +18,6 @@ export class CartComponent {
   cartItems: OrderDetail[] = [];
   isLoading = false;
 
-  // Descuento por producto (hardcodeado por ahora, pero preparado para ser variable por producto)
-  descuentoPorProducto: Record<number, { porcentaje: number, cantidadMinima: number }> = {
-    // Ejemplo: producto 1 y 2
-    1: { porcentaje: 5, cantidadMinima: 5 },
-    2: { porcentaje: 10, cantidadMinima: 3 }
-  };
-
   constructor(
     private cartService: CartService,
     private orderService: OrderService,
@@ -59,11 +52,14 @@ export class CartComponent {
       return;
     }
     this.isLoading = true;
-    // Descuento solo por línea: 5% si compra 5 o más unidades de un producto
-    const detalles = this.cartItems.map(item => ({
-      ...item,
-      discount: item.quantity >= 5 ? item.unitPrice * item.quantity * 0.05 : 0
-    }));
+    // Descuento por línea usando el porcentaje del producto
+    const detalles = this.cartItems.map(item => {
+      const discountPercent = item.product?.discountPercent || 0;
+      return {
+        ...item,
+        discount: item.unitPrice * item.quantity * (discountPercent / 100)
+      };
+    });
     const order: Order = {
       discount: 0, // No se aplica descuento global
       comments: '',
@@ -94,23 +90,21 @@ export class CartComponent {
   }
 
   getTotalLinea(item: OrderDetail): number {
-    const regla = this.descuentoPorProducto[item.productId];
-    if (!regla) return item.unitPrice * item.quantity;
-    const aplica = item.quantity >= regla.cantidadMinima;
-    const descuento = aplica ? item.unitPrice * item.quantity * (regla.porcentaje / 100) : 0;
+    const discountPercent = item.product?.discountPercent || 0;
+    const descuento = item.unitPrice * item.quantity * (discountPercent / 100);
     return item.unitPrice * item.quantity - descuento;
   }
 
   getDescuentoLinea(item: OrderDetail): number {
-    const regla = this.descuentoPorProducto[item.productId];
-    if (!regla) return 0;
-    const aplica = item.quantity >= regla.cantidadMinima;
-    return aplica ? item.unitPrice * item.quantity * (regla.porcentaje / 100) : 0;
+    const discountPercent = item.product?.discountPercent || 0;
+    return item.unitPrice * item.quantity * (discountPercent / 100);
   }
 
   getMensajeDescuento(item: OrderDetail): string | null {
-    const regla = this.descuentoPorProducto[item.productId];
-    if (!regla) return null;
-    return `Compra ${regla.cantidadMinima} o más y obtén un ${regla.porcentaje}% de descuento en este producto.`;
+    const discountPercent = item.product?.discountPercent || 0;
+    if (discountPercent > 0) {
+      return `¡Promoción! Obtén un ${discountPercent}% de descuento en este producto.`;
+    }
+    return null;
   }
 }

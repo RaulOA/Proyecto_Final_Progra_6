@@ -25,5 +25,7 @@ namespace Proyecto_Final_Progra_6.Core.Models.Shop
 
         public ICollection<Product> Children { get; } = [];
         public ICollection<OrderDetail> OrderDetails { get; } = [];
+
+        public decimal DiscountPercent { get; set; } // Porcentaje de descuento configurable por producto
     }
 }

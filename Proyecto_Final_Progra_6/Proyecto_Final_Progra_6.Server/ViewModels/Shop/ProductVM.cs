@@ -18,5 +18,6 @@ namespace Proyecto_Final_Progra_6.Server.ViewModels.Shop
         public bool IsActive { get; set; }
         public bool IsDiscontinued { get; set; }
         public string? ProductCategoryName { get; set; }
+        public decimal DiscountPercent { get; set; }
     }
 }

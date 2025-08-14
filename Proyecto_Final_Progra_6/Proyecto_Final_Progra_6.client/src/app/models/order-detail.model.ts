@@ -4,4 +4,5 @@ export interface OrderDetail {
   quantity: number;
   discount: number;
   productId: number;
+  product?: import('./product.model').Product;
 }

@@ -47,8 +47,11 @@ namespace Proyecto_Final_Progra_6.Core.Services.Shop
                 .FirstOrDefault(p => p.Id == id);
         }
 
+        // Al crear producto, inicializar DiscountPercent si es necesario
         public Product CreateProduct(Product product)
         {
+            if (product.DiscountPercent < 0) product.DiscountPercent = 0;
+
             // Validaciones básicas
             if (string.IsNullOrWhiteSpace(product.Name) || product.Name.Length > 100)
                 throw new ArgumentException("El nombre es obligatorio y debe tener máximo 100 caracteres.");
@@ -89,6 +92,7 @@ namespace Proyecto_Final_Progra_6.Core.Services.Shop
             existing.BuyingPrice = product.BuyingPrice;
             existing.SellingPrice = product.SellingPrice;
             existing.UnitsInStock = product.UnitsInStock;
+            existing.DiscountPercent = product.DiscountPercent;
             existing.IsActive = product.IsActive;
             existing.IsDiscontinued = product.IsDiscontinued;
             existing.ProductCategoryId = product.ProductCategoryId;
