@@ -8,6 +8,14 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
 - Ubica el nuevo componente en `src/app/components/controls/`.
 - Ejemplo: `mi-widget.component.ts`, `mi-widget.component.html`, `mi-widget.component.scss`.
 - El componente debe ser standalone y tener su lógica, template y estilos propios.
+- **Recomendación:** Usa el patrón de imports y standalone de Angular 16+:
+  ```typescript
+  @Component({
+    standalone: true,
+    imports: [NgClass, FormsModule, TranslateModule, CommonModule, SearchBoxComponent, NgxDatatableModule],
+    ...
+  })
+  ```
 
 ## 2. Registrar el widget en el dashboard
 - Importa el componente en `home.component.ts`:
@@ -114,6 +122,28 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
   },
   ```
 - Usa estas claves en las plantillas del widget para mantener consistencia y facilitar la traducción. Si agregas nuevas acciones o columnas, sigue este patrón.
+
+## 9. Tabla avanzada, búsqueda y ordenamiento (recomendado)
+- Para widgets con tablas, utiliza `ngx-datatable` para soporte de ordenamiento, búsqueda y experiencia uniforme:
+  - Declara un arreglo `columns` y una propiedad `rows` en el componente.
+  - Usa solo `rows` como fuente de datos y filtra sobre ella en la búsqueda.
+  - Ejemplo de patrón:
+    ```typescript
+    columns: TableColumn[] = [
+      { prop: 'name', name: $localize`:@@miWidgetDemo.table.Name:Nombre`, sortable: true },
+      ...
+    ];
+    rows: MiEntidad[] = [];
+    onSearchChanged(value: string) {
+      const term = value?.toLowerCase() ?? '';
+      this.rows = this.miListaOriginal.filter(x => x.name.toLowerCase().includes(term));
+    }
+    ```
+  - En el template, usa:
+    ```html
+    <ngx-datatable [rows]="rows" [columns]="columns" ...></ngx-datatable>
+    ```
+- Así aseguras búsqueda y ordenamiento igual que en los widgets estándar del dashboard.
 
 ---
 

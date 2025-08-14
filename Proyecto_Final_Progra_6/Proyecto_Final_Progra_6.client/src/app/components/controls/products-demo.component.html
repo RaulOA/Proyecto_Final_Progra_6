@@ -7,9 +7,6 @@ Ruta: Proyecto_Final_Progra_6/Proyecto_Final_Progra_6.client/src/app/components/
 
 Descripción:
 Widget visual para mostrar productos/libros en el dashboard. Permite buscar, visualizar y agregar productos al carrito.
-
-Historial de cambios:
-1. 2024-05-01 - Creación inicial del widget de productos para dashboard.
 -->
 
 <div class="row control-box">
@@ -20,37 +17,46 @@ Historial de cambios:
   </div>
 </div>
 
-<div class="table-responsive mt-2">
-  <table class="table table-hover align-middle">
-    <thead>
-      <tr>
-        <th>{{'productsDemo.table.Name' | translate}}</th>
-        <th>{{'productsDemo.table.Description' | translate}}</th>
-        <th>{{'productsDemo.table.Price' | translate}}</th>
-        <th>{{'productsDemo.table.Stock' | translate}}</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of filteredProducts">
-        <td>{{product.name}}</td>
-        <td>{{product.description}}</td>
-        <td>{{product.sellingPrice | currency}}</td>
-        <td>
-          <span [ngClass]="{'text-danger': product.unitsInStock < 1}">{{product.unitsInStock}}</span>
-        </td>
-        <td>
-          <button class="btn btn-sm btn-primary" [disabled]="product.unitsInStock < 1" (click)="addToCart(product)">
-            <i class="fa fa-cart-plus"></i> {{'productsDemo.table.AddToCart' | translate}}
-          </button>
-        </td>
-      </tr>
-      <tr *ngIf="!loading && filteredProducts.length === 0">
-        <td colspan="5" class="text-center text-muted">{{'productsDemo.table.NoProducts' | translate}}</td>
-      </tr>
-      <tr *ngIf="loading">
-        <td colspan="5" class="text-center"><i class="fa fa-spinner fa-spin"></i> {{'productsDemo.table.Loading' | translate}}</td>
-      </tr>
-    </tbody>
-  </table>
+<ngx-datatable class="material colored-header sm table-hover"
+               [loadingIndicator]="loading"
+               [rows]="rows"
+               [columns]="columns"
+               [rowHeight]="35"
+               [headerHeight]="37"
+               [footerHeight]="35"
+               [columnMode]="'force'">
+  <ngx-datatable-column name="{{'productsDemo.table.Name' | translate}}" prop="name" [sortable]="true">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="{{'productsDemo.table.Description' | translate}}" prop="description" [sortable]="true">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="{{'productsDemo.table.Price' | translate}}" prop="sellingPrice" [sortable]="true">
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value | currency}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="{{'productsDemo.table.Stock' | translate}}" prop="unitsInStock" [sortable]="true">
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <span [ngClass]="{'text-danger': row.unitsInStock < 1}">{{value}}</span>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [sortable]="false">
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <button class="btn btn-sm btn-primary" [disabled]="row.unitsInStock < 1" (click)="addToCart(row)">
+        <i class="fa fa-cart-plus"></i> {{'productsDemo.table.AddToCart' | translate}}
+      </button>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
+
+<div *ngIf="!loading && rows.length === 0" class="text-center text-muted mt-2">
+  {{'productsDemo.table.NoProducts' | translate}}
+</div>
+<div *ngIf="loading" class="text-center mt-2">
+  <i class="fa fa-spinner fa-spin"></i> {{'productsDemo.table.Loading' | translate}}
 </div>

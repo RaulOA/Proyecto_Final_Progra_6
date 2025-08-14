@@ -23,6 +23,7 @@ import { AlertService, MessageSeverity } from '../../services/alert.service';
 import { fadeInOut } from '../../services/animations';
 import { CommonModule } from '@angular/common';
 import { SearchBoxComponent } from './search-box.component';
+import { TableColumn, NgxDatatableModule } from '@siemens/ngx-datatable';
 
 @Component({
   selector: 'app-products-demo',
@@ -30,7 +31,7 @@ import { SearchBoxComponent } from './search-box.component';
   styleUrl: './products-demo.component.scss',
   animations: [fadeInOut],
   standalone: true,
-  imports: [NgClass, FormsModule, TranslateModule, CommonModule, SearchBoxComponent]
+  imports: [SearchBoxComponent, NgxDatatableModule, FormsModule, NgClass, TranslateModule, CommonModule]
 })
 export class ProductsDemoComponent implements OnInit {
   private productEndpoint = inject(ProductEndpoint);
@@ -38,12 +39,20 @@ export class ProductsDemoComponent implements OnInit {
   private alertService = inject(AlertService);
 
   products: Product[] = [];
-  filteredProducts: Product[] = [];
+  rows: Product[] = [];
   loading = true;
   search = '';
+  columns: TableColumn[] = [];
 
   ngOnInit() {
     this.loadProducts();
+    this.columns = [
+      { prop: 'name', name: $localize`:@@productsDemo.table.Name:Nombre`, sortable: true },
+      { prop: 'description', name: $localize`:@@productsDemo.table.Description:Descripción`, sortable: true },
+      { prop: 'sellingPrice', name: $localize`:@@productsDemo.table.Price:Precio`, sortable: true },
+      { prop: 'unitsInStock', name: $localize`:@@productsDemo.table.Stock:Stock`, sortable: true },
+      { name: '', sortable: false }
+    ];
   }
 
   loadProducts() {
@@ -51,7 +60,7 @@ export class ProductsDemoComponent implements OnInit {
     this.productEndpoint.getProducts().subscribe({
       next: (data) => {
         this.products = data;
-        this.filteredProducts = data;
+        this.rows = data;
         this.loading = false;
       },
       error: () => {
@@ -64,7 +73,7 @@ export class ProductsDemoComponent implements OnInit {
   onSearchChanged(value: string) {
     this.search = value;
     const term = value?.toLowerCase() ?? '';
-    this.filteredProducts = this.products.filter(p =>
+    this.rows = this.products.filter(p =>
       p.name.toLowerCase().includes(term) ||
       (p.description?.toLowerCase().includes(term))
     );
