@@ -5,7 +5,7 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
 ---
 
 ## 1. Crear el componente del widget
-- Ubica el nuevo componente en `src/app/components/controls/`.
+- Ubica el nuevo componente en `src/app/components/controls/` o en la carpeta correspondiente si es un widget global (ejemplo: carrito en `src/app/components/cart/`).
 - Ejemplo: `mi-widget.component.ts`, `mi-widget.component.html`, `mi-widget.component.scss`.
 - El componente debe ser standalone y tener su lógica, template y estilos propios.
 - **Recomendación:** Usa el patrón de imports y standalone de Angular 16+:
@@ -16,7 +16,7 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
     ...
   })
   ```
-- **Importante:** Si el widget muestra datos protegidos por roles, asegúrate de que el endpoint backend permita el acceso solo a los roles requeridos usando `[Authorize(Roles = "..."))]` en el controlador o acción correspondiente. Por ejemplo, para exponer productos a Cliente y Administrador:
+- **Importante:** Si el widget muestra datos protegidos por roles, asegúrate de que el endpoint backend permita el acceso solo a los roles requeridos usando `[Authorize(Roles = "...")]` en el controlador o acción correspondiente. Por ejemplo, para exponer productos a Cliente y Administrador:
   ```csharp
   [HttpGet]
   [Authorize(Roles = "Administrador,Cliente")]
@@ -38,6 +38,19 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
   }
   ```
 - Controla la visibilidad con una propiedad de configuración (ej: `showDashboardMiWidget`).
+- **Ejemplo avanzado:** Para widgets como el carrito, el bloque debe seguir el patrón:
+  ```html
+  @if (configurations.showDashboardCart) {
+    <div id="dashboardCart" #dashboardCart class="col-12 mb-4 pt-1 widget-container px-0"
+         cdkDrag [cdkDragStartDelay]="dragStartDelay">
+      <button type="button" class="btn-close extra-down" aria-label="Close" title="Cerrar"
+              (click)="configurations.showDashboardCart = false"></button>
+      <div #dragPlaceholder *cdkDragPlaceholder class="widget-container-placeholder mb-4"
+           [style.minHeight.px]="getPlaceholderMinHeight(dragPlaceholder, dashboardCart)"></div>
+      <app-cart></app-cart>
+    </div>
+  }
+  ```
 
 ## 3. Agregar el switch de preferencias
 - En `user-preferences.component.html`, agrega un switch para mostrar/ocultar el widget:
@@ -56,6 +69,21 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
   </div>
   ```
 - El switch enlaza directamente con la propiedad de configuración.
+- **Ejemplo avanzado:** Para el carrito:
+  ```html
+  <div class="row">
+    <label class="col-sm-3 col-form-label" for="dashboardCart">{{'preferences.DashboardCart' | translate}} </label>
+    <div class="col-sm-4">
+      <div class="form-check form-switch fs-5 pt-sm-1">
+        <input name="dashboardCart" [(ngModel)]="configurations.showDashboardCart" class="form-check-input"
+               type="checkbox" id="dashboardCart">
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <p class="form-control-plaintext text-muted small">{{'preferences.DashboardCartHint' | translate}}</p>
+    </div>
+  </div>
+  ```
 
 ## 4. Permisos (si aplica)
 - Define el permiso en `src/app/models/permission.model.ts`:
@@ -72,7 +100,9 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
   "preferences": {
     ...
     "DashboardMiWidget": "Mi Widget en el Panel:",
-    "DashboardMiWidgetHint": "Mostrar el widget personalizado en el panel"
+    "DashboardMiWidgetHint": "Mostrar el widget personalizado en el panel",
+    "DashboardCart": "Carrito de compras en el panel:",
+    "DashboardCartHint": "Mostrar el widget de carrito en el dashboard"
   }
   ```
 - Ejemplo en inglés:
@@ -80,12 +110,24 @@ Esta guía documenta los pasos estandarizados y buenas prácticas para crear, regi
   "preferences": {
     ...
     "DashboardMiWidget": "Dashboard MyWidget:",
-    "DashboardMiWidgetHint": "Show custom widget on the dashboard"
+    "DashboardMiWidgetHint": "Show custom widget on the dashboard",
+    "DashboardCart": "Dashboard Cart:",
+    "DashboardCartHint": "Show cart widget on the dashboard"
   }
   ```
 
 ## 6. Persistencia y configuración
 - La propiedad de visibilidad debe estar definida y persistida en el servicio de configuración (`configuration.service.ts`).
+- Ejemplo:
+  ```typescript
+  set showDashboardCart(value: boolean) {
+    this._showDashboardCart = value;
+    this.saveToLocalStore(value, DBkeys.SHOW_DASHBOARD_CART);
+  }
+  get showDashboardCart() {
+    return this._showDashboardCart != null ? this._showDashboardCart : ConfigurationService.defaultShowDashboardCart;
+  }
+  ```
 
 ## 7. Pruebas y validación
 - Verifica que el widget se muestre/oculte correctamente desde las preferencias.
