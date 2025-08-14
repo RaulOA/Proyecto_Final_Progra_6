@@ -25,6 +25,9 @@
       </tr>
     </tbody>
   </table>
+  <div *ngIf="cartItems.length > 0" class="mt-3">
+    <strong>Total a pagar: {{ totalAPagar | currency }}</strong>
+  </div>
   <button class="btn btn-warning" (click)="clear()" *ngIf="cartItems.length > 0">Vaciar carrito</button>
   <button class="btn btn-success ms-2" (click)="realizarPedido()" [disabled]="cartItems.length === 0 || isLoading" *ngIf="cartItems.length > 0">
     {{ isLoading ? 'Procesando...' : 'Realizar pedido' }}

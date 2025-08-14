@@ -78,4 +78,15 @@ export class CartComponent {
       }
     });
   }
+
+  get totalAPagar(): number {
+    // Calcula el total a pagar considerando descuentos por línea y global
+    const subtotal = this.cartItems.reduce((sum, item) => {
+      const lineDiscount = item.quantity >= 5 ? item.unitPrice * item.quantity * 0.05 : 0;
+      return sum + (item.unitPrice * item.quantity - lineDiscount);
+    }, 0);
+    const totalUnidades = this.cartItems.reduce((sum, d) => sum + d.quantity, 0);
+    const globalDiscount = totalUnidades >= 10 ? subtotal * 0.10 : 0;
+    return subtotal - globalDiscount;
+  }
 }
